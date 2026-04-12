@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Everlasting Android Tweak</title>
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#18120A;--surface:#231D0F;--surf2:#2D2618;--surf3:#373020;
+  --gold:#C8A830;--gold-dim:rgba(200,168,48,.18);--gold-border:rgba(200,168,48,.22);
+  --on-surf:#EDE8DC;--sub:#9E9880;--divider:rgba(200,180,100,.12);
+  --chip-bg:#373020;--chip-on:#3A2E00;
+  --hover:rgba(255,255,255,.05);--radius:20px;
+  --font:'Google Sans','Segoe UI',sans-serif;--max:700px;
+}
+html,body{min-height:100%;background:var(--bg);color:var(--on-surf);font-family:var(--font);}
+body{padding-bottom:48px;}
+a{color:var(--gold);text-decoration:none;}
+
+/* ── WRAP ── */
+.wrap{max-width:var(--max);margin:0 auto;}
+@media(min-width:720px){
+  body{padding:24px 16px 48px;}
+  .wrap{border-radius:24px;border:1px solid var(--divider);background:#1c1500;overflow:hidden;}
+}
+
+/* ── BANNER ── */
+.hero-banner{width:100%;overflow:hidden;background:#0d0900;line-height:0;}
+.hero-banner img{width:100%;height:auto;display:block;max-height:240px;object-fit:cover;object-position:center top;}
+
+/* ── HERO ── */
+.hero{background:var(--surface);padding:28px 20px 24px;}
+.hero-top{display:flex;align-items:center;gap:18px;margin-bottom:18px;}
+.app-icon{
+  width:80px;height:80px;border-radius:22px;flex-shrink:0;
+  background:linear-gradient(145deg,#2d1f00,#5a3e00);
+  border:2px solid rgba(200,168,48,.3);
+  overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 0 1px rgba(200,168,48,.1);
+  display:flex;align-items:center;justify-content:center;
+}
+.app-icon img{width:100%;height:100%;object-fit:cover;border-radius:20px;display:block;}
+.hero-info{flex:1;min-width:0;}
+.hero-name{font-size:22px;font-weight:700;color:var(--on-surf);line-height:1.2;margin-bottom:4px;}
+.hero-tagline{font-size:12px;color:var(--sub);margin-bottom:8px;}
+.hero-badges{display:flex;flex-wrap:wrap;gap:6px;}
+.badge{
+  padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;
+  background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);
+  display:inline-flex;align-items:center;gap:4px;
+}
+.badge .material-icons{font-size:13px;line-height:1;}
+.badge.green{background:rgba(76,175,80,.15);color:#81C784;border-color:rgba(76,175,80,.25);}
+.badge.blue{background:rgba(33,150,243,.15);color:#64B5F6;border-color:rgba(33,150,243,.25);}
+.hero-desc{font-size:14px;color:rgba(237,232,220,.78);line-height:1.65;margin-bottom:18px;}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 20px;border-radius:50px;
+  background:var(--gold);color:#1C1500;
+  font-size:13px;font-weight:700;cursor:pointer;
+  border:none;font-family:var(--font);transition:opacity .15s;
+  text-decoration:none;
+}
+.btn-primary:hover{opacity:.88;}
+.btn-primary svg,.btn-secondary svg,.btn-ghost svg{width:16px;height:16px;fill:currentColor;flex-shrink:0;}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 20px;border-radius:50px;
+  background:var(--gold-dim);color:var(--gold);
+  font-size:13px;font-weight:600;cursor:pointer;
+  border:1px solid var(--gold-border);font-family:var(--font);
+  transition:background .15s;text-decoration:none;
+}
+.btn-secondary:hover{background:rgba(200,168,48,.26);}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:10px 20px;border-radius:50px;
+  background:rgba(255,255,255,.06);color:var(--on-surf);
+  font-size:13px;font-weight:600;cursor:pointer;
+  border:1px solid rgba(255,255,255,.1);font-family:var(--font);
+  transition:background .15s;text-decoration:none;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.1);}
+
+/* ── SECTION HEADER ── */
+.section{padding:0 0 4px;}
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:24px 20px 14px;}
+.sec-title{font-size:18px;font-weight:700;color:var(--on-surf);}
+.sec-count{font-size:12px;color:var(--sub);}
+.divider-line{height:1px;background:var(--divider);margin:0 20px;}
+
+/* ── CHIPS ── */
+.chips-row{
+  overflow-x:auto;overflow-y:hidden;
+  display:flex;gap:8px;padding:0 20px 14px;
+  scrollbar-width:none;
+}
+.chips-row::-webkit-scrollbar{display:none;}
+.chip{
+  flex-shrink:0;padding:7px 16px;border-radius:50px;
+  background:var(--chip-bg);border:1px solid transparent;
+  font-size:12px;font-weight:500;color:var(--on-surf);
+  cursor:pointer;transition:all .15s;font-family:var(--font);white-space:nowrap;
+}
+.chip:hover{border-color:var(--gold-border);}
+.chip.on{background:var(--chip-on);border-color:var(--gold);color:var(--gold);font-weight:700;}
+
+/* ── FEATURES TEXT LIST ── */
+.feat-list-wrap{padding:0 20px 8px;}
+.feat-category{margin-bottom:22px;}
+.feat-cat-header{
+  font-size:11px;font-weight:700;color:var(--gold);
+  text-transform:uppercase;letter-spacing:1px;
+  padding:0 0 10px;margin-bottom:4px;
+  display:flex;align-items:center;gap:10px;
+}
+.feat-cat-header::after{
+  content:'';flex:1;height:1px;background:var(--divider);
+}
+.feat-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:11px 0;
+  border-bottom:1px solid var(--divider);
+}
+.feat-item:last-child{border-bottom:none;}
+.feat-item-icon{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;margin-top:1px;
+}
+.feat-item-icon .material-icons{font-size:18px;}
+.feat-item-body{flex:1;min-width:0;}
+.feat-item-title-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;margin-bottom:3px;}
+.feat-item-name{font-size:14px;font-weight:600;color:var(--on-surf);}
+.feat-item-sep{font-size:13px;color:var(--surf3);user-select:none;}
+.feat-item-sub{font-size:13px;color:var(--sub);}
+.feat-item-desc{font-size:12.5px;color:rgba(158,152,128,.8);line-height:1.55;}
+
+/* ── REVIEWS ── */
+.summary{display:flex;gap:0;align-items:stretch;padding:20px 20px 20px;}
+.avg-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding-right:22px;min-width:90px;border-right:1px solid var(--divider);flex-shrink:0;}
+.avg-num{font-size:52px;font-weight:700;color:var(--on-surf);line-height:1;letter-spacing:-2px;}
+.avg-stars-row{font-size:14px;color:var(--gold);margin:6px 0 4px;letter-spacing:2px;}
+.avg-cnt{font-size:11px;color:var(--sub);}
+.bars-col{flex:1;display:flex;flex-direction:column;justify-content:center;gap:7px;padding-left:22px;}
+.bar-row{display:flex;align-items:center;gap:9px;}
+.bar-lbl{font-size:11px;color:var(--sub);width:8px;text-align:right;flex-shrink:0;}
+.bar-track{flex:1;height:6px;border-radius:3px;background:rgba(200,168,48,.1);overflow:hidden;}
+.bar-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .6s cubic-bezier(.4,0,.2,1);width:0%;}
+
+/* ── REVIEW ITEMS ── */
+.review-item{padding:18px 20px 0;border-bottom:1px solid var(--divider);}
+.review-item:last-child{border-bottom:none;}
+.ri-top{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;}
+.ri-info{flex:1;min-width:0;}
+.ri-name{font-size:14px;font-weight:600;color:var(--on-surf);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;}
+.ri-meta{font-size:11px;color:var(--sub);}
+.ri-stars{font-size:14px;color:var(--gold);margin-bottom:10px;letter-spacing:1px;}
+.ri-text{font-size:14px;color:rgba(237,232,220,.82);line-height:1.6;padding-bottom:18px;}
+
+/* ── SKELETON ── */
+.skel-wrap{padding:18px 20px;border-bottom:1px solid var(--divider);}
+.skel{border-radius:6px;background:linear-gradient(90deg,var(--surf2) 25%,var(--surf3) 50%,var(--surf2) 75%);background-size:400% 100%;animation:shimmer 1.5s infinite;}
+.skel-circle{border-radius:50%;}
+.skel-line{height:10px;border-radius:5px;}
+@keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
+
+/* ── STATE ── */
+.state-box{text-align:center;padding:50px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.state-ico{width:60px;height:60px;border-radius:50%;background:var(--surf3);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.state-ico svg{width:28px;height:28px;}
+.state-title{font-size:15px;font-weight:600;color:var(--on-surf);}
+.state-sub{font-size:13px;color:var(--sub);}
+.retry-btn{
+  margin-top:8px;padding:8px 20px;border-radius:50px;
+  background:var(--gold-dim);color:var(--gold);
+  border:1px solid var(--gold-border);font-size:13px;font-weight:600;
+  cursor:pointer;font-family:var(--font);transition:background .15s;
+}
+.retry-btn:hover{background:rgba(200,168,48,.28);}
+
+/* ── SCREENSHOTS ── */
+.screenshots-wrap{padding:0 20px 20px;}
+.screenshots-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.screenshots-grid img{
+  width:100%;border-radius:12px;display:block;
+  background:var(--surf2);
+  border:1px solid rgba(255,255,255,.04);
+  transition:transform .15s,opacity .15s;
+}
+.screenshots-grid img:hover{transform:scale(1.02);opacity:.9;}
+@media(max-width:480px){.screenshots-grid{gap:5px;}}
+
+/* ── FOOTER ── */
+.footer{padding:20px 20px 8px;border-top:1px solid var(--divider);display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+.footer a{font-size:12px;color:var(--sub);transition:color .15s;}
+.footer a:hover{color:var(--gold);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ── BANNER ── -->
+<div class="hero-banner">
+  <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/banner.png" alt="Everlasting Android Tweak Banner">
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-top">
+    <div class="app-icon">
+      <img
+        src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/icon.png"
+        alt="EAT Icon"
+        onerror="this.style.display='none';this.parentElement.innerHTML='<span class=\'material-icons\' style=\'color:var(--gold);font-size:36px\'>android</span>'"
+      >
+    </div>
+    <div class="hero-info">
+      <div class="hero-name">Everlasting Android Tweak</div>
+      <div class="hero-tagline">by hari161008 · Kotlin · Android</div>
+      <div class="hero-badges">
+        <span class="badge"><span class="material-icons">star</span> 18 Stars</span>
+        <span class="badge green">Open Source</span>
+        <span class="badge blue">46 Features</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-desc">
+    The true heart of Android — a powerful, feature-rich toolkit designed to unlock the full potential of your device. Advanced gestures, customization, system controls, and smart utilities to enhance and personalize your Android experience. <em>Think Different :)</em>
+  </div>
+  <div class="hero-actions">
+    <a class="btn-primary" href="https://github.com/hari161008/Everlasting-Android-Tweak/releases" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M5 20h14v-2H5m14-9h-4V3H9v6H5l7 7 7-7z"/></svg>
+      Download APK
+    </a>
+    <a class="btn-secondary" href="https://t.me/EverlastingAndroidTweak" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+      Support Group
+    </a>
+    <a class="btn-ghost" href="https://t.me/CoolAppStore" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+      Channel
+    </a>
+  </div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── FEATURES ── -->
+<div class="section" id="featuresSection">
+  <div class="sec-head">
+    <div class="sec-title">Features</div>
+    <div class="sec-count" id="featCount">46 total</div>
+  </div>
+  <div class="chips-row" id="catChips"></div>
+  <div class="feat-list-wrap" id="featList"></div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── RATINGS & REVIEWS ── -->
+<div class="section">
+  <div class="sec-head">
+    <div class="sec-title">Rating and Reviews</div>
+    <button onclick="loadReviews()" style="background:none;border:none;cursor:pointer;padding:4px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#9E9880"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+    </button>
+  </div>
+  <div id="summaryArea"></div>
+  <div class="chips-row" id="reviewChips">
+    <div class="chip on" data-f="all" onclick="filterReviews(this)">All</div>
+    <div class="chip" data-f="5" onclick="filterReviews(this)">★ 5</div>
+    <div class="chip" data-f="4" onclick="filterReviews(this)">★ 4</div>
+    <div class="chip" data-f="3" onclick="filterReviews(this)">★ 3</div>
+    <div class="chip" data-f="2" onclick="filterReviews(this)">★ 2</div>
+    <div class="chip" data-f="1" onclick="filterReviews(this)">★ 1</div>
+  </div>
+  <div id="reviewList"></div>
+</div>
+
+<div class="divider-line"></div>
+
+<!-- ── SCREENSHOTS ── -->
+<div class="section">
+  <div class="sec-head">
+    <div class="sec-title">Screenshots</div>
+  </div>
+  <div class="screenshots-wrap">
+    <div class="screenshots-grid">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/1.png"  alt="Screenshot 1"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/2.png"  alt="Screenshot 2"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/3.png"  alt="Screenshot 3"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/4.png"  alt="Screenshot 4"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/5.png"  alt="Screenshot 5"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/6.png"  alt="Screenshot 6"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/7.png"  alt="Screenshot 7"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/8.png"  alt="Screenshot 8"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/9.png"  alt="Screenshot 9"  loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/10.png" alt="Screenshot 10" loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/11.png" alt="Screenshot 11" loading="lazy">
+      <img src="https://raw.githubusercontent.com/hari161008/Everlasting-Android-Tweak/main/assets/images/screenshots/12.png" alt="Screenshot 12" loading="lazy">
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<div class="footer">
+  <a href="https://github.com/hari161008/Everlasting-Android-Tweak" target="_blank">GitHub Repo</a>
+  <a href="https://github.com/hari161008/Everlasting-Android-Tweak/releases" target="_blank">Releases</a>
+  <a href="https://t.me/EverlastingAndroidTweak" target="_blank">Telegram Support</a>
+  <a href="https://t.me/CoolAppStore" target="_blank">Cool Apps Channel</a>
+  <a href="https://hari161008.github.io/Website-For-Everlasting-Android-Tweak/Everlasting_Android_Tweak_Demo%20v2.html" target="_blank">Try Demo</a>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// FEATURES DATA  (icon = Material Icons ligature name)
+// ══════════════════════════════════════════════════════════════
+const FEATURES = [
+  // Gestures
+  {cat:'Gestures',        icon:'flashlight_on',        color:'#FF9800', bg:'rgba(255,152,0,.15)',   title:'Shake for Torch',        sub:'Shake phone to toggle flashlight',             desc:'Simply shake your device to instantly toggle the flashlight on or off. Perfect for quick access in the dark without unlocking your screen. Sensitivity and shake duration can be configured to avoid accidental triggers.'},
+  {cat:'Gestures',        icon:'photo_camera',          color:'#009688', bg:'rgba(0,150,136,.15)',   title:'Twist for Camera',        sub:'Twist wrist to quickly open camera',           desc:'Perform a quick wrist twist motion to instantly launch the camera app. Ideal for capturing spontaneous moments without fumbling through menus or your lock screen.'},
+  {cat:'Gestures',        icon:'touch_app',             color:'#673AB7', bg:'rgba(103,58,183,.15)',  title:'Double Tap Back',         sub:'Double-tap back for torch or app',             desc:'Double-tap the rear of your phone to trigger a customizable action — toggle the torch, open an app, or run a shortcut. Works even when the screen is off.'},
+  {cat:'Gestures',        icon:'do_not_disturb_on',     color:'#3F51B5', bg:'rgba(63,81,181,.15)',   title:'Flip to DND',             sub:'Flip face-down to enable Do Not Disturb',      desc:'Place your phone face-down to automatically enable Do Not Disturb mode. Flip it back to restore your normal notification settings. Great for meetings and focus time.'},
+  {cat:'Gestures',        icon:'bolt',                  color:'#FFD600', bg:'rgba(255,214,0,.12)',   title:'Charging Animation',      sub:'Beautiful animation when charger connects',    desc:'Shows a stunning animated overlay the moment your charger is plugged in, displaying battery level with elegant visual feedback. Multiple animation styles available.'},
+  {cat:'Gestures',        icon:'view_quilt',            color:'#607D8B', bg:'rgba(96,125,139,.15)',  title:'Custom Nav Bar',          sub:'Overlay a custom navigation bar',              desc:'Replace or augment your system navigation bar with a fully customizable overlay. Choose button layouts, icons, gestures, and colors to match your style.'},
+  // Power & Buttons
+  {cat:'Power & Buttons', icon:'power_settings_new',    color:'#E91E63', bg:'rgba(233,30,99,.15)',   title:'Custom Power Menu',       sub:'Replace the default system power dialog',      desc:'Completely replace the standard Android power menu with a beautiful custom dialog. Add quick actions, customize button layout, and give your power menu a unique look.'},
+  {cat:'Power & Buttons', icon:'power',                 color:'#FF9800', bg:'rgba(255,152,0,.15)',   title:'Double Power Press',      sub:'Two quick power presses trigger an action',    desc:'Press the power button twice quickly to launch a custom action — open the camera, toggle torch, launch an app, or any shortcut you define. Highly configurable timing.'},
+  {cat:'Power & Buttons', icon:'screen_lock_portrait',  color:'#607D8B', bg:'rgba(96,125,139,.15)',  title:'Screen-Off Actions',      sub:'Long-press buttons while screen is off',       desc:'Assign long-press actions to your volume and power buttons when the screen is off. Access common functions without ever needing to wake your device.'},
+  {cat:'Power & Buttons', icon:'theaters',              color:'#37474F', bg:'rgba(55,71,79,.25)',    title:'Fake Power Off',          sub:'Simulate a convincing fake shutdown',           desc:'Trick onlookers with a realistic fake power-off animation. Your phone appears to be off but continues running silently in the background — perfect for privacy.'},
+  // Audio & Haptics
+  {cat:'Audio & Haptics', icon:'equalizer',             color:'#4CAF50', bg:'rgba(76,175,80,.15)',   title:'Built-in Equalizer',      sub:'Fine-tune audio with 5-band EQ',               desc:'Access a powerful 5-band equalizer directly from Everlasting. Boost bass, adjust treble, and save custom presets for music, calls, and media playback.'},
+  {cat:'Audio & Haptics', icon:'volume_up',             color:'#F44336', bg:'rgba(244,67,54,.15)',   title:'Volume Booster',          sub:'Amplify audio beyond system limits',            desc:'Break past the Android volume ceiling and push audio output further than the system normally allows. Great for loudspeakers, headphones, and media playback.'},
+  {cat:'Audio & Haptics', icon:'tune',                  color:'#00BCD4', bg:'rgba(0,188,212,.15)',   title:'Volume Styles',           sub:'Custom volume panel styles',                   desc:'Completely redesign your volume slider panel with different layouts, animations, and color themes. Make volume control feel native to your personal aesthetic.'},
+  {cat:'Audio & Haptics', icon:'vibration',             color:'#9C27B0', bg:'rgba(156,39,176,.15)',  title:'Custom Haptics',          sub:'Adjust tap & scroll vibration feedback',        desc:'Fine-tune the intensity, pattern, and duration of haptic feedback for taps, scrolls, and interactions across the entire system. Makes your phone feel uniquely yours.'},
+  {cat:'Audio & Haptics', icon:'notifications_active',  color:'#FFC107', bg:'rgba(255,193,7,.12)',   title:'Custom Sounds',           sub:'Lock, unlock, tap & charging sounds',           desc:'Assign unique sounds for locking, unlocking, screen taps, charging connection, and more. Import your own audio files or choose from included packs.'},
+  {cat:'Audio & Haptics', icon:'alarm',                 color:'#E91E63', bg:'rgba(233,30,99,.15)',   title:'Call/Alarm Vibrations',   sub:'Custom vibration patterns for calls & alarms', desc:'Define completely unique vibration patterns for incoming calls and alarms. Create SOS patterns, rhythmic pulses, or anything in between using the built-in pattern editor.'},
+  // Customization
+  {cat:'Customization',   icon:'widgets',               color:'#9C27B0', bg:'rgba(156,39,176,.15)',  title:'Lock Screen Widgets',     sub:'Add widgets to your lock screen',              desc:'Place interactive widgets directly on your lock screen — clocks, calendars, weather, music controls, and more. See key info at a glance without unlocking.'},
+  {cat:'Customization',   icon:'settings',              color:'#00897B', bg:'rgba(0,137,123,.15)',   title:'Custom QS Tiles',         sub:'Add 15+ custom quick settings tiles',          desc:'Expand your quick settings panel with over 15 powerful new tiles — from torch intensity to volume boost, gesture toggles, and system controls — all designed to match Material You.'},
+  {cat:'Customization',   icon:'colorize',              color:'#2196F3', bg:'rgba(33,150,243,.15)',  title:'Eye Dropper',             sub:'Pick any color from your screen',              desc:'A system-wide color picker that lets you sample any pixel on your display. Copy HEX, RGB, or HSL values instantly. Useful for designers and power users alike.'},
+  {cat:'Customization',   icon:'explore',               color:'#F44336', bg:'rgba(244,67,54,.15)',   title:'Compass',                 sub:'Live compass with animated UI',                desc:'A beautiful live compass overlay with smooth needle animation and precise magnetic north detection. Works standalone or as a floating overlay over other apps.'},
+  // Visuals
+  {cat:'Visuals',         icon:'nights_stay',           color:'#1565C0', bg:'rgba(21,101,192,.15)',  title:'Screensaver',             sub:'Beautiful themed screensavers',                desc:'Activate gorgeous screensaver themes that display while your phone is charging or idle. Choose from clocks, gradients, ambient displays, and animated wallpapers.'},
+  {cat:'Visuals',         icon:'filter',                color:'#6A1B9A', bg:'rgba(106,27,154,.15)',  title:'Wallpaper Effects',       sub:'Pixel-style wallpaper enhancements',            desc:'Apply real-time visual effects to your wallpaper — pixel art filters, blur, color grading, vignette, and more. Transform any image into something truly unique.'},
+  {cat:'Visuals',         icon:'hd',                    color:'#7C4DFF', bg:'rgba(124,77,255,.15)',  title:'AI Image Upscaler',       sub:'Upscale images to 2× or 4× with AI',           desc:'Use on-device AI to upscale photos and images to 2× or 4× resolution with crisp, artifact-free results. Breathe new life into old or low-resolution photos.'},
+  {cat:'Visuals',         icon:'add_photo_alternate',   color:'#546E7A', bg:'rgba(84,110,122,.2)',   title:'Watermark Photos',        sub:'EXIF overlay & frame watermark',               desc:'Automatically stamp your photos with EXIF data overlays (date, time, GPS, device) or add stylish frame watermarks. Perfect for photographers wanting provenance.'},
+  // Productivity
+  {cat:'Productivity',    icon:'ac_unit',               color:'#2196F3', bg:'rgba(33,150,243,.15)',  title:'App Freezer',             sub:'Freeze, hide or suspend apps via Hail',        desc:'Freeze or suspend apps you rarely use to free up memory and extend battery life — without uninstalling. Powered by Hail, apps are restored instantly when needed.'},
+  {cat:'Productivity',    icon:'system_update',         color:'#4CAF50', bg:'rgba(76,175,80,.15)',   title:'App Updater',             sub:'Check GitHub for sideloaded app updates',      desc:'Automatically check GitHub releases for updates to your sideloaded apps. Get notified and update in one tap, keeping your apps current without the Play Store.'},
+  {cat:'Productivity',    icon:'battery_charging_full', color:'#FF9800', bg:'rgba(255,152,0,.15)',   title:'Charge Limit Alarm',      sub:'Alert when battery hits your set limit',       desc:'Set a custom battery percentage threshold and receive an alert (sound + vibration) when charging reaches that level. Protect battery longevity by avoiding overcharging.'},
+  {cat:'Productivity',    icon:'stay_current_portrait', color:'#FFEB3B', bg:'rgba(255,235,59,.1)',   title:'Keep Screen On',          sub:'Prevent screen sleep + QS tile',               desc:'Prevent your screen from sleeping when you need it most — reading, cooking, following instructions. Toggle via QS tile or automatic activation based on app rules.'},
+  // Device & System
+  {cat:'Device & System', icon:'bar_chart',             color:'#2196F3', bg:'rgba(33,150,243,.15)',  title:'Task Manager',            sub:'View & kill running processes',                desc:'A clean, real-time task manager showing CPU, RAM, and process usage. Force-stop apps, view detailed memory stats, and reclaim resources with a single tap.'},
+  {cat:'Device & System', icon:'terminal',              color:'#1B5E20', bg:'rgba(27,94,32,.2)',     title:'Terminal',                sub:'Run shell commands on device',                 desc:'A built-in terminal emulator for executing shell commands directly on your device. Supports common Unix utilities and integrates with Shizuku for elevated access.'},
+  {cat:'Device & System', icon:'cleaning_services',     color:'#FF9800', bg:'rgba(255,152,0,.15)',   title:'Cache Cleaner',           sub:'Clear app caches via Shizuku',                 desc:'Mass-clear app caches system-wide using Shizuku for elevated permissions. Reclaim storage and improve performance without rooting your device.'},
+  {cat:'Device & System', icon:'vpn_key',               color:'#6200EE', bg:'rgba(98,0,238,.15)',    title:'Shizuku Manager',         sub:'Manage Shizuku service & permissions',          desc:'Manage your Shizuku ADB-over-Wi-Fi session directly within Everlasting. Grant or revoke app permissions, view connected sessions, and restart the service easily.'},
+  {cat:'Device & System', icon:'monitor',               color:'#1565C0', bg:'rgba(21,101,192,.15)',  title:'Secondary Display',       sub:'Project content to a second screen',            desc:'Cast or mirror content to a secondary display, TV, or monitor. Configure resolution, orientation, and what content appears — great for presentations and media.'},
+  {cat:'Device & System', icon:'refresh',               color:'#FF5722', bg:'rgba(255,87,34,.15)',   title:'Auto Reboot',             sub:'Schedule automatic reboots',                   desc:'Set a scheduled daily, weekly, or custom reboot time to keep your device fresh and clear memory buildup automatically — no manual intervention needed.'},
+  {cat:'Device & System', icon:'extension',             color:'#9C27B0', bg:'rgba(156,39,176,.15)',  title:'Hidden Features',         sub:'Unlock hidden Android settings',               desc:'Surface hidden developer and system settings that Android normally locks away. Tweak animation speeds, enable debug overlays, and access OEM-specific menus.'},
+  {cat:'Device & System', icon:'map',                   color:'#00897B', bg:'rgba(0,137,123,.15)',   title:'Maps Power Saving',       sub:'Reduce battery drain during navigation',        desc:'Intelligently throttle background processes and location polling when Google Maps is navigating, significantly reducing battery drain on long trips.'},
+  // Security
+  {cat:'Security',        icon:'security',              color:'#F44336', bg:'rgba(244,67,54,.15)',   title:'Security Motion Alert',   sub:'Alert when device is moved',                   desc:'Set up a motion detection alarm that triggers immediately when your phone is picked up or moved. A loud alert sounds and the screen flashes — great for anti-theft.'},
+  {cat:'Security',        icon:'lock',                  color:'#2196F3', bg:'rgba(33,150,243,.15)',  title:'Screenshot Blocker',      sub:'Block screenshots & screen recording',          desc:'Prevent screenshots and screen recording in any app system-wide. Ideal for protecting sensitive content in banking, messaging, or personal apps.'},
+  // Communication
+  {cat:'Communication',   icon:'wifi_tethering',        color:'#009688', bg:'rgba(0,150,136,.15)',   title:'Walkie Talkie',           sub:'Push-to-talk over Wi-Fi Direct',               desc:'Turn your phone into a walkie-talkie over Wi-Fi Direct — no internet required. Hold to talk with nearby devices on the same local network. Low latency, high clarity.'},
+  {cat:'Communication',   icon:'phone',                 color:'#4CAF50', bg:'rgba(76,175,80,.15)',   title:'Fake Call',               sub:'Simulate an incoming call',                    desc:'Schedule or instantly trigger a convincing fake incoming call to help you escape awkward situations. Customize the caller name, number, and ringtone.'},
+  // Sensors & Notifications
+  {cat:'Sensors & Notifications', icon:'lightbulb',     color:'#FFB300', bg:'rgba(255,179,0,.12)',   title:'Notification Lighting',   sub:'Edge light & flashlight pulse alerts',          desc:'Flash your screen edge or rear camera flash when notifications arrive — especially useful when your phone is face-down or you have it on silent in a dark room.'},
+  {cat:'Sensors & Notifications', icon:'battery_full',  color:'#2E7D32', bg:'rgba(46,125,50,.15)',   title:'Battery Health',          sub:'Battery stats & OEM data',                     desc:'View detailed battery health metrics including charge cycles, capacity vs. design capacity, temperature, voltage, and OEM-specific data — all in one clean screen.'},
+  {cat:'Sensors & Notifications', icon:'sensors',       color:'#00897B', bg:'rgba(0,137,123,.15)',   title:'Magnetic Field Sensor',   sub:'Real-time magnetic field strength',             desc:'Display live magnetic field strength readings from your device sensor in microteslas (μT). Log data, set threshold alerts, and visualize field intensity over time.'},
+  {cat:'Sensors & Notifications', icon:'info',          color:'#1976D2', bg:'rgba(25,118,210,.15)',  title:'Device Info',             sub:'Full hardware & software specs',               desc:'A comprehensive device info dashboard covering CPU, GPU, RAM, storage, sensors, display specs, Android version, build number, and much more. Export to JSON or TXT.'},
+  // Music & Light
+  {cat:'Music & Light',   icon:'music_note',            color:'#FF5722', bg:'rgba(255,87,34,.15)',   title:'Music Reactive Light',    sub:'Flash & vibrate to music beats',               desc:'Your phone\'s flash and/or edges pulse in sync with detected music beats. Works with any audio source. Adjustable sensitivity and light source (flash, screen edge, or vibration).'},
+  {cat:'Music & Light',   icon:'graphic_eq',            color:'#03A9F4', bg:'rgba(3,169,244,.15)',   title:'Music Leveler',           sub:'Animated equalizer across the screen',          desc:'An animated audio visualizer bar that stretches across your screen in sync with your music — bars, waves, circles, or dots. Customizable colors and styles.'},
+  // AI Writing
+  {cat:'AI Writing',      icon:'auto_awesome',          color:'#7C4DFF', bg:'rgba(124,77,255,.15)',  title:'SwiftSlate AI',           sub:'AI-powered text replacement anywhere',          desc:'Highlight any text field and replace or enhance the content with AI. Choose from Gemini, GPT-4o, Claude, or a local model. Supports grammar fix, rewrite, expand, shorten, and translate.'},
+];
+
+const CATS = ['All', ...new Set(FEATURES.map(f => f.cat))];
+let activeCat = 'All';
+
+// ── CATEGORY CHIPS ────────────────────────────────────────────
+function buildCatChips() {
+  const row = document.getElementById('catChips');
+  row.innerHTML = CATS.map((c, i) =>
+    `<div class="chip${i===0?' on':''}" onclick="setFeatCat(this,'${c}')">${c}</div>`
+  ).join('');
+}
+
+function setFeatCat(el, cat) {
+  document.querySelectorAll('#catChips .chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  activeCat = cat;
+  renderFeats();
+}
+
+// ── FEATURE TEXT LIST ─────────────────────────────────────────
+function renderFeats() {
+  const filtered = activeCat === 'All' ? FEATURES : FEATURES.filter(f => f.cat === activeCat);
+  document.getElementById('featCount').textContent = `${filtered.length} feature${filtered.length !== 1 ? 's' : ''}`;
+
+  // Group by category preserving order
+  const grouped = {};
+  const catOrder = [];
+  filtered.forEach(f => {
+    if (!grouped[f.cat]) { grouped[f.cat] = []; catOrder.push(f.cat); }
+    grouped[f.cat].push(f);
+  });
+
+  document.getElementById('featList').innerHTML = catOrder.map(cat => `
+    <div class="feat-category">
+      <div class="feat-cat-header">${cat}</div>
+      ${grouped[cat].map(f => `
+        <div class="feat-item">
+          <div class="feat-item-icon" style="background:${f.bg}">
+            <span class="material-icons" style="color:${f.color}">${f.icon}</span>
+          </div>
+          <div class="feat-item-body">
+            <div class="feat-item-title-row">
+              <span class="feat-item-name">${f.title}</span>
+              <span class="feat-item-sep">—</span>
+              <span class="feat-item-sub">${f.sub}</span>
+            </div>
+            <div class="feat-item-desc">${f.desc}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// REVIEWS
+// ══════════════════════════════════════════════════════════════
+const CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQgvvFcO2C7gQQQyu6Y1hk_Az6e9AMa8vgyiQxPOlAj6oH0s_rajS8c92C1iEXGeO1BOQ-Qq3cY3wPp/pub?output=csv';
+const PROXIES = [
+  u => u,
+  u => `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,
+  u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+  u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`
+];
+const AVATARS = [
+  ['#C8A830','#3a2e00'],['#4CAF50','#0a2e0a'],['#2196F3','#0a1c3a'],
+  ['#E91E63','#3a0a1c'],['#9C27B0','#2a0a3a'],['#FF5722','#3a1a0a'],
+  ['#00897B','#003a34'],['#FF9800','#3a1800']
+];
+
+let allReviews = [], reviewFilter = 'all';
+
+function parseCSV(raw) {
+  raw = raw.replace(/\uFEFF/g,'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
+  const rows = []; let row = [], cell = '', inQ = false;
+  for (let i = 0; i < raw.length; i++) {
+    const c = raw[i];
+    if (c === '"') { if (inQ && raw[i+1] === '"') { cell += '"'; i++; } else inQ = !inQ; }
+    else if (c === ',' && !inQ) { row.push(cell.trim()); cell = ''; }
+    else if (c === '\n' && !inQ) { row.push(cell.trim()); if (row.some(v=>v)) rows.push(row); row = []; cell = ''; }
+    else cell += c;
+  }
+  if (cell || row.length) { row.push(cell.trim()); if (row.some(v=>v)) rows.push(row); }
+  return rows;
+}
+
+function detectCols(h) {
+  h = h.map(c => c.toLowerCase());
+  const f = (...ks) => { for (const k of ks) { const i = h.findIndex(c => c.includes(k)); if (i !== -1) return i; } return -1; };
+  return { name:f('name','user','reviewer','author'), rating:f('rating','score','star'), review:f('review','comment','feedback','text'), time:f('timestamp','date','time'), ver:f('version','ver') };
+}
+
+function starStr(r) { const n = Math.max(0, Math.min(5, Math.round(r))); return '★'.repeat(n) + '☆'.repeat(5-n); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmtDate(r) { if (!r) return ''; const d = new Date(r); if (isNaN(d)) return r.slice(0,10)||r; return d.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}); }
+
+function avatarEl(name, idx) {
+  const l = (name||'?')[0].toUpperCase();
+  const [fg, bg] = AVATARS[idx % AVATARS.length];
+  return `<div class="avatar" style="background:${bg};color:${fg};border:1.5px solid ${fg}40">${l}</div>`;
+}
+
+function showSkeleton() {
+  document.getElementById('summaryArea').innerHTML = '';
+  document.getElementById('reviewList').innerHTML = Array.from({length:4}, () => `
+    <div class="skel-wrap">
+      <div style="display:flex;gap:12px;margin-bottom:10px">
+        <div class="skel skel-circle" style="width:40px;height:40px;flex-shrink:0"></div>
+        <div style="flex:1"><div class="skel skel-line" style="width:42%;margin-bottom:8px"></div><div class="skel skel-line" style="width:28%"></div></div>
+      </div>
+      <div class="skel skel-line" style="width:30%;margin-bottom:12px"></div>
+      <div class="skel skel-line" style="width:100%;margin-bottom:6px"></div>
+      <div class="skel skel-line" style="width:85%;margin-bottom:6px"></div>
+      <div class="skel skel-line" style="width:65%"></div>
+    </div>`).join('');
+}
+
+function renderSummary(reviews) {
+  if (!reviews.length) { document.getElementById('summaryArea').innerHTML = ''; return; }
+  const avg = reviews.reduce((s,r) => s + r.rating, 0) / reviews.length;
+  const counts = [0,0,0,0,0];
+  reviews.forEach(r => { const i = Math.round(r.rating)-1; if (i>=0&&i<5) counts[i]++; });
+  const max = Math.max(...counts, 1);
+  const bars = [5,4,3,2,1].map(s => `
+    <div class="bar-row">
+      <div class="bar-lbl">${s}</div>
+      <div class="bar-track"><div class="bar-fill" data-pct="${Math.round(counts[s-1]/max*100)}"></div></div>
+    </div>`).join('');
+  document.getElementById('summaryArea').innerHTML = `
+    <div class="summary">
+      <div class="avg-col">
+        <div class="avg-num">${avg.toFixed(1)}</div>
+        <div class="avg-stars-row">${starStr(Math.round(avg))}</div>
+        <div class="avg-cnt">${reviews.length} reviews</div>
+      </div>
+      <div class="bars-col">${bars}</div>
+    </div>`;
+  requestAnimationFrame(() => { document.querySelectorAll('.bar-fill').forEach(el => el.style.width = el.dataset.pct + '%'); });
+}
+
+function renderReviews() {
+  const area = document.getElementById('reviewList');
+  const list = reviewFilter === 'all' ? allReviews : allReviews.filter(r => Math.round(r.rating) === parseInt(reviewFilter));
+  if (!list.length) {
+    area.innerHTML = `<div class="state-box"><div class="state-ico"><svg viewBox="0 0 24 24" fill="#555"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></div><div class="state-title">No reviews here</div><div class="state-sub">Try a different star filter</div></div>`;
+    return;
+  }
+  area.innerHTML = list.map((r, i) => `
+    <div class="review-item">
+      <div class="ri-top">${avatarEl(r.name,i)}<div class="ri-info"><div class="ri-name">${esc(r.name)}</div><div class="ri-meta">${esc(r.date)}${r.date&&r.ver?' · ':''}${esc(r.ver)}</div></div></div>
+      <div class="ri-stars">${starStr(r.rating)}</div>
+      <div class="ri-text">${esc(r.review)}</div>
+    </div>`).join('');
+}
+
+function filterReviews(el) {
+  document.querySelectorAll('#reviewChips .chip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  reviewFilter = el.dataset.f;
+  renderReviews();
+}
+
+async function fetchCSV(pi = 0) {
+  if (pi >= PROXIES.length) throw new Error('All fetch attempts failed');
+  const url = PROXIES[pi](CSV);
+  try {
+    const res = await fetch(url, {cache:'no-store'});
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const t = await res.text();
+    if (!t || t.length < 20) throw new Error('Empty response');
+    if (t.trim().startsWith('<')) throw new Error('Got HTML not CSV');
+    return t;
+  } catch(e) { console.warn('Proxy', pi, 'failed:', e.message); return fetchCSV(pi+1); }
+}
+
+async function loadReviews() {
+  showSkeleton();
+  allReviews = [];
+  try {
+    const raw = await fetchCSV(0);
+    const rows = parseCSV(raw);
+    if (rows.length < 2) throw new Error('No data rows');
+    const col = detectCols(rows[0]);
+    rows.slice(1).forEach(cols => {
+      if (!cols || cols.length < 2) return;
+      const n = cols.length;
+      const name   = cols[col.name   !== -1 ? col.name   : (n>=3?1:0)] || '';
+      const review = cols[col.review !== -1 ? col.review : (n>=3?n-1:1)] || '';
+      const rawR   = col.rating !== -1 ? cols[col.rating] : (n>=3?cols[2]:'5');
+      const rawD   = col.time   !== -1 ? cols[col.time  ] : cols[0];
+      const ver    = col.ver    !== -1 ? cols[col.ver   ] : '';
+      let rating = parseFloat(String(rawR).replace(/[^\d.]/g,''));
+      if (isNaN(rating) || rating < 1) rating = 5;
+      if (rating > 5) rating = 5;
+      if (!review.trim() && !name.trim()) return;
+      allReviews.push({name:name.trim()||'Anonymous', review:review.trim()||'—', rating, date:fmtDate((rawD||'').trim()), ver:(ver||'').trim()});
+    });
+    if (!allReviews.length) throw new Error('No valid reviews in sheet');
+    renderSummary(allReviews);
+    renderReviews();
+  } catch(err) {
+    document.getElementById('summaryArea').innerHTML = '';
+    document.getElementById('reviewList').innerHTML = `<div class="state-box"><div class="state-ico"><svg viewBox="0 0 24 24" fill="#F44336"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="state-title">Could not load reviews</div><div class="state-sub">${esc(err.message)}</div><button class="retry-btn" onclick="loadReviews()">Retry</button></div>`;
+  }
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+buildCatChips();
+renderFeats();
+loadReviews();
+</script>
+</body>
+</html>
