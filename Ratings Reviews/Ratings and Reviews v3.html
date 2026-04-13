@@ -483,7 +483,7 @@ a{color:var(--gold);text-decoration:none;}
 }
 .back-btn:hover{background:rgba(255,255,255,.13);}
 .back-btn .material-icons{font-size:19px;color:var(--on-surf);}
-.popup-title{font-size:16px;font-weight:700;color:var(--on-surf);flex:1;}
+.popup-title{font-size:16px;font-weight:700;color:var(--on-surf);flex:1;display:flex;align-items:center;}
 .popup-count{font-size:12px;color:var(--sub);}
 .popup-body{flex:1;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;}
 .popup-body::-webkit-scrollbar{display:none;}
@@ -520,8 +520,18 @@ a{color:var(--gold);text-decoration:none;}
 /* ════════════════════════════════════
    MISC
    ════════════════════════════════════ */
-.dl-spinner{display:none;width:13px;height:13px;border:2px solid rgba(28,21,0,.3);border-top-color:#1C1500;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
-@keyframes spin{to{transform:rotate(360deg)}}
+.dl-spinner{display:none;width:13px;height:13px;border:2px solid rgba(28,21,0,.3);border-top-color:#1C1500;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;will-change:transform;}
+/* Proper CSS ring spinner — replaces glitchy Material Icons spin */
+.gh-spin{display:inline-block;flex-shrink:0;border-radius:50%;
+  border:2.5px solid rgba(200,168,48,.18);
+  border-top-color:var(--gold);
+  border-right-color:rgba(200,168,48,.55);
+  animation:spin .7s linear infinite;
+  will-change:transform;
+}
+.gh-spin-sm{width:15px;height:15px;border-width:2px;}
+.gh-spin-md{width:20px;height:20px;border-width:2.5px;}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
 /* ══════════════════════════════════════
    KEYFRAMES
@@ -534,6 +544,7 @@ a{color:var(--gold);text-decoration:none;}
 @keyframes slideRight{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:translateX(0)}}
 @keyframes rippleOut{to{transform:scale(5);opacity:0}}
 @keyframes sectionSlide{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes relCardIn{0%{opacity:0;transform:translateY(22px) scale(.97)}70%{transform:translateY(-3px) scale(1.005)}100%{opacity:1;transform:translateY(0) scale(1)}}
 
 /* ── Hero entrance ── */
 .hero-name{animation:fadeUp .55s ease-out .28s both;}
@@ -710,10 +721,18 @@ a{color:var(--gold);text-decoration:none;}
 .gh-readme-body th{background:var(--surf3);font-weight:600;color:var(--on-surf);}
 .gh-readme-body strong{color:var(--on-surf);font-weight:700;}
 .gh-readme-body del{color:var(--sub);}
+.gh-readme-body details{border:1px solid var(--divider);border-radius:8px;padding:8px 14px;margin:10px 0;background:var(--surf3);}
+.gh-readme-body summary{cursor:pointer;font-weight:600;color:var(--on-surf);padding:2px 0;user-select:none;}
+.gh-readme-body summary:hover{color:var(--gold);}
+.gh-readme-body details[open] summary{margin-bottom:8px;border-bottom:1px solid var(--divider);padding-bottom:6px;}
+
+/* Releases popup entrance */
+#releases-fullDrawer .popup-header{animation:fadeUp .28s ease-out .1s both;}
+@keyframes relPulse{0%,100%{box-shadow:0 0 0 0 rgba(200,168,48,.0)}50%{box-shadow:0 0 0 4px rgba(200,168,48,.12)}}
 
 /* States */
 .gh-loading-box{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px 20px;color:var(--sub);font-size:13px;}
-.gh-loading-box .material-icons{font-size:22px;animation:spin .8s linear infinite;color:var(--gold);}
+.gh-loading-box .gh-spin{width:22px;height:22px;}
 .gh-error-box{text-align:center;padding:50px 20px;}
 .gh-error-box .material-icons{font-size:42px;color:#f44336;display:block;margin-bottom:10px;}
 .gh-error-box .gh-err-title{font-size:14px;font-weight:600;color:var(--on-surf);margin-bottom:6px;}
@@ -744,10 +763,21 @@ a{color:var(--gold);text-decoration:none;}
 /* ════════════════════════════════════
    ALL RELEASES SECTION
    ════════════════════════════════════ */
-.releases-strip{margin-top:10px;}
-.releases-strip-head{display:flex;align-items:center;justify-content:space-between;padding:0 0 8px;}
-.releases-strip-label{font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;}
-.releases-view-all{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--gold);cursor:pointer;background:none;border:none;font-family:var(--font);padding:0;}
+.releases-strip{margin-top:14px;}
+.releases-strip-head{display:flex;align-items:center;justify-content:space-between;padding:0 0 10px;}
+/* "Releases" label as a pill */
+.releases-strip-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 13px 5px 10px;border-radius:50px;
+  background:rgba(200,168,48,.18);
+  color:var(--gold);
+  border:1.5px solid rgba(200,168,48,.42);
+  font-size:12px;font-weight:700;letter-spacing:.3px;
+  box-shadow:0 0 0 1px rgba(200,168,48,.08),inset 0 1px 0 rgba(200,168,48,.12);
+}
+.releases-strip-pill .material-icons{font-size:14px;}
+.releases-view-all{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--gold);cursor:pointer;background:none;border:none;font-family:var(--font);padding:0;opacity:.85;transition:opacity .15s;}
+.releases-view-all:hover{opacity:1;}
 .releases-view-all .material-icons{font-size:13px;}
 .releases-preview{display:flex;flex-direction:column;gap:6px;}
 .rel-mini-card{
@@ -762,11 +792,26 @@ a{color:var(--gold);text-decoration:none;}
 .rel-mini-ico{flex-shrink:0;}
 .rel-mini-ico .material-icons{font-size:15px;color:var(--sub);}
 
+/* "All Releases" pill in popup header */
+.rel-header-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:5px 16px 5px 11px;border-radius:50px;
+  background:rgba(200,168,48,.22);
+  color:var(--gold) !important;
+  border:1.5px solid rgba(200,168,48,.5);
+  font-size:15px;font-weight:700;
+  letter-spacing:.01em;
+  box-shadow:0 0 0 1px rgba(200,168,48,.12),inset 0 1px 0 rgba(200,168,48,.15);
+}
+.rel-header-pill .material-icons{font-size:17px;color:var(--gold) !important;}
+
 /* Releases full popup */
 .rel-card{
   margin:0 20px 14px;border-radius:14px;border:1px solid var(--divider);
   background:var(--surf2);overflow:hidden;
+  transition:border-color .2s,transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
 }
+.rel-card:hover{border-color:var(--gold-border);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
 @media(min-width:960px){.rel-card{margin:0 28px 16px;}}
 .rel-card-head{
   display:flex;align-items:flex-start;gap:12px;padding:14px 18px 12px;
@@ -870,14 +915,16 @@ a{color:var(--gold);text-decoration:none;}
       <!-- All Releases strip -->
       <div class="releases-strip">
         <div class="releases-strip-head">
-          <span class="releases-strip-label">Releases</span>
-          <button class="releases-view-all" onclick="openPopup('releases-full')">
+          <span class="releases-strip-pill">
+            <span class="material-icons">new_releases</span>Releases
+          </span>
+          <button class="releases-view-all" onclick="openReleasesPopup()">
             View all <span class="material-icons">chevron_right</span>
           </button>
         </div>
         <div class="releases-preview" id="relPreview">
-          <div style="padding:10px 0;text-align:center;font-size:12px;color:var(--sub);display:flex;align-items:center;justify-content:center;gap:6px">
-            <span class="material-icons" style="font-size:15px;animation:spin .8s linear infinite;color:var(--gold)">sync</span> Loading…
+          <div style="padding:10px 0;text-align:center;font-size:12px;color:var(--sub);display:flex;align-items:center;justify-content:center;gap:8px">
+            <span class="gh-spin gh-spin-sm"></span> Loading…
           </div>
         </div>
       </div>
@@ -996,7 +1043,7 @@ a{color:var(--gold);text-decoration:none;}
     <a class="gh-hub-btn" href="https://github.com/hari161008/Everlasting-Android-Tweak" target="_blank"><span class="material-icons">open_in_new</span>GitHub</a>
   </div>
   <div class="popup-body" id="ghBody">
-    <div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>
+    <div class="gh-loading-box"><span class="gh-spin gh-spin-md"></span> Loading…</div>
   </div>
 </div>
 
@@ -1055,11 +1102,11 @@ a{color:var(--gold);text-decoration:none;}
   <div class="popup-handle"></div>
   <div class="popup-header">
     <button class="back-btn" onclick="closePopup('releases-full')"><span class="material-icons">arrow_back</span></button>
-    <div class="popup-title">All Releases</div>
+    <div class="popup-title"><span class="rel-header-pill"><span class="material-icons">new_releases</span>All Releases</span></div>
     <div class="popup-count" id="relCount"></div>
   </div>
   <div class="popup-body" id="relList">
-    <div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>
+    <div class="gh-loading-box"><span class="gh-spin gh-spin-md"></span> Loading…</div>
   </div>
 </div>
 
@@ -1531,14 +1578,52 @@ function _ghDirectDownload(url,filename){
   setTimeout(()=>document.body.removeChild(a),100);
 }
 const _ghCache=new Map();
+const _GH_LS_TTL=30*60*1000; // 30-min localStorage cache
 let _ghStack=[],_ghItems=[],_ghInfo=null,_ghRootCmt=null,_ghBranches=[],_ghTags=[],_ghCmtCount=null;
 let _ghReady=false;
 
-async function _ghGet(url){
+function _ghLsKey(url){return'gh|'+url.replace(/[^a-zA-Z0-9]/g,'_').slice(-120);}
+function _ghLsGet(url){
+  try{const raw=localStorage.getItem(_ghLsKey(url));if(!raw)return null;
+    const{d,t}=JSON.parse(raw);if(Date.now()-t>_GH_LS_TTL){localStorage.removeItem(_ghLsKey(url));return null;}return d;
+  }catch(e){return null;}
+}
+function _ghLsSet(url,data){
+  try{localStorage.setItem(_ghLsKey(url),JSON.stringify({d:data,t:Date.now()}));}catch(e){}
+}
+
+async function _ghGet(url,retries=3){
+  // 1. In-memory cache (instant)
   if(_ghCache.has(url))return _ghCache.get(url);
-  const r=await fetch(url);
-  if(!r.ok)throw new Error('GitHub API: HTTP '+r.status+(r.status===403?' (rate limited)':''));
-  const d=await r.json();_ghCache.set(url,d);return d;
+  // 2. localStorage cache (persists across reloads)
+  const cached=_ghLsGet(url);
+  if(cached){_ghCache.set(url,cached);return cached;}
+  // 3. Fetch with retry on 429/403
+  let lastErr;
+  for(let attempt=0;attempt<retries;attempt++){
+    let r;
+    try{r=await fetch(url);}catch(netErr){lastErr=netErr;break;}
+    if(r.status===429||r.status===403){
+      // Respect Retry-After header if present, else back off
+      const retryAfter=parseInt(r.headers.get('Retry-After')||'0')*1000||0;
+      const backoff=retryAfter||Math.min((attempt+1)*8000,30000);
+      if(attempt<retries-1){
+        // Show user-friendly waiting state
+        const body=document.getElementById('ghBody');
+        if(body)body.innerHTML=`<div class="gh-loading-box"><span class="gh-spin gh-spin-md"></span> Rate limited — retrying in ${Math.round(backoff/1000)}s…</div>`;
+        await new Promise(res=>setTimeout(res,backoff));
+        continue;
+      }
+      lastErr=new Error('GitHub API: HTTP '+r.status+' — rate limited. Please wait a minute and retry.');
+      break;
+    }
+    if(!r.ok){lastErr=new Error('GitHub API: HTTP '+r.status);break;}
+    const data=await r.json();
+    _ghCache.set(url,data);
+    _ghLsSet(url,data);
+    return data;
+  }
+  throw lastErr||new Error('Fetch failed');
 }
 
 function openSource(){
@@ -1564,7 +1649,7 @@ function _ghSyncHeader(){
   if(_ghStack.length<=1){btn.onclick=closeSource;ttl.textContent='Source Code';}
   else{btn.onclick=_ghBack;const c=_ghStack[_ghStack.length-1];ttl.textContent=c.path?c.path.split('/').pop():'Source Code';}
 }
-function _ghLoading(){document.getElementById('ghBody').innerHTML='<div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>';}
+function _ghLoading(){document.getElementById('ghBody').innerHTML='<div class="gh-loading-box"><span class="gh-spin gh-spin-md"></span> Loading…</div>';}
 function _ghErr(msg,fn){
   document.getElementById('ghBody').innerHTML=`<div class="gh-error-box">
     <span class="material-icons">error_outline</span>
@@ -1798,14 +1883,29 @@ function _ghMd(raw){
   let s=raw.replace(/```(\w*)\n?([\s\S]*?)```/g,(_,lang,code)=>
     save(`<pre><code class="lang-${esc(lang)}">${esc(code.replace(/\n$/,''))}</code></pre>`)
   );
+  // 1b. Indented code blocks (4 spaces / tab)
+  s=s.replace(/(?:^|\n)((?:(?:    |\t)[^\n]*\n?)+)/g,(m,block)=>
+    '\n'+save(`<pre><code>${esc(block.replace(/^(    |\t)/gm,''))}</code></pre>`)
+  );
   // 2. Extract inline code
   s=s.replace(/`([^`\n]+)`/g,(_,c)=>save(`<code>${esc(c)}</code>`));
-  // 3. Preserve existing HTML tags (details, summary, img, br, div, etc.)
-  s=s.replace(/<(details|summary|div|span|p|br|hr|img|a|table|thead|tbody|tr|th|td|ul|ol|li|strong|em|del|code|pre|h[1-6]|sup|sub|ins|mark|kbd|samp)[^>]*>[\s\S]*?<\/\1>/gi,m=>save(m));
-  s=s.replace(/<(br|hr|img)[^>]*\/?>/gi,m=>save(m));
-  s=s.replace(/<!--[\s\S]*?-->/g,m=>save(''));// strip HTML comments
-  // 4. Escape remaining plain text
-  s=s.replace(/&(?!amp;|lt;|gt;|quot;|#\d+;|#x[\da-f]+;)/gi,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+  // 3. Preserve HTML blocks — order matters: most specific first
+  // a) <details>...</details> — can be deeply nested/multiline
+  s=s.replace(/<details(?:[^>]*)>([\s\S]*?)<\/details>/gi,m=>save(m));
+  // b) Self-closing / void tags: br, hr, img, input
+  s=s.replace(/<(?:br|hr|img|input|meta|link|wbr)(?:[^>]*?)(?:\/)?>(?:[^<]*<\/(?:br|hr|img|input|meta|link|wbr)>)?/gi,m=>save(m));
+  // c) Block-level HTML pairs
+  s=s.replace(/<(div|table|thead|tbody|tfoot|tr|th|td|ul|ol|li|dl|dt|dd|pre|figure|figcaption|section|article|aside|nav|header|footer|main|form|fieldset|blockquote|summary|p)[^>]*>[\s\S]*?<\/\1>/gi,m=>save(m));
+  // d) Inline HTML pairs (span, a, strong, em, code, etc.)
+  s=s.replace(/<(span|a|strong|em|b|i|del|ins|mark|sup|sub|kbd|samp|abbr|cite|q|u|s|small)[^>]*>[\s\S]*?<\/\1>/gi,m=>save(m));
+  // e) Strip HTML comments
+  s=s.replace(/<!--[\s\S]*?-->/g,()=>'');
+
+  // 4. Escape remaining plain text (skip already-saved tokens)
+  s=s.replace(/&(?![a-zA-Z]{2,8};|#\d{1,6};|#x[\da-fA-F]{1,6};)/g,'&amp;')
+     .replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
   // 5. Block elements
   s=s
     .replace(/^######[ \t]+(.+)$/gm,'<h6>$1</h6>')
@@ -1816,11 +1916,12 @@ function _ghMd(raw){
     .replace(/^#[ \t]+(.+)$/gm,'<h1>$1</h1>')
     .replace(/^[-*_]{3,}\s*$/gm,'<hr>')
     .replace(/^&gt;[ \t]?(.*)$/gm,'<blockquote>$1</blockquote>')
-    .replace(/^[ \t]*[-*+][ \t]+(.+)$/gm,'<li>$1</li>')
-    .replace(/^[ \t]*\d+\.[ \t]+(.+)$/gm,'<li>$1</li>');
-  // Wrap consecutive li into ul
-  s=s.replace(/(<li>[\s\S]*?<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
-  // Merge nested blockquotes
+    .replace(/^[ \t]{0,3}[-*+][ \t]+(.+)$/gm,'<li class="_ul">$1</li>')
+    .replace(/^[ \t]{0,3}\d+\.[ \t]+(.+)$/gm,'<li class="_ol">$1</li>');
+  // Wrap consecutive ul/ol items
+  s=s.replace(/(<li class="_ul">[\s\S]*?<\/li>\n?)+/g,m=>`<ul>${m.replace(/ class="_ul"/g,'')}</ul>`);
+  s=s.replace(/(<li class="_ol">[\s\S]*?<\/li>\n?)+/g,m=>`<ol>${m.replace(/ class="_ol"/g,'')}</ol>`);
+  // Merge consecutive blockquotes
   s=s.replace(/(<\/blockquote>\n<blockquote>)/g,'<br>');
   // Tables
   s=s.replace(/(\|.+\|\n\|[-| :]+\|\n(?:\|.+\|\n?)+)/g,tbl=>{
@@ -1829,6 +1930,7 @@ function _ghMd(raw){
     const body=rows.slice(2).map(r=>`<tr>${r.split('|').filter(Boolean).map(c=>`<td>${c.trim()}</td>`).join('')}</tr>`).join('');
     return`<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
   });
+
   // 6. Inline formatting
   s=s
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1" style="max-width:100%">')
@@ -1839,7 +1941,8 @@ function _ghMd(raw){
     .replace(/__(.+?)__/gs,'<strong>$1</strong>')
     .replace(/(?<![a-zA-Z0-9])_(.+?)_(?![a-zA-Z0-9])/gs,'<em>$1</em>')
     .replace(/~~(.+?)~~/gs,'<del>$1</del>');
-  // 7. Paragraphs
+
+  // 7. Paragraphs — skip lines that are block tokens or empty
   const lines=s.split('\n'),out=[];let inP=false;
   for(const line of lines){
     const t=line.trim();
@@ -1854,14 +1957,15 @@ function _ghMd(raw){
   }
   if(inP)out.push('</p>');
   s=out.join('\n');
-  // 8. Restore preserved blocks
+
+  // 8. Restore preserved HTML blocks
   blk.forEach((b,i)=>{s=s.replaceAll(`\x00B${i}\x00`,b);});
   return s;
 }
 // ══════════════════════════════════════════════════════════════
 // ALL RELEASES
 // ══════════════════════════════════════════════════════════════
-let _relData=null,_relLoaded=false;
+let _relData=null,_relLoaded=false,_srcFiles=null,_srcFilesLoaded=false;
 
 function _relFmtDate(iso){
   if(!iso)return'';
@@ -1874,18 +1978,62 @@ function _relFmtSize(bytes){
   return(bytes/(1024*1024)).toFixed(1)+' MB';
 }
 
+/* Try to find the matching file in the Source code folder for a given tag */
+function _matchSrcFile(tagName){
+  if(!_srcFiles||!_srcFiles.length)return null;
+  const norm=tagName.replace(/^v/i,'').toLowerCase();
+  // Try exact version match, then tag match
+  return _srcFiles.find(f=>{
+    const fn=f.name.toLowerCase();
+    return fn.includes(norm)||fn.includes(tagName.toLowerCase());
+  })||null;
+}
+
+async function _loadSrcFiles(){
+  if(_srcFilesLoaded)return;
+  const cacheKey='gh_src_files';
+  try{
+    const cached=_ghLsGet(cacheKey);
+    if(cached){_srcFiles=cached;_srcFilesLoaded=true;return;}
+    const res=await fetch(`https://api.github.com/repos/${_GH}/contents/Source%20code`);
+    if(res.status===429||res.status===403){_srcFiles=[];_srcFilesLoaded=true;return;}
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const data=await res.json();
+    _srcFiles=Array.isArray(data)?data:[];
+    _ghLsSet(cacheKey,_srcFiles);
+  }catch(e){_srcFiles=[];}
+  _srcFilesLoaded=true;
+}
+
 async function loadReleases(){
   if(_relLoaded&&_relData)return _relData;
+  const rlsCacheKey='gh_releases';
   try{
-    const res=await fetch(`https://api.github.com/repos/${_GH}/releases?per_page=30`);
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    _relData=await res.json();
+    // Check localStorage first to avoid hitting rate limit on reload
+    const cached=_ghLsGet(rlsCacheKey);
+    if(cached){
+      _relData=cached;_relLoaded=true;
+      await _loadSrcFiles();
+      renderRelPreview();return _relData;
+    }
+    const [relRes]=await Promise.all([
+      fetch(`https://api.github.com/repos/${_GH}/releases?per_page=30`),
+      _loadSrcFiles()
+    ]);
+    if(relRes.status===429||relRes.status===403){
+      document.getElementById('relPreview').innerHTML=
+        `<div style="font-size:12px;color:var(--sub);padding:8px 0;display:flex;align-items:center;gap:6px"><span class="gh-spin gh-spin-sm"></span> Rate limited — <button onclick="loadReleases()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;font-family:var(--font);padding:0">Retry</button></div>`;
+      return [];
+    }
+    if(!relRes.ok)throw new Error('HTTP '+relRes.status);
+    _relData=await relRes.json();
     _relLoaded=true;
+    _ghLsSet(rlsCacheKey,_relData);
     renderRelPreview();
     return _relData;
   }catch(e){
     document.getElementById('relPreview').innerHTML=
-      `<div style="font-size:12px;color:var(--sub);padding:8px 0">Could not load releases</div>`;
+      `<div style="font-size:12px;color:var(--sub);padding:8px 0">Could not load releases — <button onclick="loadReleases()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;font-family:var(--font);padding:0">Retry</button></div>`;
     return [];
   }
 }
@@ -1914,7 +2062,7 @@ function openReleasesPopup(){
 function renderRelList(){
   const area=document.getElementById('relList');
   if(!_relData){
-    area.innerHTML='<div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>';
+    area.innerHTML='<div class="gh-loading-box"><span class="gh-spin gh-spin-md"></span> Loading…</div>';
     loadReleases().then(()=>renderRelList());
     return;
   }
@@ -1932,17 +2080,26 @@ function renderRelList(){
       <a class="rel-asset-btn" href="${esc(a.browser_download_url)}" download="${esc(a.name)}">
         <span class="material-icons">android</span>${esc(a.name)}<span style="opacity:.7;font-size:11px">&nbsp;${_relFmtSize(a.size)}</span>
       </a>`).join('');
-    const srcZipBtn=`<a class="rel-src-btn" href="https://github.com/${_GH}/archive/refs/tags/${esc(r.tag_name)}.zip" download>
-      <span class="material-icons">folder_zip</span>Source ZIP</a>`;
+    // Source ZIP: try to match a file from the Source code folder for this version
+    const srcMatch=_matchSrcFile(r.tag_name);
+    const srcZipHref=srcMatch
+      ?srcMatch.download_url
+      :`https://github.com/${_GH}/archive/refs/tags/${esc(r.tag_name)}.zip`;
+    const srcZipLabel=srcMatch?`<span class="material-icons">${srcMatch.name.toLowerCase().endsWith('.apk')?'android':'folder_zip'}</span>${esc(srcMatch.name)}`
+      :`<span class="material-icons">folder_zip</span>Source ZIP`;
+    const srcZipBtn=`<a class="rel-src-btn" href="${srcZipHref}" download>${srcZipLabel}</a>`;
     const otherBtns=otherAssets.map(a=>`
       <a class="rel-asset-btn secondary" href="${esc(a.browser_download_url)}" download="${esc(a.name)}">
         <span class="material-icons">download</span>${esc(a.name)}</a>`).join('');
-    return`<div class="rel-card" style="animation:fadeUp .4s ease-out ${Math.min(i*.06,.5)}s both">
+    // Stagger delay capped at 0.5s, with a slight scale entrance
+    // Base offset of 0.18s ensures popup is fully visible before cards animate
+    const delay=(0.18+Math.min(i*.08,.5)).toFixed(2);
+    return`<div class="rel-card" style="animation:relCardIn .45s cubic-bezier(.34,1.46,.64,1) ${delay}s both">
       <div class="rel-card-head">
         <div style="flex:1;min-width:0">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px">
-            <span class="rel-tag-badge"><span class="material-icons">local_offer</span>${esc(r.tag_name)}</span>
-            ${isLatest?'<span class="rel-latest-badge">Latest</span>':''}
+            <span class="rel-tag-badge" style="animation:badgePop .4s cubic-bezier(.34,1.56,.64,1) ${(+delay+.12).toFixed(2)}s both"><span class="material-icons">local_offer</span>${esc(r.tag_name)}</span>
+            ${isLatest?`<span class="rel-latest-badge" style="animation:badgePop .4s cubic-bezier(.34,1.56,.64,1) ${(+delay+.22).toFixed(2)}s both">Latest</span>`:''}
           </div>
           <div class="rel-card-title">${esc(r.name||r.tag_name)}</div>
         </div>
