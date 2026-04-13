@@ -737,7 +737,7 @@ a{color:var(--gold);text-decoration:none;}
       <div id="summaryArea"></div>
       <div class="review-hint reveal">
         <span class="material-icons">info</span>
-        To publish your review, first download the app and then go to app's settings &gt; <strong>Rate &amp; Review</strong>
+        <span>To publish your review, first download the app and then go to app's settings &gt; <strong>Rate &amp; Review</strong></span>
       </div>
       <div id="reviewListHome" class="review-grid"></div>
       <div id="readMoreBtn" style="display:none;">
@@ -1083,14 +1083,19 @@ function starStr(r,animate=false){
   ).join('');
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function parseDDMMDate(s){
+  const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[T\s]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
+  if(m){const[,dd,mo,yyyy,hh,mi,ss]=m;return new Date(+yyyy,+mo-1,+dd,hh?+hh:0,mi?+mi:0,ss?+ss:0);}
+  return new Date(s);
+}
 function fmtDate(raw){
   if(!raw)return'';
   const s=String(raw).trim();
-  const d=new Date(s);
+  const d=parseDDMMDate(s);
   if(isNaN(d))return s.slice(0,10)||s;
   const datePart=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-  const timeMatch=s.match(/\d{1,2}:\d{2}/);
-  if(!timeMatch)return datePart;
+  const hasTime=s.match(/\d{1,2}:\d{2}/);
+  if(!hasTime)return datePart;
   const timePart=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
   return datePart+', '+timePart;
 }
@@ -1235,7 +1240,7 @@ function processCSV(raw){
   });
   if(!allReviews.length)throw new Error('No valid reviews');
   // Sort newest first
-  allReviews.sort((a,b)=>{const da=new Date(a.rawDate),db=new Date(b.rawDate);if(isNaN(da)&&isNaN(db))return 0;if(isNaN(da))return 1;if(isNaN(db))return -1;return db-da;});
+  allReviews.sort((a,b)=>{const da=parseDDMMDate(a.rawDate),db=parseDDMMDate(b.rawDate);if(isNaN(da)&&isNaN(db))return 0;if(isNaN(da))return 1;if(isNaN(db))return -1;return db-da;});
   try{localStorage.removeItem('eat_rev_v3');}catch(e){} // clear any old cache
   renderSummary(allReviews);renderHomeReviews();renderReviews();
 }
