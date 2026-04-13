@@ -923,8 +923,8 @@ a{color:var(--gold);text-decoration:none;}
           </button>
         </div>
         <div class="releases-preview" id="relPreview">
-          <div style="padding:10px 0;text-align:center;font-size:12px;color:var(--sub);display:flex;align-items:center;justify-content:center;gap:8px">
-            <span class="gh-spin gh-spin-sm"></span> Loading…
+          <div style="padding:12px 0;text-align:center;font-size:12px;color:var(--sub);display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px">
+            <span class="gh-spin gh-spin-sm" style="flex-shrink:0;display:block"></span> Loading releases…
           </div>
         </div>
       </div>
@@ -1477,6 +1477,7 @@ async function fetchCSV(pi=0,ts=Date.now()){
     return t;
   }catch(e){console.warn('Proxy',pi,'failed:',e.message);return fetchCSV(pi+1,ts);}
 }
+// Reviews are intentionally never cached in localStorage — always fresh from source
 async function loadReviews(){
   allReviews=[];
   showSkeleton();
@@ -1743,6 +1744,9 @@ async function _ghNavDir(path,isBack=false,isRoot=false){
         const bytes=new Uint8Array(bin.length);
         for(let k=0;k<bin.length;k++)bytes[k]=bin.charCodeAt(k);
         readme=new TextDecoder('utf-8').decode(bytes);
+        // Fix relative URLs so images and links resolve correctly
+        const rawBase=`https://raw.githubusercontent.com/${_GH}/main/${path?path+'/':''}`;
+        readme=_fixRelUrls(readme,rawBase);
       }catch(e){}
     }
     _ghRenderDir(path,items,cm,readme);
@@ -1801,6 +1805,13 @@ async function _ghNavFile(item,isBack=false){
     }else{content=fd.content||'';}
     const lines=content.split('\n').length;
     const isMd=ext==='md';
+    // Fix relative URLs in markdown files
+    if(isMd){
+      const parts=item.path.split('/');
+      const dir=parts.slice(0,-1).join('/');
+      const rawBase=`https://raw.githubusercontent.com/${_GH}/main/${dir?dir+'/':''}`;
+      content=_fixRelUrls(content,rawBase);
+    }
     document.getElementById('ghBody').innerHTML=`${bc}
       <div class="gh-file-wrap">
         <div class="gh-file-header">
@@ -1874,7 +1885,19 @@ function _ghRenderDir(path,items,cm,readme){
     ${readmeHTML}`;
 }
 
-// ── Markdown renderer ─────────────────────────────────────────
+// ── Relative URL fixer (README / markdown files) ──────────────
+function _fixRelUrls(md,rawBase){
+  if(!rawBase)return md;
+  // Fix HTML img src attributes (single or double quoted)
+  md=md.replace(/(<img\b[^>]+?\bsrc=)(["'])(?!https?:|\/\/|data:)([^"'#?][^"']*)\2/gi,
+    (_,pre,q,src)=>pre+q+rawBase+src+q);
+  // Fix Markdown images  ![alt](relative-path)
+  md=md.replace(/!\[([^\]]*)\]\((?!https?:|\/\/|data:)([^)#?][^)]*)\)/g,
+    (_,alt,src)=>`![${alt}](${rawBase}${src})`);
+  return md;
+}
+
+
 function _ghMd(raw){
   const blk=[];
   const save=s=>{const i=blk.length;blk.push(s);return`\x00B${i}\x00`;};
@@ -1965,7 +1988,7 @@ function _ghMd(raw){
 // ══════════════════════════════════════════════════════════════
 // ALL RELEASES
 // ══════════════════════════════════════════════════════════════
-let _relData=null,_relLoaded=false,_srcFiles=null,_srcFilesLoaded=false;
+let _relData=null,_relLoaded=false,_relLoading=false,_srcFiles=null,_srcFilesLoaded=false;
 
 function _relFmtDate(iso){
   if(!iso)return'';
@@ -2005,24 +2028,39 @@ async function _loadSrcFiles(){
   _srcFilesLoaded=true;
 }
 
+function _showRelError(msg){
+  const retryBtn=`<button onclick="loadReleases()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;font-family:var(--font);padding:0">Retry</button>`;
+  const previewEl=document.getElementById('relPreview');
+  if(previewEl)previewEl.innerHTML=`<div style="font-size:12px;color:var(--sub);padding:8px 0">${msg} — ${retryBtn}</div>`;
+  const listEl=document.getElementById('relList');
+  if(listEl)listEl.innerHTML=`<div style="text-align:center;padding:40px 20px;color:var(--sub);font-size:13px">${msg} — ${retryBtn}</div>`;
+}
+
 async function loadReleases(){
-  if(_relLoaded&&_relData)return _relData;
-  const rlsCacheKey='gh_releases';
+  if(_relLoaded)return _relData||[];
+  if(_relLoading){
+    // Already in flight — wait for it
+    return new Promise(res=>{const iv=setInterval(()=>{if(!_relLoading){clearInterval(iv);res(_relData||[]);}},80);});
+  }
+  _relLoading=true;
   try{
-    // Check localStorage first to avoid hitting rate limit on reload
+    const rlsCacheKey='gh_releases';
     const cached=_ghLsGet(rlsCacheKey);
     if(cached){
       _relData=cached;_relLoaded=true;
       await _loadSrcFiles();
-      renderRelPreview();return _relData;
+      renderRelPreview();
+      // Populate list if popup is already open
+      const listEl=document.getElementById('relList');
+      if(listEl&&listEl.querySelector('.gh-loading-box'))renderRelList();
+      return _relData;
     }
     const [relRes]=await Promise.all([
       fetch(`https://api.github.com/repos/${_GH}/releases?per_page=30`),
       _loadSrcFiles()
     ]);
     if(relRes.status===429||relRes.status===403){
-      document.getElementById('relPreview').innerHTML=
-        `<div style="font-size:12px;color:var(--sub);padding:8px 0;display:flex;align-items:center;gap:6px"><span class="gh-spin gh-spin-sm"></span> Rate limited — <button onclick="loadReleases()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;font-family:var(--font);padding:0">Retry</button></div>`;
+      _showRelError('Rate limited — try again shortly');
       return [];
     }
     if(!relRes.ok)throw new Error('HTTP '+relRes.status);
@@ -2030,11 +2068,15 @@ async function loadReleases(){
     _relLoaded=true;
     _ghLsSet(rlsCacheKey,_relData);
     renderRelPreview();
+    // Populate list if popup is already open
+    const listEl=document.getElementById('relList');
+    if(listEl&&listEl.querySelector('.gh-loading-box'))renderRelList();
     return _relData;
   }catch(e){
-    document.getElementById('relPreview').innerHTML=
-      `<div style="font-size:12px;color:var(--sub);padding:8px 0">Could not load releases — <button onclick="loadReleases()" style="background:none;border:none;color:var(--gold);cursor:pointer;font-size:12px;font-family:var(--font);padding:0">Retry</button></div>`;
+    _showRelError('Could not load releases');
     return [];
+  }finally{
+    _relLoading=false;
   }
 }
 
@@ -2062,8 +2104,12 @@ function openReleasesPopup(){
 function renderRelList(){
   const area=document.getElementById('relList');
   if(!_relData){
-    area.innerHTML='<div class="gh-loading-box"><span class="gh-spin gh-spin-md"></span> Loading…</div>';
-    loadReleases().then(()=>renderRelList());
+    if(!_relLoading&&!_relLoaded){
+      area.innerHTML='<div class="gh-loading-box"><span class="gh-spin gh-spin-md"></span> Loading…</div>';
+      loadReleases();
+    }
+    // If _relLoading: spinner already shown by static HTML or previous renderRelList call;
+    // loadReleases will call renderRelList when done.
     return;
   }
   if(!_relData.length){
