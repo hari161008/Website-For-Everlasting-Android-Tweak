@@ -528,8 +528,6 @@ a{color:var(--gold);text-decoration:none;}
    ══════════════════════════════════════ */
 @keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes iconBounce{0%{opacity:0;transform:scale(0) rotate(-12deg)}55%{opacity:1;transform:scale(1.18) rotate(5deg)}78%{transform:scale(.93)}100%{opacity:1;transform:scale(1) rotate(0)}}
-@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 @keyframes badgePop{0%{opacity:0;transform:scale(.5) translateY(8px)}70%{transform:scale(1.1) translateY(-2px)}100%{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes starPop{0%{opacity:0;transform:scale(0) rotate(-25deg)}65%{transform:scale(1.3) rotate(8deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
 @keyframes countPop{0%{opacity:0;transform:scale(.4)}70%{transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
@@ -538,11 +536,6 @@ a{color:var(--gold);text-decoration:none;}
 @keyframes sectionSlide{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 
 /* ── Hero entrance ── */
-.app-icon{animation:iconBounce .75s cubic-bezier(.34,1.56,.64,1) .1s both;}
-@media(min-width:960px){
-  .app-icon{animation:iconBounce .75s cubic-bezier(.34,1.56,.64,1) .1s both,floatY 4s ease-in-out 1.3s infinite;}
-  .app-icon:hover{filter:brightness(1.08);transition:filter .25s;}
-}
 .hero-name{animation:fadeUp .55s ease-out .28s both;}
 .hero-tagline{animation:fadeUp .5s ease-out .36s both;}
 .hero-badges .badge:nth-child(1){animation:badgePop .5s cubic-bezier(.34,1.56,.64,1) .44s both;}
@@ -622,6 +615,197 @@ a{color:var(--gold);text-decoration:none;}
 @media(min-width:960px){.review-hint{padding:10px 28px 16px;}}
 .review-hint .material-icons{font-size:14px;color:var(--gold);flex-shrink:0;margin-top:1px;}
 .review-hint strong{color:var(--on-surf);font-weight:600;}
+
+/* ════════════════════════════════════
+   GITHUB BROWSER POPUP
+   ════════════════════════════════════ */
+.gh-popup-drawer{max-width:min(1020px,98vw)!important;}
+@media(min-width:960px){.gh-popup-drawer{width:min(1020px,96vw)!important;}}
+
+/* Top action bar */
+.gh-topbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 18px;border-bottom:1px solid var(--divider);background:var(--surf2);flex-shrink:0;}
+@media(min-width:600px){.gh-topbar{padding:12px 22px;}}
+.gh-branch-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;background:var(--surf3);border:1px solid var(--gold-border);font-size:12.5px;font-weight:600;color:var(--on-surf);}
+.gh-branch-pill .material-icons{font-size:15px;color:var(--gold);}
+.gh-meta-pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:7px;background:var(--surf3);border:1px solid var(--divider);font-size:12px;color:var(--sub);}
+.gh-meta-pill .material-icons{font-size:14px;}
+.gh-meta-pill strong{color:var(--on-surf);}
+.gh-spacer{flex:1;}
+.gh-open-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;background:var(--gold);color:#1C1500;font-size:12px;font-weight:700;text-decoration:none;border:none;cursor:pointer;font-family:var(--font);}
+.gh-open-btn:hover{opacity:.88;}
+
+/* Commit bar */
+.gh-commit-bar{display:flex;align-items:center;gap:8px;padding:9px 18px;border-bottom:1px solid var(--divider);background:var(--surface);flex-shrink:0;overflow:hidden;}
+@media(min-width:600px){.gh-commit-bar{padding:9px 22px;}}
+.gh-av{width:20px;height:20px;border-radius:50%;overflow:hidden;flex-shrink:0;}
+.gh-av img{width:100%;height:100%;object-fit:cover;}
+.gh-commit-author{font-size:12.5px;font-weight:600;color:var(--on-surf);flex-shrink:0;white-space:nowrap;}
+.gh-commit-msg{font-size:12.5px;color:rgba(237,232,220,.75);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gh-commit-sha{font-size:11px;color:var(--gold);font-family:monospace;flex-shrink:0;white-space:nowrap;}
+.gh-commit-time{font-size:11.5px;color:var(--sub);flex-shrink:0;white-space:nowrap;}
+.gh-commit-count{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:var(--surf3);border:1px solid var(--divider);font-size:11.5px;color:var(--sub);flex-shrink:0;text-decoration:none;white-space:nowrap;}
+.gh-commit-count:hover{border-color:var(--gold-border);}
+.gh-commit-count .material-icons{font-size:12px;}
+.gh-commit-count strong{color:var(--on-surf);}
+
+/* Breadcrumb */
+.gh-breadcrumb{display:flex;align-items:center;gap:4px;flex-wrap:wrap;padding:10px 18px 8px;font-size:13px;}
+@media(min-width:600px){.gh-breadcrumb{padding:10px 22px 8px;}}
+.gh-bc-link{color:var(--gold);cursor:pointer;display:inline-flex;align-items:center;gap:3px;}
+.gh-bc-link:hover{text-decoration:underline;}
+.gh-bc-sep{color:var(--sub);user-select:none;}
+.gh-bc-cur{color:var(--on-surf);font-weight:600;}
+
+/* File table */
+.gh-table{border:1px solid var(--divider);border-radius:9px;margin:0 18px 16px;overflow:hidden;}
+@media(min-width:600px){.gh-table{margin:0 22px 20px;}}
+.gh-row{display:grid;grid-template-columns:22px 1fr auto;align-items:center;gap:10px;padding:8px 14px;border-bottom:1px solid var(--divider);cursor:pointer;transition:background .13s;}
+@media(min-width:560px){.gh-row{grid-template-columns:22px minmax(120px,1fr) 1fr auto;}}
+.gh-row:last-child{border-bottom:none;}
+.gh-row:hover{background:rgba(200,168,48,.07);}
+.gh-row-ico .material-icons{font-size:17px;vertical-align:middle;}
+.gh-row-ico .folder{color:var(--gold);}
+.gh-row-ico .file{color:var(--sub);}
+.gh-row-name{font-size:13px;color:var(--on-surf);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.gh-row-name:hover{color:var(--gold);}
+.gh-row-msg{font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none;}
+@media(min-width:560px){.gh-row-msg{display:block;}}
+.gh-row-time{font-size:11.5px;color:var(--sub);white-space:nowrap;flex-shrink:0;}
+
+/* File viewer */
+.gh-file-wrap{border:1px solid var(--divider);border-radius:9px;margin:0 18px 20px;overflow:hidden;}
+@media(min-width:600px){.gh-file-wrap{margin:0 22px 24px;}}
+.gh-file-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 14px;background:var(--surf2);border-bottom:1px solid var(--divider);}
+.gh-file-meta{font-size:12px;color:var(--sub);}
+.gh-raw-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);font-size:11.5px;font-weight:600;text-decoration:none;}
+.gh-raw-btn:hover{background:rgba(200,168,48,.28);}
+.gh-raw-btn .material-icons{font-size:13px;}
+.gh-raw-btns{display:flex;gap:6px;}
+.gh-code-pre{padding:16px;font-family:'Courier New',monospace;font-size:12.5px;color:rgba(237,232,220,.88);line-height:1.65;white-space:pre;overflow-x:auto;background:var(--bg);max-height:65vh;overflow-y:auto;tab-size:2;}
+.gh-img-viewer{padding:16px;background:var(--surf2);text-align:center;}
+.gh-img-viewer img{max-width:100%;max-height:60vh;object-fit:contain;border-radius:6px;}
+
+/* README */
+.gh-readme-wrap{margin:0 18px 24px;}
+@media(min-width:600px){.gh-readme-wrap{margin:0 22px 28px;}}
+.gh-readme-head{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--surf2);border:1px solid var(--divider);border-radius:9px 9px 0 0;font-size:13px;font-weight:600;color:var(--on-surf);}
+.gh-readme-head .material-icons{font-size:17px;color:var(--gold);}
+.gh-readme-body{padding:18px 22px;border:1px solid var(--divider);border-top:none;border-radius:0 0 9px 9px;background:var(--surf2);font-size:13.5px;color:rgba(237,232,220,.85);line-height:1.75;}
+.gh-readme-body h1{font-size:22px;font-weight:700;color:var(--on-surf);margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid var(--divider);}
+.gh-readme-body h2{font-size:18px;font-weight:700;color:var(--on-surf);margin:18px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--divider);}
+.gh-readme-body h3{font-size:15px;font-weight:700;color:var(--on-surf);margin:14px 0 6px;}
+.gh-readme-body h4,.gh-readme-body h5,.gh-readme-body h6{font-size:13.5px;font-weight:700;color:var(--on-surf);margin:12px 0 4px;}
+.gh-readme-body p{margin:0 0 12px;}
+.gh-readme-body ul,.gh-readme-body ol{padding-left:22px;margin:0 0 12px;}
+.gh-readme-body li{margin-bottom:4px;}
+.gh-readme-body code{background:var(--surf3);padding:2px 6px;border-radius:4px;font-family:monospace;font-size:12px;color:var(--on-surf);}
+.gh-readme-body pre{background:var(--bg);border:1px solid var(--divider);border-radius:6px;padding:14px;overflow-x:auto;margin:12px 0;}
+.gh-readme-body pre code{background:none;padding:0;font-size:12.5px;}
+.gh-readme-body a{color:var(--gold);}
+.gh-readme-body img{max-width:100%;border-radius:6px;margin:6px 0;}
+.gh-readme-body blockquote{border-left:3px solid var(--gold-border);padding:6px 14px;color:var(--sub);margin:12px 0;background:var(--surf3);border-radius:0 6px 6px 0;}
+.gh-readme-body hr{border:none;border-top:1px solid var(--divider);margin:18px 0;}
+.gh-readme-body table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13px;}
+.gh-readme-body th,.gh-readme-body td{border:1px solid var(--divider);padding:7px 12px;}
+.gh-readme-body th{background:var(--surf3);font-weight:600;color:var(--on-surf);}
+.gh-readme-body strong{color:var(--on-surf);font-weight:700;}
+.gh-readme-body del{color:var(--sub);}
+
+/* States */
+.gh-loading-box{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px 20px;color:var(--sub);font-size:13px;}
+.gh-loading-box .material-icons{font-size:22px;animation:spin .8s linear infinite;color:var(--gold);}
+.gh-error-box{text-align:center;padding:50px 20px;}
+.gh-error-box .material-icons{font-size:42px;color:#f44336;display:block;margin-bottom:10px;}
+.gh-error-box .gh-err-title{font-size:14px;font-weight:600;color:var(--on-surf);margin-bottom:6px;}
+.gh-error-box .gh-err-msg{font-size:12.5px;color:var(--sub);margin-bottom:14px;}
+.gh-retry-btn{padding:7px 20px;border-radius:50px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font);}
+
+/* ZIP download button in source popup */
+.gh-zip-btn{display:inline-flex;align-items:center;gap:4px;padding:5px 11px;border-radius:7px;background:var(--surf3);border:1px solid var(--gold-border);color:var(--gold);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);flex-shrink:0;}
+.gh-zip-btn:hover{background:rgba(200,168,48,.22);}
+.gh-zip-btn .material-icons{font-size:14px;}
+
+/* GitHub link button in source popup header */
+.gh-hub-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:7px;background:var(--gold);color:#1C1500;font-size:12px;font-weight:700;text-decoration:none;flex-shrink:0;border:none;cursor:pointer;font-family:var(--font);}
+.gh-hub-btn:hover{opacity:.88;}
+.gh-hub-btn .material-icons{font-size:13px;}
+
+/* Fixed-size source drawer — no resize on navigation */
+#sourceDrawer{height:90vh;max-height:90vh!important;}
+@media(min-width:960px){
+  #sourceDrawer{
+    width:min(1020px,94vw)!important;
+    max-width:min(1020px,94vw)!important;
+    height:min(88vh,840px);
+    max-height:none!important;
+  }
+}
+
+/* ════════════════════════════════════
+   ALL RELEASES SECTION
+   ════════════════════════════════════ */
+.releases-strip{margin-top:10px;}
+.releases-strip-head{display:flex;align-items:center;justify-content:space-between;padding:0 0 8px;}
+.releases-strip-label{font-size:11px;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.8px;}
+.releases-view-all{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--gold);cursor:pointer;background:none;border:none;font-family:var(--font);padding:0;}
+.releases-view-all .material-icons{font-size:13px;}
+.releases-preview{display:flex;flex-direction:column;gap:6px;}
+.rel-mini-card{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;
+  border-radius:11px;background:var(--surf2);border:1px solid var(--divider);
+  cursor:pointer;transition:border-color .18s,background .18s;
+}
+.rel-mini-card:hover{border-color:var(--gold-border);background:var(--surf3);}
+.rel-mini-tag{font-size:11.5px;font-weight:700;color:var(--gold);flex-shrink:0;min-width:52px;}
+.rel-mini-name{flex:1;font-size:12px;color:var(--on-surf);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rel-mini-date{font-size:11px;color:var(--sub);flex-shrink:0;white-space:nowrap;}
+.rel-mini-ico{flex-shrink:0;}
+.rel-mini-ico .material-icons{font-size:15px;color:var(--sub);}
+
+/* Releases full popup */
+.rel-card{
+  margin:0 20px 14px;border-radius:14px;border:1px solid var(--divider);
+  background:var(--surf2);overflow:hidden;
+}
+@media(min-width:960px){.rel-card{margin:0 28px 16px;}}
+.rel-card-head{
+  display:flex;align-items:flex-start;gap:12px;padding:14px 18px 12px;
+  border-bottom:1px solid var(--divider);
+}
+.rel-tag-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;flex-shrink:0;
+  background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);
+}
+.rel-tag-badge .material-icons{font-size:12px;}
+.rel-latest-badge{
+  display:inline-flex;align-items:center;padding:2px 8px;border-radius:20px;
+  font-size:10px;font-weight:700;background:rgba(76,175,80,.15);color:#81C784;
+  border:1px solid rgba(76,175,80,.25);flex-shrink:0;
+}
+.rel-card-title{font-size:14px;font-weight:700;color:var(--on-surf);margin-bottom:3px;flex:1;}
+.rel-card-meta{font-size:11.5px;color:var(--sub);flex-shrink:0;white-space:nowrap;padding-top:2px;}
+.rel-body{padding:12px 18px 0;font-size:12.5px;color:rgba(237,232,220,.75);line-height:1.65;max-height:120px;overflow:hidden;position:relative;}
+.rel-body.expanded{max-height:none;}
+.rel-body-fade{position:absolute;bottom:0;left:0;right:0;height:36px;background:linear-gradient(transparent,var(--surf2));pointer-events:none;}
+.rel-body.expanded .rel-body-fade{display:none;}
+.rel-expand-btn{display:flex;align-items:center;justify-content:center;gap:4px;padding:6px 18px 10px;font-size:12px;color:var(--gold);background:none;border:none;cursor:pointer;font-family:var(--font);}
+.rel-assets{display:flex;flex-wrap:wrap;gap:8px;padding:10px 18px 14px;}
+.rel-asset-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:7px 14px;border-radius:50px;
+  background:var(--gold);color:#1C1500;
+  font-size:12px;font-weight:700;cursor:pointer;
+  border:none;font-family:var(--font);text-decoration:none;
+  transition:opacity .15s;
+}
+.rel-asset-btn:hover{opacity:.88;}
+.rel-asset-btn .material-icons{font-size:15px;}
+.rel-asset-btn.secondary{background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);}
+.rel-asset-btn.secondary:hover{background:rgba(200,168,48,.28);}
+.rel-src-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:50px;background:var(--surf3);color:var(--sub);border:1px solid var(--divider);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);text-decoration:none;}
+.rel-src-btn:hover{border-color:var(--gold-border);color:var(--gold);}
+.rel-src-btn .material-icons{font-size:14px;}
 </style>
 </head>
 <body>
@@ -665,10 +849,10 @@ a{color:var(--gold);text-decoration:none;}
           <span id="dlLabel">Latest APK</span>
           <span class="dl-spinner" id="dlSpinner"></span>
         </button>
-        <a class="btn-source" href="https://github.com/hari161008/Everlasting-Android-Tweak" target="_blank">
+        <button class="btn-source" onclick="openSource()">
           <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
           Source Code
-        </a>
+        </button>
         <a class="btn-secondary" href="https://t.me/EverlastingAndroidTweak" target="_blank">
           <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
           Support Group
@@ -682,6 +866,21 @@ a{color:var(--gold);text-decoration:none;}
           Try Demo
         </a>
       </div>
+
+      <!-- All Releases strip -->
+      <div class="releases-strip">
+        <div class="releases-strip-head">
+          <span class="releases-strip-label">Releases</span>
+          <button class="releases-view-all" onclick="openPopup('releases-full')">
+            View all <span class="material-icons">chevron_right</span>
+          </button>
+        </div>
+        <div class="releases-preview" id="relPreview">
+          <div style="padding:10px 0;text-align:center;font-size:12px;color:var(--sub);display:flex;align-items:center;justify-content:center;gap:6px">
+            <span class="material-icons" style="font-size:15px;animation:spin .8s linear infinite;color:var(--gold)">sync</span> Loading…
+          </div>
+        </div>
+      </div>
     </div><!-- /hero -->
 
     <!-- Compact rating (desktop bottom of left col) -->
@@ -689,7 +888,7 @@ a{color:var(--gold);text-decoration:none;}
 
     <!-- Desktop left-col footer links -->
     <div class="left-footer">
-      <a href="https://github.com/hari161008/Everlasting-Android-Tweak" target="_blank">GitHub</a>
+      <a href="https://github.com/hari161008/Everlasting-Android-Tweak" target="_blank" onclick="event.preventDefault();openSource()">GitHub</a>
       <a href="https://github.com/hari161008/Everlasting-Android-Tweak/releases" target="_blank">Releases</a>
       <a href="https://t.me/EverlastingAndroidTweak" target="_blank">Telegram</a>
       <a href="https://t.me/CoolAppStore" target="_blank">Cool Apps</a>
@@ -787,6 +986,20 @@ a{color:var(--gold);text-decoration:none;}
 </div><!-- /wrap -->
 
 
+<!-- ═══ SOURCE CODE POPUP ═══ -->
+<div class="popup-overlay" id="sourceOverlay" onclick="closeSource()"></div>
+<div class="popup-drawer gh-popup-drawer" id="sourceDrawer">
+  <div class="popup-handle"></div>
+  <div class="popup-header">
+    <button class="back-btn" id="ghBackBtn" onclick="closeSource()"><span class="material-icons">arrow_back</span></button>
+    <div class="popup-title" id="ghTitle">Source Code</div>
+    <a class="gh-hub-btn" href="https://github.com/hari161008/Everlasting-Android-Tweak" target="_blank"><span class="material-icons">open_in_new</span>GitHub</a>
+  </div>
+  <div class="popup-body" id="ghBody">
+    <div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>
+  </div>
+</div>
+
 <!-- ═══ FEATURES POPUP ═══ -->
 <div class="popup-overlay" id="featuresOverlay" onclick="closePopup('features')"></div>
 <div class="popup-drawer" id="featuresDrawer">
@@ -833,6 +1046,20 @@ a{color:var(--gold);text-decoration:none;}
   </div>
   <div class="popup-body">
     <div class="screenshots-grid" id="ssGrid"></div>
+  </div>
+</div>
+
+<!-- ═══ ALL RELEASES POPUP ═══ -->
+<div class="popup-overlay" id="releases-fullOverlay" onclick="closePopup('releases-full')"></div>
+<div class="popup-drawer" id="releases-fullDrawer">
+  <div class="popup-handle"></div>
+  <div class="popup-header">
+    <button class="back-btn" onclick="closePopup('releases-full')"><span class="material-icons">arrow_back</span></button>
+    <div class="popup-title">All Releases</div>
+    <div class="popup-count" id="relCount"></div>
+  </div>
+  <div class="popup-body" id="relList">
+    <div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>
   </div>
 </div>
 
@@ -1027,7 +1254,12 @@ function lbNav(dir,e){
 // REVIEWS
 // ══════════════════════════════════════════════════════════════
 const CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vQgvvFcO2C7gQQQyu6Y1hk_Az6e9AMa8vgyiQxPOlAj6oH0s_rajS8c92C1iEXGeO1BOQ-Qq3cY3wPp/pub?output=csv';
-const PROXIES=[u=>u,u=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,u=>`https://corsproxy.io/?${encodeURIComponent(u)}`,u=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`];
+const PROXIES=[
+  (u,t)=>u+'&_cb='+t,                                                                          // direct — bust Google CDN
+  (u,t)=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}&_cb=${t}`,              // allorigins — unique proxy URL
+  (u,t)=>`https://corsproxy.io/?${encodeURIComponent(u)}&_cb=${t}`,                           // corsproxy — unique proxy URL
+  (u,t)=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}&_cb=${t}`          // codetabs — unique proxy URL
+];
 const AVATARS=[['#C8A830','#3a2e00'],['#4CAF50','#0a2e0a'],['#2196F3','#0a1c3a'],['#E91E63','#3a0a1c'],['#9C27B0','#2a0a3a'],['#FF5722','#3a1a0a'],['#00897B','#003a34'],['#FF9800','#3a1800']];
 let allReviews=[],reviewFilter='all';
 
@@ -1127,6 +1359,7 @@ function showSkeleton(){
   document.getElementById('reviewList').innerHTML='';
   document.getElementById('readMoreBtn').style.display='none';
 }
+function fmtAvg(n){const v=Math.round(n*10)/10;return v.toFixed(1);}
 function renderSummary(reviews){
   if(!reviews.length){document.getElementById('summaryArea').innerHTML='';return;}
   const avg=reviews.reduce((s,r)=>s+r.rating,0)/reviews.length;
@@ -1141,7 +1374,7 @@ function renderSummary(reviews){
   document.getElementById('summaryArea').innerHTML=`
     <div class="summary">
       <div class="avg-col">
-        <div class="avg-num">${avg.toFixed(1)}</div>
+        <div class="avg-num">${fmtAvg(avg)}</div>
         <div class="avg-stars-row">${starStr(Math.round(avg))}</div>
         <div class="avg-cnt">${reviews.length} reviews</div>
       </div>
@@ -1149,7 +1382,7 @@ function renderSummary(reviews){
     </div>`;
   // Populate compact left-col rating
   const lr=document.getElementById('leftRating');
-  if(lr){lr.innerHTML=`<div class="lr-num">${avg.toFixed(1)}</div><div class="lr-right"><div class="lr-stars">${starStr(Math.round(avg))}</div><div class="lr-cnt">${reviews.length} user review${reviews.length!==1?'s':''}</div></div>`;}
+  if(lr){lr.innerHTML=`<div class="lr-num">${fmtAvg(avg)}</div><div class="lr-right"><div class="lr-stars">${starStr(Math.round(avg))}</div><div class="lr-cnt">${reviews.length} user review${reviews.length!==1?'s':''}</div></div>`;}
   requestAnimationFrame(()=>{document.querySelectorAll('.bar-fill').forEach(el=>el.style.width=el.dataset.pct+'%');});
 }
 const REV_BATCH=20;
@@ -1185,9 +1418,9 @@ function filterReviews(el){
   document.querySelectorAll('#reviewChips .chip').forEach(c=>c.classList.remove('on'));
   el.classList.add('on'); reviewFilter=el.dataset.f; renderReviews();
 }
-async function fetchCSV(pi=0){
+async function fetchCSV(pi=0,ts=Date.now()){
   if(pi>=PROXIES.length)throw new Error('All fetch attempts failed');
-  const url=PROXIES[pi](CSV);
+  const url=PROXIES[pi](CSV,ts);
   try{
     const res=await fetch(url,{cache:'no-store'});
     if(!res.ok)throw new Error('HTTP '+res.status);
@@ -1195,12 +1428,11 @@ async function fetchCSV(pi=0){
     if(!t||t.length<20)throw new Error('Empty');
     if(t.trim().startsWith('<'))throw new Error('Got HTML');
     return t;
-  }catch(e){console.warn('Proxy',pi,'failed:',e.message);return fetchCSV(pi+1);}
+  }catch(e){console.warn('Proxy',pi,'failed:',e.message);return fetchCSV(pi+1,ts);}
 }
 async function loadReviews(){
   allReviews=[];
   showSkeleton();
-  // Always fetch fresh data from network on every load
   try{
     const raw=await fetchCSV(0);
     processCSV(raw);
@@ -1234,14 +1466,13 @@ function processCSV(raw){
     const rawD=col.time!==-1?cols[col.time]:cols[0];
     const ver=col.ver!==-1?cols[col.ver]:'';
     let rating=parseRating(rawR);
-    if(rating===null)rating=5;
+    if(rating===null)return; // skip rows with no parseable rating — don't inflate avg
     if(!review.trim()&&!name.trim())return;
     allReviews.push({name:name.trim()||'Anonymous',review:review.trim()||'—',rating,date:fmtDate((rawD||'').trim()),rawDate:(rawD||'').trim(),ver:(ver||'').trim()});
   });
   if(!allReviews.length)throw new Error('No valid reviews');
   // Sort newest first
   allReviews.sort((a,b)=>{const da=parseDDMMDate(a.rawDate),db=parseDDMMDate(b.rawDate);if(isNaN(da)&&isNaN(db))return 0;if(isNaN(da))return 1;if(isNaN(db))return -1;return db-da;});
-  try{localStorage.removeItem('eat_rev_v3');}catch(e){} // clear any old cache
   renderSummary(allReviews);renderHomeReviews();renderReviews();
 }
 
@@ -1279,6 +1510,492 @@ document.querySelectorAll('.btn-primary,.btn-secondary,.btn-ghost,.btn-demo,.btn
     setTimeout(()=>dot.remove(),700);
   });
 });
+// ══════════════════════════════════════════════════════════════
+// GITHUB REPO BROWSER
+// ══════════════════════════════════════════════════════════════
+const _GH='hari161008/Everlasting-Android-Tweak';
+const _GHAPI=`https://api.github.com/repos/${_GH}`;
+
+// ── Direct download helpers ────────────────────────────────────
+function _ghDownloadZip(){
+  const a=document.createElement('a');
+  a.href=`https://github.com/${_GH}/archive/refs/heads/main.zip`;
+  a.download=_GH.split('/')[1]+'-main.zip';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>document.body.removeChild(a),100);
+}
+function _ghDirectDownload(url,filename){
+  const a=document.createElement('a');
+  a.href=url;a.download=filename;
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>document.body.removeChild(a),100);
+}
+const _ghCache=new Map();
+let _ghStack=[],_ghItems=[],_ghInfo=null,_ghRootCmt=null,_ghBranches=[],_ghTags=[],_ghCmtCount=null;
+let _ghReady=false;
+
+async function _ghGet(url){
+  if(_ghCache.has(url))return _ghCache.get(url);
+  const r=await fetch(url);
+  if(!r.ok)throw new Error('GitHub API: HTTP '+r.status+(r.status===403?' (rate limited)':''));
+  const d=await r.json();_ghCache.set(url,d);return d;
+}
+
+function openSource(){
+  document.getElementById('sourceOverlay').classList.add('open');
+  document.getElementById('sourceDrawer').classList.add('open');
+  document.body.style.overflow='hidden';
+  if(!_ghReady){_ghReady=true;_ghInitLoad();}
+}
+function closeSource(){
+  document.getElementById('sourceOverlay').classList.remove('open');
+  document.getElementById('sourceDrawer').classList.remove('open');
+  document.body.style.overflow='';
+}
+function _ghBack(){
+  if(_ghStack.length<=1){closeSource();return;}
+  _ghStack.pop();
+  const p=_ghStack[_ghStack.length-1];
+  if(p.type==='dir')_ghNavDir(p.path,true);
+  else _ghNavFile(p.item,true);
+}
+function _ghSyncHeader(){
+  const btn=document.getElementById('ghBackBtn'),ttl=document.getElementById('ghTitle');
+  if(_ghStack.length<=1){btn.onclick=closeSource;ttl.textContent='Source Code';}
+  else{btn.onclick=_ghBack;const c=_ghStack[_ghStack.length-1];ttl.textContent=c.path?c.path.split('/').pop():'Source Code';}
+}
+function _ghLoading(){document.getElementById('ghBody').innerHTML='<div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>';}
+function _ghErr(msg,fn){
+  document.getElementById('ghBody').innerHTML=`<div class="gh-error-box">
+    <span class="material-icons">error_outline</span>
+    <div class="gh-err-title">Could not load</div>
+    <div class="gh-err-msg">${esc(msg)}</div>
+    <button class="gh-retry-btn" onclick="${fn||'_ghInitLoad()'}">Retry</button>
+  </div>`;
+}
+function _ghTimeAgo(ds){
+  const s=(Date.now()-new Date(ds))/1e3;
+  if(s<60)return'just now';
+  if(s<3600)return`${~~(s/60)} min ago`;
+  if(s<86400){const h=~~(s/3600);return`${h} hour${h!==1?'s':''} ago`;}
+  if(s<604800){const d=~~(s/86400);return`${d} day${d!==1?'s':''} ago`;}
+  if(s<2592000){const w=~~(s/604800);return`${w} week${w!==1?'s':''} ago`;}
+  if(s<31536000){const m=~~(s/2592000);return`${m} month${m!==1?'s':''} ago`;}
+  const y=~~(s/31536000);return`${y} year${y!==1?'s':''} ago`;
+}
+function _ghIcon(item){
+  if(item.type==='dir')return'<span class="material-icons folder">folder</span>';
+  const e=(item.name.split('.').pop()||'').toLowerCase();
+  const m={md:'description',txt:'description',js:'code',ts:'code',kt:'code',java:'code',py:'code',c:'code',cpp:'code',h:'code',xml:'code',json:'data_object',yaml:'code',yml:'code',toml:'code',gradle:'settings',properties:'tune',gitignore:'visibility_off',gitattributes:'settings',png:'image',jpg:'image',jpeg:'image',gif:'image',webp:'image',svg:'image',zip:'archive',rar:'archive','7z':'archive',apk:'android',html:'web',css:'brush',sh:'terminal',bat:'terminal',lock:'lock'};
+  return`<span class="material-icons file">${m[e]||'insert_drive_file'}</span>`;
+}
+function _ghBcDir(path){
+  // Builds breadcrumb HTML for a directory path
+  let h=`<span class="gh-bc-link" onclick="_ghNavDir('')"><svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor" style="vertical-align:-1px;margin-right:2px"><path d="M1.5 1.75V13.5h13V1.75a.25.25 0 0 0-.25-.25h-12.5a.25.25 0 0 0-.25.25ZM0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v11.75a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1.75Z"/></svg>${_GH.split('/')[1]}</span>`;
+  if(!path)return h;
+  const parts=path.split('/');
+  parts.forEach((p,i)=>{
+    const pp=parts.slice(0,i+1).join('/');
+    h+=`<span class="gh-bc-sep">/</span>`;
+    if(i===parts.length-1)h+=`<span class="gh-bc-cur">${esc(p)}</span>`;
+    else h+=`<span class="gh-bc-link" onclick="_ghNavDir('${pp}')">${esc(p)}</span>`;
+  });
+  return h;
+}
+function _ghBcFile(path){
+  const parts=path.split('/');
+  let h=`<span class="gh-bc-link" onclick="_ghNavDir('')"><svg viewBox="0 0 16 16" width="13" height="13" fill="currentColor" style="vertical-align:-1px;margin-right:2px"><path d="M1.5 1.75V13.5h13V1.75a.25.25 0 0 0-.25-.25h-12.5a.25.25 0 0 0-.25.25ZM0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v11.75a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V1.75Z"/></svg>${_GH.split('/')[1]}</span>`;
+  parts.forEach((p,i)=>{
+    h+=`<span class="gh-bc-sep">/</span>`;
+    if(i===parts.length-1)h+=`<span class="gh-bc-cur">${esc(p)}</span>`;
+    else{const pp=parts.slice(0,i+1).join('/');h+=`<span class="gh-bc-link" onclick="_ghNavDir('${pp}')">${esc(p)}</span>`;}
+  });
+  return h;
+}
+
+async function _ghInitLoad(){
+  _ghStack=[{type:'dir',path:''}];_ghSyncHeader();_ghLoading();
+  try{
+    const [info,rc,br,tg]=await Promise.all([
+      _ghGet(_GHAPI),
+      _ghGet(`${_GHAPI}/commits/main`),
+      _ghGet(`${_GHAPI}/branches`),
+      _ghGet(`${_GHAPI}/tags`)
+    ]);
+    _ghInfo=info;_ghRootCmt=rc;_ghBranches=br;_ghTags=tg;
+    // Commit count via Link header
+    try{
+      const cr=await fetch(`${_GHAPI}/commits?per_page=1`);
+      const lk=cr.headers.get('Link')||'';
+      const m=lk.match(/page=(\d+)>;\s*rel="last"/);
+      _ghCmtCount=m?+m[1]:null;
+    }catch(e){}
+    await _ghNavDir('',false,true);
+  }catch(e){_ghErr(e.message);}
+}
+
+async function _ghNavDir(path,isBack=false,isRoot=false){
+  if(!isBack&&!isRoot)_ghStack.push({type:'dir',path});
+  _ghSyncHeader();
+  if(!isRoot)_ghLoading();
+  try{
+    const items=await _ghGet(`${_GHAPI}/contents/${path}`);
+    items.sort((a,b)=>a.type===b.type?a.name.localeCompare(b.name):a.type==='dir'?-1:1);
+    _ghItems=[...items];
+    // Fetch commits for each item concurrently
+    const cm={};
+    await Promise.allSettled(items.slice(0,30).map(async it=>{
+      try{const cs=await _ghGet(`${_GHAPI}/commits?path=${encodeURIComponent(it.path)}&per_page=1`);if(cs.length)cm[it.path]=cs[0];}catch(e){}
+    }));
+    // README
+    let readme=null;
+    const rm=items.find(i=>i.name.toLowerCase()==='readme.md');
+    if(rm&&rm.size<400000){
+      try{
+        const rd=await _ghGet(rm.url);
+        const b64=rd.content.replace(/\n/g,'');
+        const bin=atob(b64);
+        const bytes=new Uint8Array(bin.length);
+        for(let k=0;k<bin.length;k++)bytes[k]=bin.charCodeAt(k);
+        readme=new TextDecoder('utf-8').decode(bytes);
+      }catch(e){}
+    }
+    _ghRenderDir(path,items,cm,readme);
+  }catch(e){_ghErr(e.message,`_ghNavDir('${path}')`);}
+}
+
+function _ghClickItem(idx){
+  const it=_ghItems[idx];if(!it)return;
+  if(it.type==='dir')_ghNavDir(it.path);else _ghNavFile(it);
+}
+
+async function _ghNavFile(item,isBack=false){
+  if(!isBack)_ghStack.push({type:'file',path:item.path,item});
+  _ghSyncHeader();
+  document.getElementById('ghTitle').textContent=item.name;
+  _ghLoading();
+  const ext=(item.name.split('.').pop()||'').toLowerCase();
+  const isImg=['png','jpg','jpeg','gif','webp','svg','bmp'].includes(ext);
+  const isBin=['zip','rar','7z','apk','jar','exe','class','so','dex','bin','db'].includes(ext)||item.size>1500000;
+  const rawUrl=`https://raw.githubusercontent.com/${_GH}/main/${item.path}`;
+  const ghUrl=`https://github.com/${_GH}/blob/main/${item.path}`;
+  const bc=`<div class="gh-breadcrumb">${_ghBcFile(item.path)}</div>`;
+
+  if(isImg){
+    document.getElementById('ghBody').innerHTML=`${bc}
+      <div class="gh-file-wrap">
+        <div class="gh-file-header">
+          <span class="gh-file-meta">${(item.size/1024).toFixed(1)} KB · Image</span>
+          <a class="gh-raw-btn" href="${rawUrl}" target="_blank"><span class="material-icons">open_in_new</span> Raw</a>
+        </div>
+        <div class="gh-img-viewer"><img src="${rawUrl}" alt="${esc(item.name)}"></div>
+      </div>`;return;
+  }
+  if(isBin){
+    const isDownloadable=['zip','rar','7z','apk','jar','exe','bin','dex','so'].includes(ext);
+    const rawDlUrl=`https://raw.githubusercontent.com/${_GH}/main/${item.path}`;
+    const actionBtn=isDownloadable
+      ?`<button class="gh-open-btn" style="cursor:pointer;border:none;font-family:var(--font)" onclick="_ghDirectDownload('${rawDlUrl}','${esc(item.name)}')"><span class="material-icons" style="font-size:14px">download</span> Download</button>`
+      :`<a href="${ghUrl}" target="_blank" class="gh-open-btn">View on GitHub ↗</a>`;
+    document.getElementById('ghBody').innerHTML=`${bc}
+      <div class="gh-error-box">
+        <span class="material-icons" style="color:var(--gold)">archive</span>
+        <div class="gh-err-title">${esc(item.name)}</div>
+        <div class="gh-err-msg">${(item.size/1024).toFixed(1)} KB · Binary file — cannot preview</div>
+        ${actionBtn}
+      </div>`;return;
+  }
+  try{
+    const fd=await _ghGet(item.url);
+    let content='';
+    if(fd.encoding==='base64'){
+      const bin=atob(fd.content.replace(/\n/g,''));
+      const bytes=new Uint8Array(bin.length);
+      for(let k=0;k<bin.length;k++)bytes[k]=bin.charCodeAt(k);
+      content=new TextDecoder('utf-8').decode(bytes);
+    }else{content=fd.content||'';}
+    const lines=content.split('\n').length;
+    const isMd=ext==='md';
+    document.getElementById('ghBody').innerHTML=`${bc}
+      <div class="gh-file-wrap">
+        <div class="gh-file-header">
+          <span class="gh-file-meta">${lines} line${lines!==1?'s':''} · ${(item.size/1024).toFixed(1)} KB</span>
+          <div class="gh-raw-btns">
+            <a class="gh-raw-btn" href="${rawUrl}" target="_blank"><span class="material-icons">code</span> Raw</a>
+            <a class="gh-raw-btn" href="${ghUrl}" target="_blank"><span class="material-icons">open_in_new</span> GitHub</a>
+          </div>
+        </div>
+        ${isMd
+          ?`<div class="gh-readme-body" style="padding:18px 22px">${_ghMd(content)}</div>`
+          :`<pre class="gh-code-pre">${esc(content)}</pre>`
+        }
+      </div>`;
+  }catch(e){_ghErr(e.message);}
+}
+
+function _ghRenderDir(path,items,cm,readme){
+  const brc=_ghBranches.length,tgc=_ghTags.length;
+  const rc=_ghRootCmt;
+  const sha=rc?rc.sha.slice(0,7):'';
+  const author=rc?rc.commit.author.name:'';
+  const avatar=rc&&rc.author?rc.author.avatar_url:'';
+  const msg=rc?rc.commit.message.split('\n')[0]:'';
+  const ct=rc?_ghTimeAgo(rc.commit.author.date):'';
+  const cc=_ghCmtCount;
+
+  const rows=items.map((it,i)=>{
+    const c=cm[it.path];
+    const cmsg=c?c.commit.message.split('\n')[0]:'';
+    const ctime=c?_ghTimeAgo(c.commit.author.date):'';
+    return`<div class="gh-row" onclick="_ghClickItem(${i})">
+      <div class="gh-row-ico">${_ghIcon(it)}</div>
+      <div class="gh-row-name">${esc(it.name)}</div>
+      <div class="gh-row-msg">${esc(cmsg)}</div>
+      <div class="gh-row-time">${esc(ctime)}</div>
+    </div>`;
+  }).join('');
+
+  const readmeHTML=readme?`
+    <div class="gh-readme-wrap">
+      <div class="gh-readme-head"><span class="material-icons">menu_book</span>README.md</div>
+      <div class="gh-readme-body">${_ghMd(readme)}</div>
+    </div>`:'';
+
+  document.getElementById('ghBody').innerHTML=`
+    <div class="gh-topbar">
+      <div class="gh-branch-pill"><span class="material-icons">call_split</span>main<span class="material-icons" style="font-size:14px;color:var(--sub)">expand_more</span></div>
+      <div class="gh-meta-pill"><span class="material-icons">call_split</span><strong>${brc}</strong>&nbsp;Branch${brc!==1?'es':''}</div>
+      <div class="gh-meta-pill"><span class="material-icons">local_offer</span><strong>${tgc}</strong>&nbsp;Tag${tgc!==1?'s':''}</div>
+      <div class="gh-spacer"></div>
+      <button class="gh-open-btn" style="cursor:pointer;border:none;font-family:var(--font)" onclick="_ghDownloadZip()">
+        <span class="material-icons" style="font-size:13px">download</span>
+        ZIP
+      </button>
+    </div>
+    <div class="gh-commit-bar">
+      ${avatar?`<div class="gh-av"><img src="${avatar}" alt="${esc(author)}"></div>`:''}
+      <span class="gh-commit-author">${esc(author)}</span>
+      <span class="gh-commit-msg">${esc(msg)}</span>
+      <span class="gh-commit-sha">${sha}</span>
+      <span class="gh-commit-time">· ${ct}</span>
+      <div class="gh-spacer"></div>
+      <a class="gh-commit-count" href="https://github.com/${_GH}/commits/main" target="_blank">
+        <span class="material-icons">history</span>
+        ${cc!=null?`<strong>${cc}</strong>&nbsp;`:''}Commits
+      </a>
+    </div>
+    <div class="gh-breadcrumb">${_ghBcDir(path)}</div>
+    <div class="gh-table">${rows}</div>
+    ${readmeHTML}`;
+}
+
+// ── Markdown renderer ─────────────────────────────────────────
+function _ghMd(raw){
+  const blk=[];
+  const save=s=>{const i=blk.length;blk.push(s);return`\x00B${i}\x00`;};
+
+  // 1. Extract fenced code blocks
+  let s=raw.replace(/```(\w*)\n?([\s\S]*?)```/g,(_,lang,code)=>
+    save(`<pre><code class="lang-${esc(lang)}">${esc(code.replace(/\n$/,''))}</code></pre>`)
+  );
+  // 2. Extract inline code
+  s=s.replace(/`([^`\n]+)`/g,(_,c)=>save(`<code>${esc(c)}</code>`));
+  // 3. Preserve existing HTML tags (details, summary, img, br, div, etc.)
+  s=s.replace(/<(details|summary|div|span|p|br|hr|img|a|table|thead|tbody|tr|th|td|ul|ol|li|strong|em|del|code|pre|h[1-6]|sup|sub|ins|mark|kbd|samp)[^>]*>[\s\S]*?<\/\1>/gi,m=>save(m));
+  s=s.replace(/<(br|hr|img)[^>]*\/?>/gi,m=>save(m));
+  s=s.replace(/<!--[\s\S]*?-->/g,m=>save(''));// strip HTML comments
+  // 4. Escape remaining plain text
+  s=s.replace(/&(?!amp;|lt;|gt;|quot;|#\d+;|#x[\da-f]+;)/gi,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // 5. Block elements
+  s=s
+    .replace(/^######[ \t]+(.+)$/gm,'<h6>$1</h6>')
+    .replace(/^#####[ \t]+(.+)$/gm,'<h5>$1</h5>')
+    .replace(/^####[ \t]+(.+)$/gm,'<h4>$1</h4>')
+    .replace(/^###[ \t]+(.+)$/gm,'<h3>$1</h3>')
+    .replace(/^##[ \t]+(.+)$/gm,'<h2>$1</h2>')
+    .replace(/^#[ \t]+(.+)$/gm,'<h1>$1</h1>')
+    .replace(/^[-*_]{3,}\s*$/gm,'<hr>')
+    .replace(/^&gt;[ \t]?(.*)$/gm,'<blockquote>$1</blockquote>')
+    .replace(/^[ \t]*[-*+][ \t]+(.+)$/gm,'<li>$1</li>')
+    .replace(/^[ \t]*\d+\.[ \t]+(.+)$/gm,'<li>$1</li>');
+  // Wrap consecutive li into ul
+  s=s.replace(/(<li>[\s\S]*?<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
+  // Merge nested blockquotes
+  s=s.replace(/(<\/blockquote>\n<blockquote>)/g,'<br>');
+  // Tables
+  s=s.replace(/(\|.+\|\n\|[-| :]+\|\n(?:\|.+\|\n?)+)/g,tbl=>{
+    const rows=tbl.trim().split('\n');
+    const head=rows[0].split('|').filter(Boolean).map(c=>`<th>${c.trim()}</th>`).join('');
+    const body=rows.slice(2).map(r=>`<tr>${r.split('|').filter(Boolean).map(c=>`<td>${c.trim()}</td>`).join('')}</tr>`).join('');
+    return`<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+  });
+  // 6. Inline formatting
+  s=s
+    .replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img src="$2" alt="$1" style="max-width:100%">')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener">$1</a>')
+    .replace(/\*\*\*(.+?)\*\*\*/gs,'<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/gs,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/gs,'<em>$1</em>')
+    .replace(/__(.+?)__/gs,'<strong>$1</strong>')
+    .replace(/(?<![a-zA-Z0-9])_(.+?)_(?![a-zA-Z0-9])/gs,'<em>$1</em>')
+    .replace(/~~(.+?)~~/gs,'<del>$1</del>');
+  // 7. Paragraphs
+  const lines=s.split('\n'),out=[];let inP=false;
+  for(const line of lines){
+    const t=line.trim();
+    const isBlock=/^(<h[1-6]|<ul|<ol|<li|<hr|<blockquote|<pre|<table|<div|\x00B)/.test(t)||t==='';
+    if(isBlock){
+      if(inP){out.push('</p>');inP=false;}
+      if(t)out.push(t);
+    }else{
+      if(!inP){out.push('<p>');inP=true;}else out.push('<br>');
+      out.push(t);
+    }
+  }
+  if(inP)out.push('</p>');
+  s=out.join('\n');
+  // 8. Restore preserved blocks
+  blk.forEach((b,i)=>{s=s.replaceAll(`\x00B${i}\x00`,b);});
+  return s;
+}
+// ══════════════════════════════════════════════════════════════
+// ALL RELEASES
+// ══════════════════════════════════════════════════════════════
+let _relData=null,_relLoaded=false;
+
+function _relFmtDate(iso){
+  if(!iso)return'';
+  const d=new Date(iso);
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+function _relFmtSize(bytes){
+  if(!bytes)return'';
+  if(bytes<1024*1024)return(bytes/1024).toFixed(0)+' KB';
+  return(bytes/(1024*1024)).toFixed(1)+' MB';
+}
+
+async function loadReleases(){
+  if(_relLoaded&&_relData)return _relData;
+  try{
+    const res=await fetch(`https://api.github.com/repos/${_GH}/releases?per_page=30`);
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    _relData=await res.json();
+    _relLoaded=true;
+    renderRelPreview();
+    return _relData;
+  }catch(e){
+    document.getElementById('relPreview').innerHTML=
+      `<div style="font-size:12px;color:var(--sub);padding:8px 0">Could not load releases</div>`;
+    return [];
+  }
+}
+
+function renderRelPreview(){
+  if(!_relData||!_relData.length)return;
+  const preview=document.getElementById('relPreview');
+  if(!preview)return;
+  const show=_relData.slice(0,3);
+  preview.innerHTML=show.map((r,i)=>{
+    const apk=r.assets&&r.assets.find(a=>a.name.toLowerCase().endsWith('.apk'));
+    return`<div class="rel-mini-card" onclick="openReleasesPopup()" style="animation:fadeUp .35s ease-out ${i*.07}s both">
+      <div class="rel-mini-tag">${esc(r.tag_name)}</div>
+      <div class="rel-mini-name">${esc(r.name||r.tag_name)}</div>
+      <div class="rel-mini-date">${_relFmtDate(r.published_at)}</div>
+      <div class="rel-mini-ico"><span class="material-icons">${apk?'android':'code'}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function openReleasesPopup(){
+  openPopup('releases-full');
+  renderRelList();
+}
+
+function renderRelList(){
+  const area=document.getElementById('relList');
+  if(!_relData){
+    area.innerHTML='<div class="gh-loading-box"><span class="material-icons">sync</span> Loading…</div>';
+    loadReleases().then(()=>renderRelList());
+    return;
+  }
+  if(!_relData.length){
+    area.innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--sub);font-size:13px">No releases found</div>';
+    return;
+  }
+  document.getElementById('relCount').textContent=`${_relData.length} release${_relData.length!==1?'s':''}`;
+  area.innerHTML=_relData.map((r,i)=>{
+    const isLatest=i===0;
+    const apkAssets=(r.assets||[]).filter(a=>a.name.toLowerCase().endsWith('.apk'));
+    const otherAssets=(r.assets||[]).filter(a=>!a.name.toLowerCase().endsWith('.apk'));
+    const bodyHtml=r.body?_relMd(r.body):'';
+    const assetBtns=apkAssets.map(a=>`
+      <a class="rel-asset-btn" href="${esc(a.browser_download_url)}" download="${esc(a.name)}">
+        <span class="material-icons">android</span>${esc(a.name)}<span style="opacity:.7;font-size:11px">&nbsp;${_relFmtSize(a.size)}</span>
+      </a>`).join('');
+    const srcZipBtn=`<a class="rel-src-btn" href="https://github.com/${_GH}/archive/refs/tags/${esc(r.tag_name)}.zip" download>
+      <span class="material-icons">folder_zip</span>Source ZIP</a>`;
+    const otherBtns=otherAssets.map(a=>`
+      <a class="rel-asset-btn secondary" href="${esc(a.browser_download_url)}" download="${esc(a.name)}">
+        <span class="material-icons">download</span>${esc(a.name)}</a>`).join('');
+    return`<div class="rel-card" style="animation:fadeUp .4s ease-out ${Math.min(i*.06,.5)}s both">
+      <div class="rel-card-head">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:5px">
+            <span class="rel-tag-badge"><span class="material-icons">local_offer</span>${esc(r.tag_name)}</span>
+            ${isLatest?'<span class="rel-latest-badge">Latest</span>':''}
+          </div>
+          <div class="rel-card-title">${esc(r.name||r.tag_name)}</div>
+        </div>
+        <div class="rel-card-meta">${_relFmtDate(r.published_at)}</div>
+      </div>
+      ${bodyHtml?`<div class="rel-body gh-readme-body" id="relBody${i}" style="padding:12px 18px 0;border:none;border-radius:0;background:transparent">
+        ${bodyHtml}
+        <div class="rel-body-fade"></div>
+      </div>
+      <button class="rel-expand-btn" onclick="toggleRelBody(${i},this)">
+        <span class="material-icons" style="font-size:15px">expand_more</span> Show more
+      </button>`:''}
+      <div class="rel-assets">
+        ${assetBtns}${otherBtns}${srcZipBtn}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleRelBody(i,btn){
+  const el=document.getElementById('relBody'+i);
+  if(!el)return;
+  const expanded=el.classList.toggle('expanded');
+  btn.innerHTML=expanded
+    ?'<span class="material-icons" style="font-size:15px">expand_less</span> Show less'
+    :'<span class="material-icons" style="font-size:15px">expand_more</span> Show more';
+}
+
+// Simplified markdown for release bodies (no HTML preservation needed — just basic formatting)
+function _relMd(raw){
+  if(!raw)return'';
+  let s=raw.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s=s
+    .replace(/^###\s+(.+)$/gm,'<h3>$1</h3>')
+    .replace(/^##\s+(.+)$/gm,'<h2>$1</h2>')
+    .replace(/^#\s+(.+)$/gm,'<h1>$1</h1>')
+    .replace(/^[-*_]{3,}\s*$/gm,'<hr>')
+    .replace(/^[-*+]\s+(.+)$/gm,'<li>$1</li>')
+    .replace(/\*\*(.+?)\*\*/gs,'<strong>$1</strong>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>');
+  s=s.replace(/(<li>[\s\S]*?<\/li>\n?)+/g,m=>`<ul>${m}</ul>`);
+  const lines=s.split('\n'),out=[];let inP=false;
+  for(const ln of lines){
+    const t=ln.trim();
+    const isB=/^(<h|<ul|<ol|<li|<hr)/.test(t)||t==='';
+    if(isB){if(inP){out.push('</p>');inP=false;}if(t)out.push(t);}
+    else{if(!inP){out.push('<p>');inP=true;}else out.push('<br>');out.push(t);}
+  }
+  if(inP)out.push('</p>');
+  return out.join('\n');
+}
+
+// Load releases on page init (so preview is populated)
+loadReleases();
 </script>
-</body>
 </html>
