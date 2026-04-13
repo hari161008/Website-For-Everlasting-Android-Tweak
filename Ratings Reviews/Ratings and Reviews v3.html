@@ -522,6 +522,98 @@ a{color:var(--gold);text-decoration:none;}
    ════════════════════════════════════ */
 .dl-spinner{display:none;width:13px;height:13px;border:2px solid rgba(28,21,0,.3);border-top-color:#1C1500;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0;}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* ══════════════════════════════════════
+   KEYFRAMES
+   ══════════════════════════════════════ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes iconBounce{0%{opacity:0;transform:scale(0) rotate(-12deg)}55%{opacity:1;transform:scale(1.18) rotate(5deg)}78%{transform:scale(.93)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes badgePop{0%{opacity:0;transform:scale(.5) translateY(8px)}70%{transform:scale(1.1) translateY(-2px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes starPop{0%{opacity:0;transform:scale(0) rotate(-25deg)}65%{transform:scale(1.3) rotate(8deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes countPop{0%{opacity:0;transform:scale(.4)}70%{transform:scale(1.12)}100%{opacity:1;transform:scale(1)}}
+@keyframes slideRight{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:translateX(0)}}
+@keyframes rippleOut{to{transform:scale(5);opacity:0}}
+@keyframes sectionSlide{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Hero entrance ── */
+.app-icon{animation:iconBounce .75s cubic-bezier(.34,1.56,.64,1) .1s both;}
+@media(min-width:960px){
+  .app-icon{animation:iconBounce .75s cubic-bezier(.34,1.56,.64,1) .1s both,floatY 4s ease-in-out 1.3s infinite;}
+  .app-icon:hover{filter:brightness(1.08);transition:filter .25s;}
+}
+.hero-name{animation:fadeUp .55s ease-out .28s both;}
+.hero-tagline{animation:fadeUp .5s ease-out .36s both;}
+.hero-badges .badge:nth-child(1){animation:badgePop .5s cubic-bezier(.34,1.56,.64,1) .44s both;}
+.hero-badges .badge:nth-child(2){animation:badgePop .5s cubic-bezier(.34,1.56,.64,1) .54s both;}
+.hero-badges .badge:nth-child(3){animation:badgePop .5s cubic-bezier(.34,1.56,.64,1) .64s both;}
+.hero-desc{animation:fadeUp .5s ease-out .54s both;}
+.hero-actions>*:nth-child(1){animation:fadeUp .45s ease-out .68s both;}
+.hero-actions>*:nth-child(2){animation:fadeUp .45s ease-out .76s both;}
+.hero-actions>*:nth-child(3){animation:fadeUp .45s ease-out .84s both;}
+.hero-actions>*:nth-child(4){animation:fadeUp .45s ease-out .92s both;}
+.hero-actions>*:nth-child(5){animation:fadeUp .45s ease-out 1s both;}
+
+/* ── Scroll reveal ── */
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .6s cubic-bezier(.4,0,.2,1),transform .6s cubic-bezier(.4,0,.2,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ── Button press feel ── */
+.btn-primary{position:relative;overflow:hidden;transition:opacity .15s,transform .15s;}
+.btn-primary:active{transform:scale(.96);}
+.btn-secondary,.btn-ghost,.btn-demo,.btn-source{position:relative;overflow:hidden;transition:background .15s,transform .15s;}
+.btn-secondary:active,.btn-ghost:active,.btn-demo:active,.btn-source:active{transform:scale(.95);}
+
+/* ── Chip spring ── */
+.chip{transition:all .22s cubic-bezier(.34,1.56,.64,1);}
+.chip:active{transform:scale(.9);}
+.chip.on{transform:scale(1.05);}
+
+/* ── Card lifts ── */
+.feat-teaser-item{transition:border-color .2s,transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;}
+.feat-teaser-item:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.45);}
+.preview-card{transition:border-color .2s,transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;}
+.preview-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.4);}
+.review-item{transition:background .2s,transform .22s cubic-bezier(.34,1.56,.64,1);}
+.review-item:hover{background:rgba(200,168,48,.05);transform:translateX(3px);}
+
+/* ── Avatar ── */
+.avatar{transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
+.review-item:hover .avatar{transform:scale(1.12) rotate(-4deg);}
+
+/* ── Stars ── */
+.ri-star{display:inline-block;animation:starPop .38s cubic-bezier(.34,1.56,.64,1) both;}
+
+/* ── Summary avg pop ── */
+.avg-num{animation:countPop .65s cubic-bezier(.34,1.56,.64,1) .1s both;}
+.avg-stars-row{animation:fadeIn .5s ease-out .55s both;}
+.avg-cnt{animation:fadeIn .5s ease-out .7s both;}
+
+/* ── Bar fill ── */
+.bar-row{animation:slideRight .45s ease-out both;}
+.bar-row:nth-child(1){animation-delay:.05s}.bar-row:nth-child(2){animation-delay:.12s}
+.bar-row:nth-child(3){animation-delay:.19s}.bar-row:nth-child(4){animation-delay:.26s}
+.bar-row:nth-child(5){animation-delay:.33s}
+
+/* ── Screenshot strip ── */
+.ss-strip img{transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;}
+.ss-strip img:hover{transform:scale(1.07);box-shadow:0 10px 28px rgba(0,0,0,.55);}
+
+/* ── View all pill ── */
+.view-all-pill{transition:background .15s,transform .2s cubic-bezier(.34,1.56,.64,1);}
+.view-all-pill:active{transform:scale(.93);}
+
+/* ── Back button ── */
+.back-btn{transition:background .15s,transform .2s cubic-bezier(.34,1.56,.64,1);}
+.back-btn:active{transform:scale(.86);}
+
+/* ── Read more btn ── */
+.read-more-btn{transition:background .15s,transform .2s cubic-bezier(.34,1.56,.64,1);}
+.read-more-btn:active{transform:scale(.97);}
+
+/* ── Ripple ── */
+.ripple-dot{position:absolute;border-radius:50%;background:rgba(255,255,255,.28);transform:scale(0);animation:rippleOut .65s ease-out forwards;pointer-events:none;}
 .review-hint{
   display:flex;align-items:flex-start;gap:7px;
   padding:10px 20px 16px;
@@ -564,7 +656,7 @@ a{color:var(--gold);text-decoration:none;}
       </div>
 
       <div class="hero-desc">
-        The true heart of Android — a powerful, feature-rich toolkit designed to unlock the full potential of your device. Advanced gestures, customization, system controls, and smart utilities to enhance and personalize your Android experience. <em>Think Different :)</em>
+        The true heart of Android — a powerful, feature-rich toolkit designed to unlock the full potential of your device. Advanced gestures, customization, system controls, and smart utilities to enhance and personalize your Android experience. <br><br>Think Different :)
       </div>
 
       <div class="hero-actions">
@@ -615,12 +707,11 @@ a{color:var(--gold);text-decoration:none;}
 
     <!-- ── FEATURES ── -->
     <div class="section">
-      <div class="sec-head">
-        <div class="sec-title">Features</div>
+      <div class="sec-head reveal">
         <div class="sec-count">46 total</div>
       </div>
       <!-- Mobile: tap card -->
-      <div class="preview-card" onclick="openPopup('features')" id="featMobileCard">
+      <div class="preview-card reveal" onclick="openPopup('features')" id="featMobileCard">
         <div class="preview-card-inner">
           <div class="preview-card-left">
             <div class="preview-card-title">Explore all 46 features</div>
@@ -637,14 +728,14 @@ a{color:var(--gold);text-decoration:none;}
 
     <!-- ── RATINGS & REVIEWS ── -->
     <div class="section">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <div class="sec-title">Ratings & Reviews</div>
         <button onclick="loadReviews()" style="background:none;border:none;cursor:pointer;padding:4px;">
           <svg width="19" height="19" viewBox="0 0 24 24" fill="#9E9880"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
         </button>
       </div>
       <div id="summaryArea"></div>
-      <div class="review-hint">
+      <div class="review-hint reveal">
         <span class="material-icons">info</span>
         To publish your review, first download the app and then go to app's settings &gt; <strong>Rate &amp; Review</strong>
       </div>
@@ -661,7 +752,7 @@ a{color:var(--gold);text-decoration:none;}
 
     <!-- ── SCREENSHOTS ── -->
     <div class="section">
-      <div class="sec-head">
+      <div class="sec-head reveal">
         <div class="sec-title">Screenshots</div>
         <div class="view-all-pill" id="ssViewAll" onclick="openPopup('screenshots')">
           <span class="material-icons">photo_library</span>
@@ -885,12 +976,11 @@ function renderFeats(){
 }
 
 function buildFeatTeaser(){
-  // Desktop teaser: show 6 features in 2-col grid
   const sample=FEATURES.slice(0,6);
   const grid=document.getElementById('featTeaserGrid');
   if(!grid) return;
-  grid.innerHTML=sample.map(f=>`
-    <div class="feat-teaser-item" onclick="openPopup('features')">
+  grid.innerHTML=sample.map((f,i)=>`
+    <div class="feat-teaser-item" onclick="openPopup('features')" style="animation:fadeUp .45s ease-out ${(i*.09).toFixed(2)}s both">
       <div class="feat-teaser-icon" style="background:${f.bg}"><span class="material-icons" style="color:${f.color};font-size:16px">${f.icon}</span></div>
       <div class="feat-teaser-text">
         <div class="feat-teaser-name">${f.title}</div>
@@ -910,13 +1000,13 @@ let lbIdx=0;
 function buildScreenshotGrid(){
   // Popup grid (all 12)
   document.getElementById('ssGrid').innerHTML=SS_URLS.map((url,i)=>
-    `<img src="${url}" alt="Screenshot ${i+1}" loading="lazy" onclick="openLightbox(${i})">`
+    `<img src="${url}" alt="Screenshot ${i+1}" loading="lazy" onclick="openLightbox(${i})" style="animation:fadeIn .5s ease-out ${(i*.06).toFixed(2)}s both">`
   ).join('');
-  // Desktop inline grid (all 12)
+  // Desktop inline grid (all 12) with stagger
   const dg=document.getElementById('ssDesktopGrid');
   if(dg){
     dg.innerHTML=SS_URLS.map((url,i)=>
-      `<img src="${url}" alt="Screenshot ${i+1}" loading="lazy" onclick="openLightbox(${i})">`
+      `<img src="${url}" alt="Screenshot ${i+1}" loading="lazy" onclick="openLightbox(${i})" style="animation:fadeUp .5s ease-out ${(i*.07).toFixed(2)}s both">`
     ).join('');
   }
 }
@@ -985,7 +1075,13 @@ function parseRating(rawR){
   if(m){const v=parseFloat(m[1]);if(v>=1&&v<=5)return v;}
   return null;
 }
-function starStr(r){const n=Math.max(0,Math.min(5,Math.round(r)));return'★'.repeat(n)+'☆'.repeat(5-n);}
+function starStr(r,animate=false){
+  const n=Math.max(0,Math.min(5,Math.round(r)));
+  if(!animate)return'★'.repeat(n)+'☆'.repeat(5-n);
+  return Array.from({length:5},(_,i)=>
+    `<span class="ri-star" style="animation-delay:${i*.07}s;color:${i<n?'var(--gold)':'rgba(200,168,48,.22)'}">${i<n?'★':'☆'}</span>`
+  ).join('');
+}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function fmtDate(raw){
   if(!raw)return'';
@@ -1004,9 +1100,10 @@ function avatarEl(name,idx){
   return`<div class="avatar" style="background:${bg};color:${fg};border:1.5px solid ${fg}40">${l}</div>`;
 }
 function reviewItemHTML(r,i){
-  return`<div class="review-item">
+  const delay=((i%20)*.055).toFixed(2);
+  return`<div class="review-item" style="animation:fadeUp .45s ease-out ${delay}s both">
     <div class="ri-top">${avatarEl(r.name,i)}<div class="ri-info"><div class="ri-name">${esc(r.name)}</div><div class="ri-meta">${esc(r.date)}${r.date&&r.ver?' · ':''}${esc(r.ver)}</div></div></div>
-    <div class="ri-stars">${starStr(r.rating)}</div>
+    <div class="ri-stars">${starStr(r.rating,true)}</div>
     <div class="ri-text">${esc(r.review)}</div>
   </div>`;
 }
@@ -1158,6 +1255,25 @@ renderFeats();
 buildFeatTeaser();
 buildScreenshotGrid();
 loadReviews();
+
+// Scroll reveal
+const revealIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');revealIO.unobserve(e.target);}});
+},{threshold:.08,rootMargin:'0px 0px -24px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>revealIO.observe(el));
+
+// Ripple on all action buttons
+document.querySelectorAll('.btn-primary,.btn-secondary,.btn-ghost,.btn-demo,.btn-source').forEach(btn=>{
+  btn.addEventListener('click',e=>{
+    const rect=btn.getBoundingClientRect();
+    const size=Math.max(rect.width,rect.height);
+    const dot=document.createElement('span');
+    dot.className='ripple-dot';
+    dot.style.cssText=`width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;`;
+    btn.appendChild(dot);
+    setTimeout(()=>dot.remove(),700);
+  });
+});
 </script>
 </body>
 </html>
