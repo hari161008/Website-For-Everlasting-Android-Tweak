@@ -358,8 +358,29 @@ a{color:var(--gold);text-decoration:none;}
 .ri-top{display:flex;align-items:center;gap:11px;margin-bottom:7px;}
 .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
 .ri-info{flex:1;min-width:0;}
-.ri-name{font-size:13.5px;font-weight:600;color:var(--on-surf);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;}
+.ri-name{font-size:13.5px;font-weight:600;color:var(--on-surf);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;}
+.ri-date{font-size:11px;color:var(--gold);opacity:.85;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .ri-meta{font-size:11px;color:var(--sub);}
+
+/* Dev reply — Play Store style */
+.dev-reply{
+  margin:10px 0 14px;padding:11px 14px 12px;
+  border-radius:11px;
+  background:rgba(200,168,48,.07);
+  border:1px solid var(--gold-border);
+  border-left:3px solid var(--gold);
+}
+.dev-reply-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.dev-av{
+  width:26px;height:26px;border-radius:50%;flex-shrink:0;
+  background:var(--gold);color:#1C1500;
+  font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 2px rgba(200,168,48,.25);
+}
+.dev-reply-name{font-size:12.5px;font-weight:700;color:var(--gold);}
+.dev-reply-label{font-size:10px;font-weight:600;color:rgba(200,168,48,.6);margin-left:2px;}
+.dev-reply-text{font-size:13px;color:rgba(237,232,220,.8);line-height:1.58;}
 .ri-stars{font-size:13px;color:var(--gold);margin-bottom:8px;letter-spacing:1px;}
 .ri-text{font-size:13.5px;color:rgba(237,232,220,.82);line-height:1.6;padding-bottom:16px;}
 
@@ -1300,15 +1321,25 @@ function lbNav(dir,e){
 // ══════════════════════════════════════════════════════════════
 // REVIEWS
 // ══════════════════════════════════════════════════════════════
-const CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vSCutZVYxmeeaDIVs9HedFsXrHEmsoCNq-8nWd6Zx1lkNK5RTHZo31rZMjOECTWgX2Jeq6dZ3VgJQac/pub?output=csv';
+const CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vTXKkTHJNX7x23EzZ1qBpz2UxmKN1pmrWLNP7-oM6nE25fbim6NQO33NjjzMQ668d4frF2c9E2yRkjd/pub?output=csv';
 const PROXIES=[
-  (u,t)=>u+'&_cb='+t,                                                                          // direct — bust Google CDN
-  (u,t)=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}&_cb=${t}`,              // allorigins — unique proxy URL
-  (u,t)=>`https://corsproxy.io/?${encodeURIComponent(u)}&_cb=${t}`,                           // corsproxy — unique proxy URL
-  (u,t)=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}&_cb=${t}`          // codetabs — unique proxy URL
+  (u)=>u,                                                                                       // direct
+  (u)=>`https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`,                          // allorigins
+  (u)=>`https://corsproxy.io/?${encodeURIComponent(u)}`,                                       // corsproxy
+  (u)=>`https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`                      // codetabs
 ];
 const AVATARS=[['#C8A830','#3a2e00'],['#4CAF50','#0a2e0a'],['#2196F3','#0a1c3a'],['#E91E63','#3a0a1c'],['#9C27B0','#2a0a3a'],['#FF5722','#3a1a0a'],['#00897B','#003a34'],['#FF9800','#3a1800']];
 let allReviews=[],reviewFilter='all';
+const _REV_LS_KEY='everlasting_reviews_cache';
+const _REV_LS_TTL=5*60*1000; // 5 minutes
+function _revLsGet(){
+  try{const raw=localStorage.getItem(_REV_LS_KEY);if(!raw)return null;
+    const{d,t}=JSON.parse(raw);if(Date.now()-t>_REV_LS_TTL)return null;return d;
+  }catch(e){return null;}
+}
+function _revLsSet(csv){
+  try{localStorage.setItem(_REV_LS_KEY,JSON.stringify({d:csv,t:Date.now()}));}catch(e){}
+}
 
 function parseCSV(raw){
   raw=raw.replace(/\uFEFF/g,'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -1402,22 +1433,38 @@ function fmtDate(raw){
   const s=String(raw).trim();
   const d=parseDDMMDate(s);
   if(isNaN(d))return s.slice(0,10)||s;
-  const datePart=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const datePart=d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
   if(!_extractHasTime(s,d))return datePart;
-  const timePart=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
-  return datePart+', '+timePart;
+  let h=d.getHours(),m=d.getMinutes(),ampm=h>=12?'PM':'AM';
+  h=h%12||12;
+  const timePart=h+':'+(m<10?'0':'')+m+' '+ampm;
+  return datePart+' | '+timePart;
 }
 function avatarEl(name,idx){
   const l=(name||'?')[0].toUpperCase();
   const[fg,bg]=AVATARS[idx%AVATARS.length];
   return`<div class="avatar" style="background:${bg};color:${fg};border:1.5px solid ${fg}40">${l}</div>`;
 }
+// Parse <REPLY: text> tag out of review body
+function extractReply(text){
+  const m=String(text).match(/^([\s\S]*?)\s*<REPLY:\s*([\s\S]*?)>?\s*$/i);
+  if(m&&m[2].trim())return{text:m[1].trim()||'—',reply:m[2].trim()};
+  return{text:String(text).trim()||'—',reply:''};
+}
 function reviewItemHTML(r,i){
   const delay=((i%20)*.055).toFixed(2);
+  const dateLine=r.date?`<div class="ri-date">${esc(r.date)}</div>`:'';
+  const metaLine=r.ver?`<div class="ri-meta">${esc(r.ver)}</div>`:'';
+  const replyBlock=r.reply?`<div class="dev-reply">
+    <div class="dev-reply-head"><div class="dev-av">H</div><div class="dev-reply-name">Hari<span class="dev-reply-label">· Developer</span></div></div>
+    <div class="dev-reply-text">${esc(r.reply)}</div>
+  </div>`:'';
   return`<div class="review-item" style="animation:fadeUp .45s ease-out ${delay}s both">
-    <div class="ri-top">${avatarEl(r.name,i)}<div class="ri-info"><div class="ri-name">${esc(r.name)}</div><div class="ri-meta">${esc(r.date)}${r.date&&r.ver?' · ':''}${esc(r.ver)}</div></div></div>
+    <div class="ri-top">${avatarEl(r.name,i)}<div class="ri-info"><div class="ri-name">${esc(r.name)}</div>${dateLine}${metaLine}</div></div>
     <div class="ri-stars">${starStr(r.rating,true)}</div>
     <div class="ri-text">${esc(r.review)}</div>
+    ${replyBlock}
   </div>`;
 }
 function showSkeleton(){
@@ -1494,30 +1541,49 @@ function filterReviews(el){
   document.querySelectorAll('#reviewChips .chip').forEach(c=>c.classList.remove('on'));
   el.classList.add('on'); reviewFilter=el.dataset.f; renderReviews();
 }
-async function fetchCSV(pi=0,ts=Date.now()){
-  if(pi>=PROXIES.length)throw new Error('All fetch attempts failed');
-  const url=PROXIES[pi](CSV,ts);
-  try{
-    const res=await fetch(url,{cache:'no-store'});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const t=await res.text();
-    if(!t||t.length<20)throw new Error('Empty');
-    if(t.trim().startsWith('<'))throw new Error('Got HTML');
-    return t;
-  }catch(e){console.warn('Proxy',pi,'failed:',e.message);return fetchCSV(pi+1,ts);}
+async function _trySingleProxy(url,signal){
+  const res=await fetch(url,{signal});
+  if(!res.ok)throw new Error('HTTP '+res.status);
+  const t=await res.text();
+  if(!t||t.length<20)throw new Error('Empty');
+  if(t.trim().startsWith('<'))throw new Error('Got HTML');
+  return t;
 }
-// Reviews are intentionally never cached in localStorage — always fresh from source
+async function _fetchWithTimeout(url,ms){
+  const ac=new AbortController();
+  const timer=setTimeout(()=>ac.abort(),ms);
+  try{return await _trySingleProxy(url,ac.signal);}
+  finally{clearTimeout(timer);}
+}
+async function fetchCSV(){
+  // Fire all proxies at once — resolve the moment ANY one succeeds
+  try{
+    return await Promise.any(PROXIES.map(p=>_fetchWithTimeout(p(CSV),10000)));
+  }catch(e){
+    throw new Error('All fetch attempts failed');
+  }
+}
 async function loadReviews(){
   allReviews=[];
-  showSkeleton();
+  // Show cached data instantly if available
+  const cached=_revLsGet();
+  if(cached){
+    try{processCSV(cached);}catch(e){}
+  }else{
+    showSkeleton();
+  }
+  // Always fetch fresh in background (silently if cache was shown)
   try{
-    const raw=await fetchCSV(0);
+    const raw=await fetchCSV();
+    _revLsSet(raw);
     processCSV(raw);
   }catch(err){
-    document.getElementById('summaryArea').innerHTML='';
-    document.getElementById('reviewListHome').innerHTML=`<div class="state-box"><div class="state-ico"><svg viewBox="0 0 24 24" fill="#F44336"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="state-title">Could not load reviews</div><div class="state-sub">${esc(err.message)}</div><button class="retry-btn" onclick="loadReviews()">Retry</button></div>`;
-    document.getElementById('reviewList').innerHTML='';
-    document.getElementById('readMoreBtn').style.display='none';
+    if(!cached){
+      document.getElementById('summaryArea').innerHTML='';
+      document.getElementById('reviewListHome').innerHTML=`<div class="state-box"><div class="state-ico"><svg viewBox="0 0 24 24" fill="#F44336"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="state-title">Could not load reviews</div><div class="state-sub">${esc(err.message)}</div><button class="retry-btn" onclick="loadReviews()">Retry</button></div>`;
+      document.getElementById('reviewList').innerHTML='';
+      document.getElementById('readMoreBtn').style.display='none';
+    }
   }
 }
 function processCSV(raw){
@@ -1538,17 +1604,18 @@ function processCSV(raw){
     if(!cols||cols.length<2)return;
     const n=cols.length;
     const name=cols[col.name!==-1?col.name:(n>=3?1:0)]||'';
-    const review=cols[col.review!==-1?col.review:(n>=3?n-1:1)]||'';
+    const rawReview=cols[col.review!==-1?col.review:(n>=3?n-1:1)]||'';
     const rawR=col.rating!==-1?cols[col.rating]:(n>=3?cols[2]:'');
     const rawD=col.time!==-1?cols[col.time]:cols[0];
     const ver=col.ver!==-1?cols[col.ver]:'';
     let rating=parseRating(rawR);
     if(rating===null)return; // skip rows with no parseable rating — don't inflate avg
-    if(!review.trim()&&!name.trim())return;
-    allReviews.push({name:name.trim()||'Anonymous',review:review.trim()||'—',rating,date:fmtDate((rawD||'').trim()),rawDate:(rawD||'').trim(),ver:(ver||'').trim()});
+    const parsed=extractReply(rawReview);
+    if(!parsed.text.replace(/^—$/,'').trim()&&!name.trim())return;
+    allReviews.push({name:name.trim()||'Anonymous',review:parsed.text,reply:parsed.reply,rating,date:fmtDate((rawD||'').trim()),rawDate:(rawD||'').trim(),ver:(ver||'').trim()});
   });
   if(!allReviews.length)throw new Error('No valid reviews');
-  // Sort newest first
+  // Sort newest first — latest submissions appear at the top
   allReviews.sort((a,b)=>{const da=parseDDMMDate(a.rawDate),db=parseDDMMDate(b.rawDate);if(isNaN(da)&&isNaN(db))return 0;if(isNaN(da))return 1;if(isNaN(db))return -1;return db-da;});
   renderSummary(allReviews);renderHomeReviews();renderReviews();
 }
