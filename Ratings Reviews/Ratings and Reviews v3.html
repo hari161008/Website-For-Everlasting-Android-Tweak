@@ -509,6 +509,8 @@ a{color:var(--gold);text-decoration:none;}
 .state-title{font-size:14px;font-weight:600;color:var(--on-surf);}
 .state-sub{font-size:12.5px;color:var(--sub);}
 .retry-btn{margin-top:6px;padding:7px 18px;border-radius:50px;background:var(--gold-dim);color:var(--gold);border:1px solid var(--gold-border);font-size:12.5px;font-weight:600;cursor:pointer;font-family:var(--font);}
+#refreshRevBtn svg{transition:transform .65s cubic-bezier(.4,0,.2,1),opacity .2s;}
+#refreshRevBtn:disabled svg{opacity:.45;}
 
 /* ════════════════════════════════════
    FOOTER (mobile only; desktop uses left-footer)
@@ -1061,7 +1063,7 @@ a{color:var(--gold);text-decoration:none;}
       <div class="sec-head reveal">
         <div class="sec-title">Ratings & Reviews</div>
         <button id="refreshRevBtn" onclick="refreshReviews()" title="Refresh reviews" style="background:none;border:none;cursor:pointer;padding:4px;line-height:0;transition:opacity .2s;">
-          <svg id="refreshRevIco" width="19" height="19" viewBox="0 0 24 24" fill="#9E9880" style="transition:transform .55s cubic-bezier(.4,0,.2,1);display:block;"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          <svg id="refreshRevIco" width="19" height="19" viewBox="0 0 24 24" fill="#9E9880" style="display:block;"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
         </button>
       </div>
       <div id="summaryArea"></div>
@@ -1460,15 +1462,9 @@ const PROXIES=[
 const AVATARS=[['#C8A830','#3a2e00'],['#4CAF50','#0a2e0a'],['#2196F3','#0a1c3a'],['#E91E63','#3a0a1c'],['#9C27B0','#2a0a3a'],['#FF5722','#3a1a0a'],['#00897B','#003a34'],['#FF9800','#3a1800']];
 let allReviews=[],reviewFilter='all';
 const _REV_LS_KEY='everlasting_reviews_cache';
-const _REV_LS_TTL=5*60*1000; // 5 minutes
-function _revLsGet(){
-  try{const raw=localStorage.getItem(_REV_LS_KEY);if(!raw)return null;
-    const{d,t}=JSON.parse(raw);if(Date.now()-t>_REV_LS_TTL)return null;return d;
-  }catch(e){return null;}
-}
-function _revLsSet(csv){
-  try{localStorage.setItem(_REV_LS_KEY,JSON.stringify({d:csv,t:Date.now()}));}catch(e){}
-}
+// No localStorage caching for reviews — always fetch fresh on every page open
+function _revLsGet(){return null;}
+function _revLsSet(){}
 
 function parseCSV(raw){
   raw=raw.replace(/\uFEFF/g,'').replace(/\r\n/g,'\n').replace(/\r/g,'\n');
@@ -1699,47 +1695,61 @@ async function _fetchWithTimeout(url,ms){
 async function fetchCSV(){
   // Fire all proxies at once — resolve the moment ANY one succeeds
   try{
-    return await Promise.any(PROXIES.map(p=>_fetchWithTimeout(p(CSV),10000)));
+    return await Promise.any(PROXIES.map(p=>_fetchWithTimeout(p(CSV),6000)));
   }catch(e){
     throw new Error('All fetch attempts failed');
   }
 }
+let _revRefreshing=false;
 async function refreshReviews(){
-  // Animate the refresh icon
+  // Debounce: ignore repeated clicks while a refresh is in flight
+  if(_revRefreshing)return;
+  _revRefreshing=true;
   const ico=document.getElementById('refreshRevIco');
   const btn=document.getElementById('refreshRevBtn');
-  if(ico){ico.style.transform='rotate(360deg)';}
   if(btn){btn.disabled=true;btn.style.opacity='0.5';}
-  // Clear the localStorage review cache so we always fetch fresh
+  // Fix: reset transform WITHOUT transition first (force reflow), then re-apply spin
+  // This ensures the animation re-triggers on every click, not just the first.
+  if(ico){
+    ico.style.transition='none';
+    ico.style.transform='rotate(0deg)';
+    ico.getBoundingClientRect(); // force layout flush so browser registers the reset
+    ico.style.transition='transform .65s cubic-bezier(.4,0,.2,1)';
+    ico.style.transform='rotate(360deg)';
+  }
+  // Clear any leftover old cache entry (from previous versions)
   try{localStorage.removeItem(_REV_LS_KEY);}catch(e){}
-  await loadReviews();
-  // Reset icon after a moment
-  setTimeout(()=>{
-    if(ico){ico.style.transform='';}
-    if(btn){btn.disabled=false;btn.style.opacity='';}
-  },700);
+  // Fetch fresh data silently — keep current reviews visible instead of showing skeleton
+  try{
+    const raw=await fetchCSV();
+    processCSV(raw);
+  }catch(err){
+    // Only show error state if there are no reviews to fall back to
+    if(!allReviews.length){
+      document.getElementById('summaryArea').innerHTML='';
+      document.getElementById('reviewListHome').innerHTML=`<div class="state-box"><div class="state-ico"><svg viewBox="0 0 24 24" fill="#F44336"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="state-title">Could not refresh</div><div class="state-sub">${esc(err.message)}</div><button class="retry-btn" onclick="refreshReviews()">Retry</button></div>`;
+      document.getElementById('readMoreBtn').style.display='none';
+    }
+  }finally{
+    // Re-enable button after spin completes
+    setTimeout(()=>{
+      if(btn){btn.disabled=false;btn.style.opacity='';}
+      _revRefreshing=false;
+    },700);
+  }
 }
 async function loadReviews(){
   allReviews=[];
-  // Show cached data instantly if available
-  const cached=_revLsGet();
-  if(cached){
-    try{processCSV(cached);}catch(e){}
-  }else{
-    showSkeleton();
-  }
-  // Always fetch fresh in background (silently if cache was shown)
+  showSkeleton();
+  // Always fetch fresh from the sheet on every page open
   try{
     const raw=await fetchCSV();
-    _revLsSet(raw);
     processCSV(raw);
   }catch(err){
-    if(!cached){
-      document.getElementById('summaryArea').innerHTML='';
-      document.getElementById('reviewListHome').innerHTML=`<div class="state-box"><div class="state-ico"><svg viewBox="0 0 24 24" fill="#F44336"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="state-title">Could not load reviews</div><div class="state-sub">${esc(err.message)}</div><button class="retry-btn" onclick="loadReviews()">Retry</button></div>`;
-      document.getElementById('reviewList').innerHTML='';
-      document.getElementById('readMoreBtn').style.display='none';
-    }
+    document.getElementById('summaryArea').innerHTML='';
+    document.getElementById('reviewListHome').innerHTML=`<div class="state-box"><div class="state-ico"><svg viewBox="0 0 24 24" fill="#F44336"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div><div class="state-title">Could not load reviews</div><div class="state-sub">${esc(err.message)}</div><button class="retry-btn" onclick="loadReviews()">Retry</button></div>`;
+    document.getElementById('reviewList').innerHTML='';
+    document.getElementById('readMoreBtn').style.display='none';
   }
 }
 function processCSV(raw){
