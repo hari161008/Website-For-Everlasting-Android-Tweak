@@ -961,7 +961,7 @@ a{color:var(--gold);text-decoration:none;}
           <div class="hero-name">Everlasting Android Tweak</div>
           <div class="hero-tagline">by hari161008 · Kotlin · Android</div>
           <div class="hero-badges">
-            <span class="badge"><span class="material-icons">star</span> 18 Stars</span>
+            <span class="badge" id="ghStarsBadge"><span class="material-icons">star</span> <span id="ghStarsCount">18</span> Stars</span>
             <span class="badge green">Open Source</span>
             <span class="badge blue">46 Features</span>
           </div>
@@ -1825,6 +1825,29 @@ document.querySelectorAll('.btn-primary,.btn-secondary,.btn-ghost,.btn-demo,.btn
 const _GH='hari161008/Everlasting-Android-Tweak';
 const _GHAPI=`https://api.github.com/repos/${_GH}`;
 
+// ── Stars badge (live from API, cached) ───────────────────────
+async function _loadGhStars(){
+  try{
+    // Reuse the same LS cache that the source browser uses
+    const cacheKey=_GHAPI;
+    const cached=_ghLsGet(cacheKey);
+    const apply=info=>{
+      const n=info&&info.stargazers_count;
+      if(typeof n==='number'){
+        const el=document.getElementById('ghStarsCount');
+        if(el)el.textContent=n>=1000?(n/1000).toFixed(1)+'k':n;
+      }
+    };
+    if(cached){apply(cached);}
+    // Always fetch fresh in background (same endpoint _ghInitLoad uses)
+    const res=await fetch(_GHAPI);
+    if(!res.ok)return;
+    const info=await res.json();
+    _ghLsSet(cacheKey,info);
+    apply(info);
+  }catch(e){}
+}
+
 // ── Direct download helpers ────────────────────────────────────
 function _ghDownloadZip(){
   const a=document.createElement('a');
@@ -2461,5 +2484,7 @@ function _relMd(raw){
 
 // Load releases on page init (so preview is populated)
 loadReleases();
+// Load live GitHub star count into the About badge
+_loadGhStars();
 </script>
 </html>
