@@ -210,7 +210,8 @@ a{color:var(--gold);text-decoration:none;}
 .section{padding:0 0 4px;}
 .sec-head{display:flex;align-items:center;justify-content:space-between;padding:22px 20px 12px;}
 @media(min-width:960px){.sec-head{padding:26px 28px 14px;}}
-.sec-title{font-size:17px;font-weight:700;color:var(--on-surf);}
+.sec-title{font-size:17px;font-weight:700;color:var(--on-surf);display:flex;align-items:center;gap:9px;}
+.sec-title::before{content:'';display:inline-block;width:3px;height:17px;border-radius:2px;background:linear-gradient(to bottom,var(--gold),rgba(200,168,48,.4));flex-shrink:0;}
 .sec-count{font-size:12px;color:var(--sub);}
 
 /* View-all pill */
@@ -241,6 +242,7 @@ a{color:var(--gold);text-decoration:none;}
 }
 .chip:hover{border-color:var(--gold-border);}
 .chip.on{background:var(--chip-on);border-color:var(--gold);color:var(--gold);font-weight:700;}
+.chip.on::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--gold);margin-right:5px;vertical-align:middle;box-shadow:0 0 5px rgba(200,168,48,.6);}
 
 /* ════════════════════════════════════
    PREVIEW CARD (Features tap card)
@@ -256,10 +258,21 @@ a{color:var(--gold);text-decoration:none;}
 .preview-card-title{font-size:14px;font-weight:700;color:var(--on-surf);margin-bottom:3px;}
 .preview-card-sub{font-size:12px;color:var(--sub);}
 .preview-card-arrow{
-  width:34px;height:34px;border-radius:50%;
-  background:var(--gold-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,#d4b030 0%,#f0cc50 55%,#c8a828 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 3px rgba(200,168,48,.22),0 4px 14px rgba(200,168,48,.40);
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;
 }
-.preview-card-arrow .material-icons{font-size:19px;color:var(--gold);}
+.preview-card:hover .preview-card-arrow{
+  transform:scale(1.15);
+  box-shadow:0 0 0 5px rgba(200,168,48,.3),0 6px 22px rgba(200,168,48,.58);
+}
+.preview-card-arrow svg{
+  width:17px;height:17px;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.preview-card:hover .preview-card-arrow svg{transform:translateX(2px);}
 
 /* Desktop: show 3 feature teasers inline inside the card */
 .feat-teaser{display:none;}
@@ -349,22 +362,55 @@ a{color:var(--gold);text-decoration:none;}
 .bar-row{display:flex;align-items:center;gap:8px;}
 .bar-lbl{font-size:11px;color:var(--sub);width:8px;text-align:right;flex-shrink:0;}
 .bar-track{flex:1;height:5px;border-radius:3px;background:rgba(200,168,48,.1);overflow:hidden;}
-.bar-fill{height:100%;border-radius:3px;background:var(--gold);transition:width .6s cubic-bezier(.4,0,.2,1);width:0%;}
+.bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#c8a830 0%,#f0cc50 60%,#e8c040 100%);transition:width .6s cubic-bezier(.4,0,.2,1);width:0%;}
 
-/* Review items */
-.review-item{padding:16px 20px 0;border-bottom:1px solid var(--divider);}
-.review-item:last-child{border-bottom:none;}
-@media(min-width:960px){.review-item{padding:16px 28px 0;}}
+/* Review items — card style */
+.review-grid{padding:4px 0 8px;}
+.review-item{
+  margin:8px 16px;
+  padding:16px 18px 16px;
+  border-radius:18px;
+  background:#2D2618;
+  border:1px solid var(--divider);
+  box-shadow:0 2px 12px rgba(0,0,0,.18);
+}
+.review-item:last-child{border-bottom:1px solid var(--divider);}
+@media(min-width:960px){
+  .review-item{margin:10px 24px;padding:18px 22px 18px;}
+  .review-grid{display:flex;flex-direction:column;}
+}
 .ri-top{display:flex;align-items:center;gap:11px;margin-bottom:7px;}
 .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;}
 .ri-info{flex:1;min-width:0;}
 .ri-name{font-size:13.5px;font-weight:600;color:var(--on-surf);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:1px;}
 .ri-date{font-size:11px;color:var(--gold);opacity:.85;margin-bottom:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .ri-meta{font-size:11px;color:var(--sub);}
+.ri-stars{font-size:13px;color:var(--gold);margin-bottom:8px;letter-spacing:1px;}
+.ri-text{font-size:13.5px;color:rgba(237,232,220,.82);line-height:1.6;padding-bottom:0;margin-bottom:0;}
 
-/* Dev reply — Play Store style */
+/* Thread reply wrapper — draws the connecting vertical line */
+.reply-thread{
+  position:relative;
+  margin-top:12px;
+  padding-left:38px;
+}
+/* Curved connector: vertical line that smoothly curves right into the reply box */
+.reply-thread::before{
+  content:'';
+  position:absolute;
+  left:19px;
+  top:-14px;
+  width:16px;
+  height:calc(100% - 10px);
+  border-left:2px solid var(--gold);
+  border-bottom:2px solid var(--gold);
+  border-bottom-left-radius:12px;
+  background:transparent;
+}
+
+/* Dev reply box */
 .dev-reply{
-  margin:10px 0 14px;padding:11px 14px 12px;
+  padding:11px 14px 12px;
   border-radius:11px;
   background:rgba(200,168,48,.07);
   border:1px solid var(--gold-border);
@@ -381,21 +427,6 @@ a{color:var(--gold);text-decoration:none;}
 .dev-reply-name{font-size:12.5px;font-weight:700;color:var(--gold);}
 .dev-reply-label{font-size:10px;font-weight:600;color:rgba(200,168,48,.6);margin-left:2px;}
 .dev-reply-text{font-size:13px;color:rgba(237,232,220,.8);line-height:1.58;}
-.ri-stars{font-size:13px;color:var(--gold);margin-bottom:8px;letter-spacing:1px;}
-.ri-text{font-size:13.5px;color:rgba(237,232,220,.82);line-height:1.6;padding-bottom:16px;}
-
-/* Reviews layout on desktop: 2-column grid for review cards */
-@media(min-width:960px){
-  .review-grid{
-    display:grid;grid-template-columns:1fr 1fr;
-    gap:0;
-  }
-  .review-grid .review-item{
-    border-bottom:1px solid var(--divider);
-    border-right:1px solid var(--divider);
-  }
-  .review-grid .review-item:nth-child(even){border-right:none;}
-}
 
 /* Read more button */
 .read-more-btn{
@@ -413,6 +444,33 @@ a{color:var(--gold);text-decoration:none;}
 /* ════════════════════════════════════
    FEATURES TEXT LIST (in popup)
    ════════════════════════════════════ */
+/* Features drawer — always constant height so switching pills never resizes */
+#featuresDrawer{height:92vh;}
+@media(min-width:960px){#featuresDrawer{height:85vh;}}
+
+/* Horizontal slides pager */
+.feat-slides-viewport{
+  flex:1;min-height:0;
+  overflow:hidden;
+  width:100%;
+  position:relative;
+}
+.feat-slides-track{
+  display:flex;
+  height:100%;
+  will-change:transform;
+  transition:transform .42s cubic-bezier(.4,0,.2,1);
+}
+.feat-slide{
+  flex:0 0 100%;
+  width:100%;
+  height:100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior-y:contain;
+  scrollbar-width:none;
+}
+.feat-slide::-webkit-scrollbar{display:none;}
 .feat-list-wrap{padding:0 20px 8px;}
 .feat-category{margin-bottom:20px;}
 .feat-cat-header{
@@ -598,10 +656,10 @@ a{color:var(--gold);text-decoration:none;}
 /* ── Card lifts ── */
 .feat-teaser-item{transition:border-color .2s,transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;}
 .feat-teaser-item:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.45);}
-.preview-card{transition:border-color .2s,transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;}
-.preview-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.4);}
-.review-item{transition:background .2s,transform .22s cubic-bezier(.34,1.56,.64,1);}
-.review-item:hover{background:rgba(200,168,48,.05);transform:translateX(3px);}
+.preview-card{transition:border-color .2s,transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s;}
+.preview-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.45);border-color:var(--gold-border);}
+.review-item{transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s,border-color .2s;}
+.review-item:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.38);border-color:var(--gold-border);}
 
 /* ── Avatar ── */
 .avatar{transition:transform .25s cubic-bezier(.34,1.56,.64,1);}
@@ -797,8 +855,13 @@ a{color:var(--gold);text-decoration:none;}
   box-shadow:0 0 0 1px rgba(200,168,48,.08),inset 0 1px 0 rgba(200,168,48,.12);
 }
 .releases-strip-pill .material-icons{font-size:14px;}
-.releases-view-all{display:inline-flex;align-items:center;gap:3px;font-size:11px;color:var(--gold);cursor:pointer;background:none;border:none;font-family:var(--font);padding:0;opacity:.85;transition:opacity .15s;}
-.releases-view-all:hover{opacity:1;}
+.releases-view-all{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;color:var(--gold);cursor:pointer;
+  background:none;border:none;font-family:var(--font);padding:0;
+  transition:gap .2s cubic-bezier(.34,1.56,.64,1),opacity .15s;
+}
+.releases-view-all:hover{gap:8px;opacity:1;}
 .releases-view-all .material-icons{font-size:13px;}
 .releases-preview{display:flex;flex-direction:column;gap:6px;}
 .rel-mini-card{
@@ -984,7 +1047,7 @@ a{color:var(--gold);text-decoration:none;}
             <div class="preview-card-title">Explore all 46 features</div>
             <div class="preview-card-sub">Gestures · Customization · Sensors · AI · Security & more</div>
           </div>
-          <div class="preview-card-arrow"><span class="material-icons">chevron_right</span></div>
+          <div class="preview-card-arrow"><svg viewBox="0 0 24 24" fill="none"><polyline points="9 18 15 12 9 6" stroke="#1C1500" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         </div>
       </div>
       <!-- Desktop: 2-col teaser grid (populated by JS) -->
@@ -997,8 +1060,8 @@ a{color:var(--gold);text-decoration:none;}
     <div class="section">
       <div class="sec-head reveal">
         <div class="sec-title">Ratings & Reviews</div>
-        <button onclick="loadReviews()" style="background:none;border:none;cursor:pointer;padding:4px;">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="#9E9880"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+        <button id="refreshRevBtn" onclick="refreshReviews()" title="Refresh reviews" style="background:none;border:none;cursor:pointer;padding:4px;line-height:0;transition:opacity .2s;">
+          <svg id="refreshRevIco" width="19" height="19" viewBox="0 0 24 24" fill="#9E9880" style="transition:transform .55s cubic-bezier(.4,0,.2,1);display:block;"><path d="M17.65 6.35A7.958 7.958 0 0 0 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0 1 12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
         </button>
       </div>
       <div id="summaryArea"></div>
@@ -1078,8 +1141,8 @@ a{color:var(--gold);text-decoration:none;}
     <div class="popup-count" id="popupFeatCount">46 features</div>
   </div>
   <div class="chips-row" id="catChips" style="flex-shrink:0;padding-top:14px;"></div>
-  <div class="popup-body">
-    <div class="feat-list-wrap" id="featList"></div>
+  <div class="feat-slides-viewport" id="featSlidesViewport">
+    <div class="feat-slides-track" id="featSlidesTrack"></div>
   </div>
 </div>
 
@@ -1237,37 +1300,103 @@ let activeCat='All';
 
 function buildCatChips(){
   const row=document.getElementById('catChips');
-  row.innerHTML=CATS.map((c,i)=>`<div class="chip${i===0?' on':''}" onclick="setFeatCat(this,'${c}')">${c}</div>`).join('');
+  row.innerHTML=CATS.map((c,i)=>`<div class="chip${i===0?' on':''}" data-idx="${i}" onclick="goToSlide(${i})">${c}</div>`).join('');
 }
 
-function setFeatCat(el,cat){
-  document.querySelectorAll('#catChips .chip').forEach(c=>c.classList.remove('on'));
-  el.classList.add('on'); activeCat=cat; renderFeats();
+let _activeFeatSlide=0;
+
+function goToSlide(idx,scrollTop=true){
+  _activeFeatSlide=Math.max(0,Math.min(idx,CATS.length-1));
+  // Sync chips
+  document.querySelectorAll('#catChips .chip').forEach((c,i)=>c.classList.toggle('on',i===_activeFeatSlide));
+  const activeChip=document.querySelector(`#catChips .chip[data-idx="${_activeFeatSlide}"]`);
+  if(activeChip)activeChip.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});
+  // Slide track
+  const vp=document.getElementById('featSlidesViewport');
+  const track=document.getElementById('featSlidesTrack');
+  if(!vp||!track)return;
+  track.style.transition='transform .42s cubic-bezier(.4,0,.2,1)';
+  track.style.transform=`translateX(${-_activeFeatSlide*vp.offsetWidth}px)`;
+  // Update count label
+  const cat=CATS[_activeFeatSlide];
+  const count=cat==='All'?FEATURES.length:FEATURES.filter(f=>f.cat===cat).length;
+  document.getElementById('popupFeatCount').textContent=`${count} feature${count!==1?'s':''}`;
+  // Scroll active slide back to top
+  if(scrollTop){const slide=track.children[_activeFeatSlide];if(slide)slide.scrollTop=0;}
 }
 
-function renderFeats(){
-  const filtered=activeCat==='All'?FEATURES:FEATURES.filter(f=>f.cat===activeCat);
-  document.getElementById('popupFeatCount').textContent=`${filtered.length} feature${filtered.length!==1?'s':''}`;
-  const grouped={},catOrder=[];
-  filtered.forEach(f=>{if(!grouped[f.cat]){grouped[f.cat]=[];catOrder.push(f.cat);}grouped[f.cat].push(f);});
-  document.getElementById('featList').innerHTML=catOrder.map(cat=>`
-    <div class="feat-category">
-      <div class="feat-cat-header">${cat}</div>
-      <div class="feat-category-grid">
-      ${grouped[cat].map(f=>`
-        <div class="feat-item">
-          <div class="feat-item-icon" style="background:${f.bg}"><span class="material-icons" style="color:${f.color}">${f.icon}</span></div>
-          <div class="feat-item-body">
-            <div class="feat-item-title-row">
-              <span class="feat-item-name">${f.title}</span>
-              <span class="feat-item-sep">—</span>
-              <span class="feat-item-sub">${f.sub}</span>
+function setFeatCat(el,cat){} // replaced by goToSlide
+
+function renderAllFeatSlides(){
+  const track=document.getElementById('featSlidesTrack');
+  if(!track)return;
+  track.innerHTML=CATS.map(cat=>{
+    const filtered=cat==='All'?FEATURES:FEATURES.filter(f=>f.cat===cat);
+    const grouped={},catOrder=[];
+    filtered.forEach(f=>{if(!grouped[f.cat]){grouped[f.cat]=[];catOrder.push(f.cat);}grouped[f.cat].push(f);});
+    const html=catOrder.map(c=>`
+      <div class="feat-category">
+        <div class="feat-cat-header">${c}</div>
+        <div class="feat-category-grid">
+        ${grouped[c].map(f=>`
+          <div class="feat-item">
+            <div class="feat-item-icon" style="background:${f.bg}"><span class="material-icons" style="color:${f.color}">${f.icon}</span></div>
+            <div class="feat-item-body">
+              <div class="feat-item-title-row">
+                <span class="feat-item-name">${f.title}</span>
+                <span class="feat-item-sep">—</span>
+                <span class="feat-item-sub">${f.sub}</span>
+              </div>
+              <div class="feat-item-desc">${f.desc}</div>
             </div>
-            <div class="feat-item-desc">${f.desc}</div>
-          </div>
-        </div>`).join('')}
-      </div>
-    </div>`).join('');
+          </div>`).join('')}
+        </div>
+      </div>`).join('');
+    return`<div class="feat-slide feat-list-wrap" data-cat="${cat}">${html}</div>`;
+  }).join('');
+  _initFeatSwipe();
+  // Keep slide position correct after resize
+  window.addEventListener('resize',()=>{
+    const vp=document.getElementById('featSlidesViewport');
+    const tr=document.getElementById('featSlidesTrack');
+    if(vp&&tr){tr.style.transition='none';tr.style.transform=`translateX(${-_activeFeatSlide*vp.offsetWidth}px)`;}
+  });
+}
+
+function _initFeatSwipe(){
+  const vp=document.getElementById('featSlidesViewport');
+  if(!vp)return;
+  let sx=null,sy=null,dragging=false;
+  vp.addEventListener('touchstart',e=>{
+    sx=e.touches[0].clientX;sy=e.touches[0].clientY;dragging=false;
+    const tr=document.getElementById('featSlidesTrack');
+    if(tr)tr.style.transition='none';
+  },{passive:true});
+  vp.addEventListener('touchmove',e=>{
+    if(sx===null)return;
+    const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;
+    if(!dragging){
+      if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>8){dragging=true;}
+      else if(Math.abs(dy)>10){sx=null;return;}
+    }
+    if(dragging){
+      e.preventDefault();
+      const tr=document.getElementById('featSlidesTrack');
+      const w=vp.offsetWidth;
+      const base=-_activeFeatSlide*w;
+      const clamped=Math.max(-(CATS.length-1)*w,Math.min(0,base+dx));
+      if(tr)tr.style.transform=`translateX(${clamped}px)`;
+    }
+  },{passive:false});
+  vp.addEventListener('touchend',e=>{
+    if(sx===null||!dragging){sx=null;dragging=false;return;}
+    const dx=e.changedTouches[0].clientX-sx;
+    const threshold=vp.offsetWidth*0.25;
+    if(dx<-threshold&&_activeFeatSlide<CATS.length-1)goToSlide(_activeFeatSlide+1,false);
+    else if(dx>threshold&&_activeFeatSlide>0)goToSlide(_activeFeatSlide-1,false);
+    else goToSlide(_activeFeatSlide,false);
+    sx=null;dragging=false;
+  },{passive:true});
 }
 
 function buildFeatTeaser(){
@@ -1355,14 +1484,15 @@ function parseCSV(raw){
   return rows;
 }
 function detectCols(h){
-  h=h.map(c=>c.toLowerCase());
+  h=h.map(c=>c.toLowerCase().trim()); // trim() fixes headers with accidental spaces
   const f=(...ks)=>{for(const k of ks){const i=h.findIndex(c=>c.includes(k));if(i!==-1)return i;}return -1;};
   return{
     name:f('name','user','reviewer','author','your name','who are'),
     rating:f('rating','score','star','stars','rate','how many','out of','points','scale','rank','give'),
     review:f('review','comment','feedback','text','opinion','thought','message','describe','experience'),
     time:f('timestamp','date','time','submitted','when'),
-    ver:f('version','ver','app version','release','build')
+    ver:f('version','ver','app version','release','build'),
+    reply:f('developer reply','dev reply','developer response','dev response','admin reply','admin response','reply','response')
   };
 }
 function parseRating(rawR){
@@ -1393,6 +1523,8 @@ function starStr(r,animate=false){
   ).join('');
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+// Like esc() but also converts newlines to <br> for multi-line reply/review display
+function escNL(s){return esc(s).replace(/\n/g,'<br>');}
 function parseDDMMDate(s){
   if(!s)return new Date(NaN);
   s=String(s).trim();
@@ -1446,24 +1578,33 @@ function avatarEl(name,idx){
   const[fg,bg]=AVATARS[idx%AVATARS.length];
   return`<div class="avatar" style="background:${bg};color:${fg};border:1.5px solid ${fg}40">${l}</div>`;
 }
-// Parse <REPLY: text> tag out of review body
+// Parse <REPLY: text> tag out of review body (legacy inline syntax — kept for backward compatibility)
+// Preferred approach: use a dedicated "Reply" column in the spreadsheet instead.
 function extractReply(text){
-  const m=String(text).match(/^([\s\S]*?)\s*<REPLY:\s*([\s\S]*?)>?\s*$/i);
+  const s=String(text||'');
+  // Match <REPLY: ...> at end of text, supporting multi-line reply content
+  const m=s.match(/^([\s\S]*?)\s*<REPLY:\s*([\s\S]+?)>\s*$/i);
   if(m&&m[2].trim())return{text:m[1].trim()||'—',reply:m[2].trim()};
-  return{text:String(text).trim()||'—',reply:''};
+  // Also support unclosed tag at end of string (legacy edge case)
+  const m2=s.match(/^([\s\S]*?)\s*<REPLY:\s*([\s\S]+)$/i);
+  if(m2&&m2[2].trim())return{text:m2[1].trim()||'—',reply:m2[2].trim()};
+  return{text:s.trim()||'—',reply:''};
 }
 function reviewItemHTML(r,i){
   const delay=((i%20)*.055).toFixed(2);
   const dateLine=r.date?`<div class="ri-date">${esc(r.date)}</div>`:'';
   const metaLine=r.ver?`<div class="ri-meta">${esc(r.ver)}</div>`:'';
-  const replyBlock=r.reply?`<div class="dev-reply">
-    <div class="dev-reply-head"><div class="dev-av">H</div><div class="dev-reply-name">Hari<span class="dev-reply-label">· Developer</span></div></div>
-    <div class="dev-reply-text">${esc(r.reply)}</div>
-  </div>`:'';
-  return`<div class="review-item" style="animation:fadeUp .45s ease-out ${delay}s both">
+  const replyBlock=r.reply?`
+    <div class="reply-thread">
+      <div class="dev-reply">
+        <div class="dev-reply-head"><div class="dev-av">H</div><div class="dev-reply-name">Hari<span class="dev-reply-label">· Developer</span></div></div>
+        <div class="dev-reply-text">${escNL(r.reply)}</div>
+      </div>
+    </div>`:'';
+  return`<div class="review-item${r.reply?' has-reply':''}" style="animation:fadeUp .45s ease-out ${delay}s both">
     <div class="ri-top">${avatarEl(r.name,i)}<div class="ri-info"><div class="ri-name">${esc(r.name)}</div>${dateLine}${metaLine}</div></div>
     <div class="ri-stars">${starStr(r.rating,true)}</div>
-    <div class="ri-text">${esc(r.review)}</div>
+    <div class="ri-text">${escNL(r.review)}</div>
     ${replyBlock}
   </div>`;
 }
@@ -1525,7 +1666,7 @@ function appendRevBatch(){
   chunk.forEach((r,i)=>area.insertAdjacentHTML('beforeend',reviewItemHTML(r,revRendered+i)));
   revRendered+=chunk.length;
   if(revRendered<revCurrentList.length){
-    area.insertAdjacentHTML('beforeend',`<div id="revLoadMore" style="padding:14px 20px 4px;"><button onclick="appendRevBatch()" style="width:100%;padding:10px;border-radius:10px;border:1px dashed var(--gold-border);background:var(--gold-dim);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);">Load ${Math.min(REV_BATCH,revCurrentList.length-revRendered)} more reviews</button></div>`);
+    area.insertAdjacentHTML('beforeend',`<div id="revLoadMore" style="padding:10px 16px 8px;"><button onclick="appendRevBatch()" style="width:100%;padding:10px;border-radius:10px;border:1px dashed var(--gold-border);background:var(--gold-dim);color:var(--gold);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);">Load ${Math.min(REV_BATCH,revCurrentList.length-revRendered)} more reviews</button></div>`);
   }
 }
 function renderHomeReviews(){
@@ -1562,6 +1703,21 @@ async function fetchCSV(){
   }catch(e){
     throw new Error('All fetch attempts failed');
   }
+}
+async function refreshReviews(){
+  // Animate the refresh icon
+  const ico=document.getElementById('refreshRevIco');
+  const btn=document.getElementById('refreshRevBtn');
+  if(ico){ico.style.transform='rotate(360deg)';}
+  if(btn){btn.disabled=true;btn.style.opacity='0.5';}
+  // Clear the localStorage review cache so we always fetch fresh
+  try{localStorage.removeItem(_REV_LS_KEY);}catch(e){}
+  await loadReviews();
+  // Reset icon after a moment
+  setTimeout(()=>{
+    if(ico){ico.style.transform='';}
+    if(btn){btn.disabled=false;btn.style.opacity='';}
+  },700);
 }
 async function loadReviews(){
   allReviews=[];
@@ -1610,9 +1766,18 @@ function processCSV(raw){
     const ver=col.ver!==-1?cols[col.ver]:'';
     let rating=parseRating(rawR);
     if(rating===null)return; // skip rows with no parseable rating — don't inflate avg
-    const parsed=extractReply(rawReview);
-    if(!parsed.text.replace(/^—$/,'').trim()&&!name.trim())return;
-    allReviews.push({name:name.trim()||'Anonymous',review:parsed.text,reply:parsed.reply,rating,date:fmtDate((rawD||'').trim()),rawDate:(rawD||'').trim(),ver:(ver||'').trim()});
+    // Prefer dedicated Reply column; fall back to legacy <REPLY:> inline tag
+    let reviewText,replyText;
+    if(col.reply!==-1&&cols[col.reply]&&cols[col.reply].trim()){
+      reviewText=String(rawReview).trim()||'—';
+      replyText=cols[col.reply].trim();
+    }else{
+      const parsed=extractReply(rawReview);
+      reviewText=parsed.text;
+      replyText=parsed.reply;
+    }
+    if(!reviewText.replace(/^—$/,'').trim()&&!name.trim())return;
+    allReviews.push({name:name.trim()||'Anonymous',review:reviewText,reply:replyText,rating,date:fmtDate((rawD||'').trim()),rawDate:(rawD||'').trim(),ver:(ver||'').trim()});
   });
   if(!allReviews.length)throw new Error('No valid reviews');
   // Sort newest first — latest submissions appear at the top
@@ -1631,7 +1796,7 @@ document.addEventListener('keydown',e=>{
 
 // ── INIT ──────────────────────────────────────────────────────
 buildCatChips();
-renderFeats();
+renderAllFeatSlides();
 buildFeatTeaser();
 buildScreenshotGrid();
 loadReviews();
@@ -2298,4 +2463,3 @@ function _relMd(raw){
 loadReleases();
 </script>
 </html>
-
