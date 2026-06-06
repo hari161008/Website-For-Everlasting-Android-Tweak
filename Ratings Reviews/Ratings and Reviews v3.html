@@ -1531,30 +1531,22 @@ function escNL(s){return esc(s).replace(/\n/g,'<br>');}
 function parseDDMMDate(s){
   if(!s)return new Date(NaN);
   s=String(s).trim();
-  // 1. Try native JS Date first — correctly handles Google Forms format M/D/YYYY H:MM:SS
-  //    and ISO 8601. Only skip if clearly ambiguous (e.g. pure DD/MM/YYYY).
-  const slashParts=s.split('/');
-  const isLikelyMMDD=slashParts.length>=2&&+slashParts[0]<=12&&+slashParts[1]>12;
-  if(!isLikelyMMDD){
-    // Could be DD/MM — try regex first so we don't misparse
-    const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[T\s]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
-    if(m){
-      const[,a,b,yyyy,hh,mi,ss]=m;
-      // If 'a' > 12 it must be the day; if 'b' > 12 it must be the month (MM/DD impossible → DD/MM)
-      const dd=+a>12?+a:+b>12?+b:null;
-      const mo=+a>12?+b:+b>12?+a:null;
-      if(dd!==null&&mo!==null){
-        const d=new Date(+yyyy,mo-1,dd,hh?+hh:0,mi?+mi:0,ss?+ss:0);
-        if(!isNaN(d))return d;
-      }
-    }
+  // Parse slash-separated dates treating format as DD/MM/YYYY with optional time
+  const m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[T\s]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
+  if(m){
+    const[,a,b,yyyy,hh,mi,ss]=m;
+    // If a > 12 it must be the day (DD/MM); if b > 12 it must be the day (a=month, MM/DD)
+    // Ambiguous (both ≤ 12): assume DD/MM/YYYY — treat a as day, b as month
+    let dd,mo;
+    if(+a>12){dd=+a;mo=+b;}
+    else if(+b>12){dd=+b;mo=+a;}
+    else{dd=+a;mo=+b;}
+    const d=new Date(+yyyy,mo-1,dd,hh?+hh:0,mi?+mi:0,ss?+ss:0);
+    if(!isNaN(d))return d;
   }
-  // 2. Native parse (handles Google Forms M/D/YYYY H:MM:SS, ISO 8601, etc.)
+  // ISO 8601 and other non-slash formats
   const native=new Date(s);
   if(!isNaN(native))return native;
-  // 3. Force DD/MM/YYYY fallback
-  const m2=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[T\s]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
-  if(m2){const[,dd,mo,yyyy,hh,mi,ss]=m2;return new Date(+yyyy,+mo-1,+dd,hh?+hh:0,mi?+mi:0,ss?+ss:0);}
   return new Date(NaN);
 }
 function _extractHasTime(s,d){
