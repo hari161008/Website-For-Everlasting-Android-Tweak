@@ -7,6 +7,7 @@
 
 # Website
 ┈➤ [Everlasting Android Tweak](https://hari161008.github.io/Website-For-Everlasting-Android-Tweak/Ratings%20Reviews/Ratings%20and%20Reviews%20v3.html)
+┈➤ [Ever dialer](https://hari161008.github.io/Website-For-Everlasting-Android-Tweak/Ratings%20Reviews/Ever%20Dialer/Ever%20Dialer.html)
 
 # Backend service for website and repo
 This is actaully a backend service, Nothing More...
