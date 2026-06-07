@@ -2338,7 +2338,7 @@ function _matchSrcFile(tagName){
 
 async function _loadSrcFiles(){
   if(_srcFilesLoaded)return;
-  const cacheKey='gh_src_files';
+  const cacheKey='gh_src_files_'+_GH.replace(/\//g,'_');
   try{
     const cached=_ghLsGet(cacheKey);
     if(cached){_srcFiles=cached;_srcFilesLoaded=true;return;}
@@ -2368,7 +2368,7 @@ async function loadReleases(){
   }
   _relLoading=true;
   try{
-    const rlsCacheKey='gh_releases';
+    const rlsCacheKey='gh_releases_'+_GH.replace(/\//g,'_');
     const cached=_ghLsGet(rlsCacheKey);
     if(cached){
       _relData=cached;_relLoaded=true;
