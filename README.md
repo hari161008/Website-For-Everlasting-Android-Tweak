@@ -1,7 +1,7 @@
 # Some Of My Apps On GitHub
 ┈➤ [Everlasting Android Tweak](https://github.com/hari161008/Everlasting-Android-Tweak-New-Repo) <br>
 ┈➤ [Ever Dialer](https://github.com/hari161008/Ever-Dialer)<br>
-┈➤ [Ever haptics](https://github.com/hari161008/Ever-Haptics)<br>
+┈➤ [Ever Haptics](https://github.com/hari161008/Ever-Haptics)<br>
 ┈➤ [Ever Call Recorder](https://github.com/hari161008/Ever-Call-Recorder) (Just a minor fork of cally to make it better) <br>
 ┈➤ [Everlasting Browser](https://github.com/hari161008/Everlasting-Browser) (Not Maintained anymore)
 
