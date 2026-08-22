@@ -11,7 +11,7 @@
 ┈➤ [Ever Call Recorder](https://hari161008.github.io/Website-For-Everlasting-Android-Tweak/Ratings%20Reviews/Ever%20Call%20Recorder/Ever_Call_Recorder.html)<br>
 ┈➤ [Ever Haptics](https://hari161008.github.io/Website-For-Everlasting-Android-Tweak/Ratings%20Reviews/Ever%20Haptics/Ever_Haptics.html)
 
-# Some Of My Apps
+# Some Of My Apps (GitHub Links)
 ┈➤ [Everlasting Android Tweak](https://github.com/hari161008/Everlasting-Android-Tweak-New-Repo) <br>
 ┈➤ [Ever Dialer](https://github.com/hari161008/Ever-Dialer)<br>
 ┈➤ [Ever Haptics](https://github.com/hari161008/Ever-Haptics)<br>
