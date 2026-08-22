@@ -1,3 +1,10 @@
+# Some Of My Apps (Website - With Ratings) + UPDATED
+┈➤ [Ever Dialer](https://hariprabhu.com/Ever-Dialer) <br>
+┈➤ [Ever Call Recorder](https://hariprabhu.com/Ever-Call-Recorder) <br>
+┈➤ [Ever Haptics](https://hariprabhu.com/Ever-Haptics) <br>
+┈➤ [Everlasting Android Tweak](https://hariprabhu.com/Everlasting-Android-Tweak)
+
+
 # Some Of My Apps (Website - With Ratings)
 ┈➤ [Everlasting Android Tweak](https://hari161008.github.io/Website-For-Everlasting-Android-Tweak/Ratings%20Reviews/Ratings%20and%20Reviews%20v3.html)<br>
 ┈➤ [Ever Dialer](https://hari161008.github.io/Website-For-Everlasting-Android-Tweak/Ratings%20Reviews/Ever%20Dialer/Ever%20Dialer.html)<br>
