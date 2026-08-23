@@ -16,7 +16,7 @@
 ┈➤ [Everlasting Android Tweak](https://github.com/hari161008/Everlasting-Android-Tweak-New-Repo) <br>
 ┈➤ [Ever Dialer](https://github.com/hari161008/Ever-Dialer)<br>
 ┈➤ [Ever Haptics](https://github.com/hari161008/Ever-Haptics)<br>
-┈➤ [Ever Call Recorder](https://github.com/hari161008/Ever-Call-Recorder) (Just a minor fork of cally to make it better) <br>
+┈➤ [Ever Call Recorder](https://github.com/hari161008/Ever-Call-Recorder) (Just a minor fork of Shizuku Call Recorder to make it better) <br>
 ┈➤ [Ever Wall](https://github.com/hari161008/Ever-wall) <br>
 ┈➤ [Everlasting Browser](https://github.com/hari161008/Everlasting-Browser) (Not Maintained anymore)
 
