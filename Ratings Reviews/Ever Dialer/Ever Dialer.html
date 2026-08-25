@@ -4,8 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ever Dialer</title>
-<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
@@ -1060,6 +1061,572 @@ a{color:var(--gold);text-decoration:none;}
 .rel-src-btn{display:inline-flex;align-items:center;gap:5px;padding:7px 12px;border-radius:50px;background:var(--surf3);color:var(--sub);border:1px solid var(--divider);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);text-decoration:none;}
 .rel-src-btn:hover{border-color:var(--gold-border);color:var(--gold);}
 .rel-src-btn .material-icons{font-size:14px;}
+
+/* ── DONATE & BUY ME A COFFEE ── */
+.donate-card{
+  background:var(--surface);
+  border:1px solid var(--divider);
+  border-radius:20px;
+  padding:28px 20px 24px;
+  margin:0 20px 24px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 32px rgba(0,0,0,.22),0 0 20px var(--gold-dim);
+  transition:transform .25s ease,box-shadow .4s ease,background-color .3s ease,border-color .3s ease;
+}
+@media(min-width:960px){
+  .donate-card{
+    margin:0 28px 28px;
+    padding:34px 28px 28px;
+  }
+}
+.donate-card::before{
+  content:'';
+  position:absolute;
+  top:-140px;
+  left:50%;
+  transform:translateX(-50%);
+  width:520px;
+  height:520px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(200,168,48,.12) 0%,rgba(200,168,48,.02) 45%,transparent 70%);
+  pointer-events:none;
+  animation:beaconPulse 6s ease-in-out infinite alternate;
+}
+.donate-card > *{
+  position:relative;
+  z-index:1;
+}
+.donate-badge-bar{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:5px 8px 5px 14px;
+  border-radius:50px;
+  background:var(--gold-dim);
+  border:1px solid var(--gold-border);
+  margin-bottom:20px;
+  box-shadow:0 3px 12px rgba(0,0,0,.12);
+  max-width:100%;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.donate-badge-bar .live-text{
+  font-size:12px;
+  font-weight:700;
+  color:var(--gold);
+  letter-spacing:.02em;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+}
+.donate-badge-bar .badge-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:3px 10px;
+  border-radius:50px;
+  background:rgba(200,168,48,.24);
+  color:var(--on-surf);
+  font-size:10.5px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.donate-badge-bar .badge-tag svg.icon{
+  width:12px;
+  height:12px;
+  color:#EA4335;
+}
+.donate-headline{
+  font-family:var(--font);
+  font-size:clamp(22px,3vw,32px);
+  font-weight:700;
+  letter-spacing:-.02em;
+  margin-bottom:10px;
+  color:var(--on-surf);
+}
+.donate-sub{
+  font-size:13.5px;
+  color:var(--sub);
+  max-width:520px;
+  margin:0 auto 24px;
+  line-height:1.65;
+}
+.donate-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+  align-items:stretch;
+  text-align:center;
+}
+@media(max-width:880px){
+  .donate-grid{
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+  .donate-card{
+    padding:24px 16px 20px;
+    border-radius:18px;
+  }
+}
+.donate-box{
+  background:var(--surf2);
+  border:1px solid var(--divider);
+  border-radius:16px;
+  padding:24px 18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  box-shadow:0 4px 16px rgba(0,0,0,.15);
+  transition:transform .3s cubic-bezier(.34,1.4,.64,1),box-shadow .3s ease,background .3s ease,border-color .3s ease;
+  position:relative;
+  overflow:hidden;
+}
+.donate-box::after{
+  content:'';
+  position:absolute;
+  top:-60%;left:-140%;
+  width:50%;height:220%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);
+  transform:rotate(25deg);
+  opacity:0;
+  transition:left .75s ease,opacity .4s ease;
+  pointer-events:none;
+}
+.donate-box:hover{
+  transform:translateY(-3px);
+  box-shadow:0 12px 32px rgba(0,0,0,.3),0 0 20px var(--gold-dim);
+  background:var(--surf3);
+  border-color:var(--gold-border);
+}
+.donate-box:hover::after{
+  left:140%;
+  opacity:1;
+}
+.donate-box-title{
+  font-family:var(--font);
+  font-size:16px;
+  font-weight:700;
+  margin-bottom:6px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--on-surf);
+}
+.donate-head-ico{
+  width:26px !important;
+  height:26px !important;
+  flex-shrink:0;
+}
+.bmc-head-ico{
+  width:26px !important;
+  height:26px !important;
+  object-fit:contain;
+  vertical-align:middle;
+  flex-shrink:0;
+  filter:drop-shadow(0 0 5px rgba(255,221,0,.45));
+}
+.donate-box-desc{
+  font-size:12.5px;
+  color:var(--sub);
+  margin-bottom:14px;
+  max-width:300px;
+  line-height:1.5;
+}
+.upi-qr-wrapper{
+  position:relative;
+  margin:6px 0 16px;
+  padding:10px;
+  background:#ffffff;
+  border:1.5px solid rgba(200,168,48,.4);
+  border-radius:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.2),0 0 16px rgba(200,168,48,.15);
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:180px;
+  height:180px;
+  box-sizing:border-box;
+  transition:transform .3s cubic-bezier(.34,1.4,.64,1),box-shadow .3s ease,border-color .3s ease;
+}
+.upi-qr-wrapper:hover{
+  transform:scale(1.03);
+  border-color:var(--gold);
+  box-shadow:0 10px 28px rgba(0,0,0,.3),0 0 24px var(--gold-dim);
+}
+.upi-qr-img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:8px;
+  display:block;
+}
+.bmc-qr-wrapper{
+  position:relative;
+  margin:6px 0 16px;
+  padding:10px;
+  background:transparent;
+  border:1.5px solid rgba(255,210,28,.35);
+  border-radius:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.2),0 0 18px rgba(255,210,28,.15);
+  display:inline-flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:180px;
+  height:180px;
+  box-sizing:border-box;
+  transition:transform .3s cubic-bezier(.34,1.4,.64,1),box-shadow .3s ease,border-color .3s ease;
+}
+.bmc-qr-wrapper:hover{
+  transform:scale(1.03);
+  border-color:#FFD21C;
+  box-shadow:0 10px 28px rgba(0,0,0,.3),0 0 28px rgba(255,210,28,.3);
+}
+#bmc-qrcode{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:156px;
+  height:156px;
+  background:transparent;
+}
+#bmc-qrcode canvas,
+#bmc-qrcode img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:contain;
+  border-radius:8px;
+  display:block;
+  background:transparent;
+}
+.upi-badge-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:var(--gold-dim);
+  color:var(--gold);
+  padding:5px 12px;
+  border-radius:50px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:12px;
+  font-weight:600;
+  margin-bottom:12px;
+  word-break:break-all;
+  border:1px dashed var(--gold-border);
+  text-decoration:none;
+  transition:all .25s ease;
+}
+a.upi-badge-chip{cursor:pointer;}
+a.upi-badge-chip:hover{
+  background:var(--gold-dim);
+  border-color:var(--gold);
+  color:var(--gold);
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(200,168,48,.2);
+}
+.donate-actions-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+  align-items:flex-end;
+  width:100%;
+  margin-top:6px;
+  margin-bottom:2px;
+}
+.donate-action-col{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  flex:0 1 auto;
+}
+.donate-action-col .upi-badge-chip{
+  margin-bottom:0;
+  width:auto;
+  max-width:100%;
+  justify-content:center;
+  padding:4px 12px;
+}
+.donate-action-col .copy-upi-btn{
+  width:auto;
+  max-width:100%;
+  justify-content:center;
+  padding:6px 14px;
+}
+.donate-btn-group{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  width:100%;
+  margin-top:6px;
+  margin-bottom:2px;
+}
+#btn-bmc-page{
+  background:#FFDD00 !important;
+  color:#000000 !important;
+  border:none;
+  font-weight:700;
+  font-size:12.5px;
+  padding:8px 18px;
+  border-radius:50px;
+  box-shadow:0 4px 16px rgba(255,221,0,.35) !important;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  text-decoration:none;
+  transition:all .25s cubic-bezier(.34,1.4,.64,1);
+  user-select:none;
+}
+#btn-bmc-page:hover{
+  background:#ffe433 !important;
+  color:#000000 !important;
+  transform:translateY(-2px) scale(1.02);
+  box-shadow:0 8px 24px rgba(255,221,0,.55) !important;
+}
+.copy-upi-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:7px 15px;
+  border-radius:50px;
+  font-family:var(--font);
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .2s ease;
+  border:1px solid var(--divider);
+  background:var(--surf3);
+  color:var(--on-surf);
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+  user-select:none;
+}
+.copy-upi-btn:hover{
+  background:var(--gold-dim);
+  border-color:var(--gold-border);
+  color:var(--gold);
+  transform:translateY(-1px);
+  box-shadow:0 4px 14px rgba(200,168,48,.18);
+}
+.copy-upi-btn:active{transform:scale(0.96);}
+.copy-upi-btn svg.icon{width:13px;height:13px;}
+.pulse-beacon{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 0 0 rgba(200,168,48,.7);
+  animation:radarPulse 2s infinite;
+  display:inline-block;
+  flex-shrink:0;
+}
+@keyframes radarPulse{
+  0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(200,168,48,.7)}
+  70%{transform:scale(1);box-shadow:0 0 0 8px rgba(200,168,48,0)}
+  100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(200,168,48,0)}
+}
+@keyframes beaconPulse{
+  0%{transform:translateX(-50%) scale(0.9);opacity:.5}
+  100%{transform:translateX(-50%) scale(1.15);opacity:.9}
+}
+
+/* Light Theme tweaks for donate elements */
+:root[data-theme="light"] .donate-card{
+  box-shadow:0 8px 28px rgba(0,0,0,.06),0 0 16px rgba(180,135,0,.1);
+}
+:root[data-theme="light"] .donate-badge-bar{
+  background:rgba(180,135,0,.1);
+  border-color:rgba(180,135,0,.22);
+}
+:root[data-theme="light"] .donate-badge-bar .badge-tag{
+  background:rgba(180,135,0,.15);
+  color:var(--on-surf);
+}
+:root[data-theme="light"] .donate-box{
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+:root[data-theme="light"] .donate-box:hover{
+  background:var(--surface);
+  box-shadow:0 8px 24px rgba(0,0,0,.09),0 0 16px rgba(180,135,0,.12);
+}
+:root[data-theme="light"] .copy-upi-btn{
+  background:#ffffff;
+  color:var(--on-surf);
+  border-color:var(--divider);
+}
+:root[data-theme="light"] .copy-upi-btn:hover{
+  background:var(--gold-dim);
+  border-color:var(--gold-border);
+  color:var(--gold);
+}
+:root[data-theme="light"] .upi-badge-chip{
+  background:var(--gold-dim);
+  color:var(--gold);
+}
+
+/* ── BUY ME A COFFEE FLOATING WIDGET (RESPONSIVE) ── */
+#bmc-wbtn + div,
+div[style*="Avenir Book"]{
+  display:none !important;
+  visibility:hidden !important;
+  opacity:0 !important;
+  pointer-events:none !important;
+}
+#bmc-wbtn{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  width:clamp(50px, 3.8vw, 60px) !important;
+  height:clamp(50px, 3.8vw, 60px) !important;
+  border-radius:50% !important;
+  right:clamp(16px, 1.8vw, 24px) !important;
+  bottom:clamp(16px, 1.8vw, 24px) !important;
+  box-shadow:0 8px 24px rgba(0,0,0,.35), 0 0 18px rgba(200,168,48,.35) !important;
+  transition:transform .25s cubic-bezier(.34,1.4,.64,1),box-shadow .25s ease,width .3s ease,height .3s ease,bottom .3s ease,right .3s ease !important;
+  z-index:9999 !important;
+}
+#bmc-wbtn:hover{
+  transform:scale(1.08) !important;
+  box-shadow:0 12px 32px rgba(255,221,0,.55), 0 0 24px rgba(200,168,48,.45) !important;
+}
+#bmc-wbtn:active{transform:scale(.94) !important;}
+#bmc-wbtn img,
+#bmc-wbtn svg{
+  width:clamp(26px, 2.1vw, 34px) !important;
+  height:clamp(26px, 2.1vw, 34px) !important;
+  margin:0 !important;
+  padding:0 !important;
+  object-fit:contain !important;
+  display:block !important;
+}
+#bmc-iframe{
+  position:fixed !important;
+  width:min(420px, calc(100vw - 40px)) !important;
+  max-width:420px !important;
+  height:min(640px, calc(100svh - 105px)) !important;
+  max-height:calc(100svh - 105px) !important;
+  min-height:unset !important;
+  right:clamp(16px, 1.8vw, 24px) !important;
+  bottom:calc(clamp(16px, 1.8vw, 24px) + clamp(50px, 3.8vw, 60px) + 12px) !important;
+  left:auto !important;
+  top:auto !important;
+  border-radius:22px !important;
+  box-shadow:0 24px 64px rgba(0,0,0,.65), 0 0 36px rgba(200,168,48,.3) !important;
+  transform-origin:bottom right !important;
+  transition:all .3s cubic-bezier(.34,1.4,.64,1) !important;
+  z-index:999999 !important;
+}
+#bmc-close-btn{
+  top:16px !important;
+  right:16px !important;
+  width:38px !important;
+  height:38px !important;
+  border-radius:50% !important;
+  background:rgba(255,255,255,.92) !important;
+  box-shadow:0 6px 18px rgba(0,0,0,.25) !important;
+  transition:transform .25s cubic-bezier(.34,1.4,.64,1), background .2s ease !important;
+}
+#bmc-close-btn:hover{
+  transform:scale(1.1) !important;
+  background:#ffffff !important;
+}
+
+@media(max-width: 1200px) and (min-width: 761px){
+  #bmc-wbtn{
+    width:54px !important;
+    height:54px !important;
+    border-radius:27px !important;
+    right:18px !important;
+    bottom:18px !important;
+  }
+  #bmc-wbtn img,
+  #bmc-wbtn svg{
+    width:28px !important;
+    height:28px !important;
+  }
+  #bmc-iframe{
+    width:min(390px, calc(100vw - 36px)) !important;
+    max-width:390px !important;
+    height:min(580px, calc(100svh - 96px)) !important;
+    max-height:calc(100svh - 96px) !important;
+    right:18px !important;
+    bottom:80px !important;
+    border-radius:20px !important;
+  }
+}
+@media(max-width: 960px) and (min-width: 761px){
+  #bmc-wbtn{
+    width:50px !important;
+    height:50px !important;
+    border-radius:25px !important;
+    right:16px !important;
+    bottom:16px !important;
+  }
+  #bmc-wbtn img,
+  #bmc-wbtn svg{
+    width:26px !important;
+    height:26px !important;
+  }
+  #bmc-iframe{
+    width:min(365px, calc(100vw - 32px)) !important;
+    max-width:365px !important;
+    height:min(540px, calc(100svh - 86px)) !important;
+    max-height:calc(100svh - 86px) !important;
+    right:16px !important;
+    bottom:74px !important;
+    border-radius:18px !important;
+  }
+}
+@media(max-height: 800px) and (min-width: 761px){
+  #bmc-wbtn{
+    width:48px !important;
+    height:48px !important;
+    border-radius:24px !important;
+    bottom:14px !important;
+    right:16px !important;
+  }
+  #bmc-wbtn img,
+  #bmc-wbtn svg{
+    width:25px !important;
+    height:25px !important;
+  }
+  #bmc-iframe{
+    height:calc(100svh - 78px) !important;
+    max-height:calc(100svh - 78px) !important;
+    bottom:68px !important;
+    right:16px !important;
+    border-radius:18px !important;
+  }
+}
+@media(max-height: 650px) and (min-width: 761px){
+  #bmc-wbtn{
+    width:44px !important;
+    height:44px !important;
+    border-radius:22px !important;
+    bottom:12px !important;
+    right:14px !important;
+  }
+  #bmc-wbtn img,
+  #bmc-wbtn svg{
+    width:23px !important;
+    height:23px !important;
+  }
+  #bmc-iframe{
+    height:calc(100svh - 64px) !important;
+    max-height:calc(100svh - 64px) !important;
+    bottom:60px !important;
+    right:14px !important;
+    width:min(350px, calc(100vw - 28px)) !important;
+    max-width:350px !important;
+    border-radius:16px !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1083,6 +1650,36 @@ a{color:var(--gold);text-decoration:none;}
     <!-- Moon (dark theme) -->
     <symbol id="ico-moon" viewBox="0 0 24 24">
       <path fill="currentColor" d="M20.742 13.045a8.088 8.088 0 0 1-2.077.273c-4.508 0-8.165-3.655-8.165-8.163 0-1.04.194-2.033.547-2.95a.5.5 0 0 0-.622-.66A9.998 9.998 0 0 0 4 11c0 5.523 4.477 10 10 10a9.998 9.998 0 0 0 9.455-6.715.5.5 0 0 0-.713-.24z"/>
+    </symbol>
+    <!-- Indian Rupee (₹) Symbol -->
+    <symbol id="ico-rupee" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M13.66 7C13.1 5.83 11.9 5 10.5 5H6V3h12v2h-3.27c.66.57 1.14 1.34 1.37 2H18v2h-1.8c-.28 2.37-2.07 4.26-4.45 4.71L17.5 21h-2.83l-5.67-7H6v-2h4.5c1.93 0 3.5-1.57 3.5-3.5 0-.17-.02-.34-.05-.5H6V7h7.66z"/>
+    </symbol>
+    <!-- Coffee / Buy Me a Coffee Official -->
+    <symbol id="ico-coffee" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M23.881 8.948c-.773-4.085-4.859-4.593-4.859-4.593H.723c-.604 0-.679.798-.679.798s-.082 7.324-.022 11.822c.164 2.424 2.586 2.672 2.586 2.672s8.267-.023 11.966-.049c2.438-.426 2.683-2.566 2.658-3.734 4.352.24 7.422-2.831 6.649-6.916zm-11.062 3.511c-1.246 1.453-4.011 3.976-4.011 3.976s-.121.119-.31.023c-.076-.057-.108-.09-.108-.09-.443-.441-3.368-3.049-4.034-3.954-.709-.965-1.041-2.7-.091-3.71.951-1.01 3.005-1.086 4.363.407 0 0 1.565-1.782 3.468-.962 1.904.82 1.832 3.011.723 4.31zm8.064-2.178c-.673.79-1.588.948-2.328.986l-.088-3.238c.683.003 1.62.062 2.148.471.603.467.744 1.229.268 1.781z"/>
+    </symbol>
+    <!-- Copy -->
+    <symbol id="ico-copy" viewBox="0 0 24 24">
+      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" fill="none" stroke="currentColor" stroke-width="2"/>
+    </symbol>
+    <!-- Check -->
+    <symbol id="ico-check" viewBox="0 0 24 24">
+      <polyline points="20 6 9 17 4 12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <!-- Phone -->
+    <symbol id="ico-phone" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M6.62 10.79a15.053 15.053 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1.02l-2.2 2.2z"/>
+    </symbol>
+    <!-- Heart -->
+    <symbol id="ico-heart" viewBox="0 0 24 24">
+      <path fill="#EA4335" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </symbol>
+    <!-- Arrow NE -->
+    <symbol id="ico-arrow-ne" viewBox="0 0 24 24">
+      <line x1="7" y1="17" x2="17" y2="7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <polyline points="7 7 17 7 17 17" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
     </symbol>
   </defs>
 </svg>
@@ -1119,6 +1716,8 @@ a{color:var(--gold);text-decoration:none;}
 
       <div class="hero-desc">
         Ever Dialer is the best replacement of Google dialer which can RECORD CALLS without announcements, without root and has Material You design with dynamic colours, aesthetic, open source, customizable, some extra features like taking notes of each contacts and it has a quick note taking window when you are on the call to take notes quickly.
+        <br><br>
+        <b>Note:</b> Since this app requires Shizuku, the Shizuku service stops automatically in the Official Shizuku App. To prevent this happening, Uninstall the Original Shizuku and Install this <b>Shizuku Fork (<a href="https://github.com/thedjchi/Shizuku">Click Here</a>)</b> and after installed, then run shizuku normally and make sure that you go to shizuku app, on the top right, click settings icon and click <b>"Watchdog"</b> which prevents Shizuku service from Stopping !!
       </div>
 
       <div class="hero-actions">
@@ -1172,6 +1771,7 @@ a{color:var(--gold);text-decoration:none;}
       <a href="https://github.com/hari161008/Ever-Dialer/releases" target="_blank">Releases</a>
       <a href="https://t.me/EverlastingAndroidTweak" target="_blank">Telegram</a>
       <a href="https://t.me/CoolAppStore" target="_blank">Cool Apps</a>
+      <a href="#donate">Donate</a>
     </div>
 
   </div><!-- /left-col -->
@@ -1263,6 +1863,97 @@ a{color:var(--gold);text-decoration:none;}
       <div class="ss-desktop-grid" id="ssDesktopGrid"></div>
     </div>
 
+    <div class="divider-line"></div>
+
+    <!-- ── DONATE ── -->
+    <div class="section" id="donate">
+      <div class="sec-head reveal">
+        <div class="sec-title">Donate &amp; Support</div>
+      </div>
+
+      <div class="donate-card reveal">
+        <div class="donate-badge-bar">
+          <span class="pulse-beacon"></span>
+          <span class="live-text">Support Independent Open Source</span>
+          <span class="badge-tag"><svg class="icon"><use href="#ico-heart"/></svg> Donate &amp; Support</span>
+        </div>
+        <h2 class="donate-headline">Fuel the Craft</h2>
+        <p class="donate-sub">If you love my open-source apps, developer tools, or customizations, consider supporting via Buy Me a Coffee or donating via UPI / BHIM to support continuous development.</p>
+
+        <div class="donate-grid">
+          <!-- UPI / Direct Payment Card -->
+          <div class="donate-box">
+            <div>
+              <div class="donate-box-title">
+                <svg class="icon donate-head-ico" style="color:var(--gold)"><use href="#ico-rupee"/></svg>
+                UPI / Direct Payment
+              </div>
+              <p class="donate-box-desc">Scan the QR code with any UPI app (GPay, PhonePe, Paytm, BHIM) or copy the details below.</p>
+            </div>
+
+            <div class="upi-qr-wrapper">
+              <img src="bhim_upi_qr.png" alt="UPI QR Code - 8446443108@upi" class="upi-qr-img" width="196" height="196" loading="lazy" onerror="this.onerror=null; this.src='https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;data=upi%3A%2F%2Fpay%3Fpa%3D8446443108%40upi%26pn%3DHari%2BPrabhu%26cu%3DINR';" />
+            </div>
+
+            <div class="donate-actions-grid">
+              <div class="donate-action-col">
+                <div class="upi-badge-chip">
+                  <svg class="icon" style="width:14px;height:14px;color:var(--gold)"><use href="#ico-rupee"/></svg>
+                  <span>8446443108@upi</span>
+                </div>
+                <button type="button" class="copy-upi-btn" id="copy-upi-btn" data-upi="8446443108@upi" title="Copy UPI ID">
+                  <svg class="icon"><use href="#ico-copy"/></svg>
+                  <span class="copy-btn-text">Copy UPI ID</span>
+                </button>
+              </div>
+              <div class="donate-action-col">
+                <div class="upi-badge-chip">
+                  <svg class="icon" style="width:14px;height:14px;color:var(--gold)"><use href="#ico-phone"/></svg>
+                  <span>8446443108</span>
+                </div>
+                <button type="button" class="copy-upi-btn" id="copy-phone-btn" data-upi="8446443108" title="Copy Phone Number">
+                  <svg class="icon"><use href="#ico-copy"/></svg>
+                  <span class="copy-btn-text">Copy Phone Number</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Buy Me a Coffee Card -->
+          <div class="donate-box">
+            <div>
+              <div class="donate-box-title">
+                <img src="https://cdn.buymeacoffee.com/widget/assets/coffee%20cup.svg" alt="Buy Me a Coffee" class="bmc-head-ico" />
+                Buy Me a Coffee
+              </div>
+              <p class="donate-box-desc">Scan to visit my Buy Me a Coffee page or tap below to donate via Card.</p>
+            </div>
+
+            <div class="bmc-qr-wrapper">
+              <div id="bmc-qrcode"></div>
+            </div>
+
+            <a href="https://buymeacoffee.com/hariprabhu" target="_blank" rel="noopener noreferrer" class="upi-badge-chip" style="margin-bottom:18px" title="Visit Buy Me a Coffee Profile">
+              <img src="https://cdn.buymeacoffee.com/widget/assets/coffee%20cup.svg" alt="Buy Me a Coffee" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;" />
+              <span>buymeacoffee.com/hariprabhu</span>
+              <svg class="icon" style="width:12px;height:12px;opacity:0.75;"><use href="#ico-arrow-ne"/></svg>
+            </a>
+
+            <div class="donate-btn-group">
+              <a href="https://buymeacoffee.com/hariprabhu" target="_blank" rel="noopener noreferrer" class="btn btn-gold" id="btn-bmc-page">
+                <img src="https://cdn.buymeacoffee.com/widget/assets/coffee%20cup.svg" alt="Buy Me a Coffee" style="width:18px;height:18px;vertical-align:middle;object-fit:contain;" />
+                <span>Buy Me a Coffee</span>
+              </a>
+              <button type="button" class="copy-upi-btn" id="copy-bmc-btn" data-url="https://buymeacoffee.com/hariprabhu" title="Copy Link">
+                <svg class="icon"><use href="#ico-copy"/></svg>
+                <span class="copy-btn-text">Copy Link</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /right-col -->
 
 </div><!-- /page-grid -->
@@ -1273,6 +1964,7 @@ a{color:var(--gold);text-decoration:none;}
   <a href="https://github.com/hari161008/Ever-Dialer/releases" target="_blank">Releases</a>
   <a href="https://t.me/EverlastingAndroidTweak" target="_blank">Telegram</a>
   <a href="https://t.me/CoolAppStore" target="_blank">Cool Apps</a>
+  <a href="#donate">Donate</a>
 </div>
 
 </div><!-- /wrap -->
@@ -2702,5 +3394,142 @@ function _relMd(raw){
 loadReleases();
 // Load live GitHub star count into the About badge
 _loadGhStars();
+
+// ── DONATE & BUY ME A COFFEE SCRIPTS ──
+(function(){
+  // Initialize Buy Me a Coffee QRCode using qrcodejs
+  const bmcQrEl = document.getElementById("bmc-qrcode");
+  if (bmcQrEl) {
+    function initBmcQr() {
+      if (typeof QRCode !== 'undefined') {
+        bmcQrEl.innerHTML = '';
+        const root = document.documentElement;
+        const explicit = root.getAttribute('data-theme');
+        const isDark = explicit === 'dark' || (!explicit && !window.matchMedia('(prefers-color-scheme: light)').matches);
+        new QRCode(bmcQrEl, {
+          text: "https://buymeacoffee.com/hariprabhu",
+          width: 240,
+          height: 240,
+          colorDark: isDark ? "#FFD21C" : "#856404",
+          colorLight: "rgba(0,0,0,0)",
+          correctLevel: QRCode.CorrectLevel.H
+        });
+      } else {
+        setTimeout(initBmcQr, 80);
+      }
+    }
+    initBmcQr();
+
+    const themeObserver = new MutationObserver(mutations => {
+      mutations.forEach(m => {
+        if (m.attributeName === 'data-theme') {
+          initBmcQr();
+        }
+      });
+    });
+    themeObserver.observe(document.documentElement, { attributes: true });
+
+    const sysLightMq = window.matchMedia('(prefers-color-scheme: light)');
+    if (sysLightMq.addEventListener) {
+      sysLightMq.addEventListener('change', () => {
+        if (!document.documentElement.getAttribute('data-theme')) {
+          initBmcQr();
+        }
+      });
+    }
+  }
+
+  // Copy Buttons handler (supports both UPI ID, Phone number, and BMC link)
+  document.querySelectorAll('.copy-upi-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const textToCopy = this.dataset.upi || this.dataset.url || '';
+      if(!textToCopy) return;
+      const originalHTML = this.innerHTML;
+      
+      function showSuccess(b) {
+        b.innerHTML = '<svg class="icon" style="color:#3DDC84"><use href="#ico-check"/></svg> <span>Copied!</span>';
+        b.style.background = 'var(--gold-dim)';
+        b.style.color = 'var(--gold)';
+        setTimeout(() => {
+          b.innerHTML = originalHTML;
+          b.style.background = '';
+          b.style.color = '';
+        }, 2200);
+      }
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy).then(() => showSuccess(this)).catch(() => {
+          fallbackCopy(textToCopy, this);
+        });
+      } else {
+        fallbackCopy(textToCopy, this);
+      }
+
+      function fallbackCopy(text, b) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try {
+          document.execCommand('copy');
+          showSuccess(b);
+        } catch(err) {
+          alert('Copied: ' + text);
+        }
+        ta.remove();
+      }
+    });
+  });
+
+  // BMC Donate button trigger widget
+  const bmcPageBtn = document.getElementById("btn-bmc-page");
+  if(bmcPageBtn) {
+    bmcPageBtn.addEventListener("click", function(e) {
+      const bmcWbtn = document.getElementById("bmc-wbtn");
+      if(bmcWbtn) {
+        e.preventDefault();
+        bmcWbtn.click();
+      }
+    });
+  }
+
+  // Smooth scroll for internal anchor links (e.g. #donate)
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', function(e){
+      const href = this.getAttribute('href');
+      if(href && href.startsWith('#') && href.length > 1){
+        const targetId = href.slice(1);
+        const targetEl = document.getElementById(targetId);
+        if(targetEl){
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if(history.pushState){
+            history.pushState(null, '', href);
+          }
+        }
+      }
+    });
+  });
+
+  // Handle #donate redirect or hash on initial page load / hashchange
+  function handleHashScroll() {
+    if(window.location.hash) {
+      const targetId = window.location.hash.slice(1);
+      const targetEl = document.getElementById(targetId);
+      if(targetEl) {
+        setTimeout(() => {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 350);
+      }
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', handleHashScroll);
+  } else {
+    handleHashScroll();
+  }
+  window.addEventListener('hashchange', handleHashScroll);
+})();
 </script>
+<script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="hariprabhu" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FFDD00" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
 </html>
